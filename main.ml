@@ -1,4 +1,4 @@
 open Tests
-open Expr
+open Formula.Formula
 
-let _ = affiche_expr f1;;
+let _ = affiche f1;;

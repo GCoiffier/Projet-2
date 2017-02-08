@@ -28,7 +28,7 @@ let rec affiche_expr f =
     | OR(f1,f2) -> aff_aux "OR(" f1 f2
     | AND (f1,f2) -> aff_aux "AND(" f1 f2
     | NOT f1 -> "NOT("^(affiche_expr f1)^")"
-    | XOR (f1,f2) -> aff_aux "WOR(" f1 f2
+    | XOR (f1,f2) -> aff_aux "XOR(" f1 f2
     | IMPLIES (f1,f2) -> aff_aux "IMPLIES(" f1 f2
     | EQUIV (f1,f2) -> aff_aux "EQUIV(" f1 f2
 
