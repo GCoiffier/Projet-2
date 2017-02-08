@@ -1,0 +1,10 @@
+### Starting build.
+# Target: main.ml.depends, tags: { extension:ml, file:main.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules main.ml > main.ml.depends # cached
+# Target: expr.ml.depends, tags: { extension:ml, file:expr.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules expr.ml > expr.ml.depends
++ /usr/bin/ocamldep -modules expr.ml > expr.ml.depends
+File "expr.ml", line 36, characters 13-16:
+Error: Syntax error
+Command exited with code 2.
+# Compilation unsuccessful.
