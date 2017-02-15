@@ -1,34 +1,42 @@
 ### Starting build.
 # Target: main.ml.depends, tags: { extension:ml, file:main.ml, ocaml, ocamldep, quiet }
-/usr/bin/ocamldep -modules main.ml > main.ml.depends
-# Target: expr.ml.depends, tags: { extension:ml, file:expr.ml, ocaml, ocamldep, quiet }
-/usr/bin/ocamldep -modules expr.ml > expr.ml.depends
+/usr/bin/ocamldep -modules main.ml > main.ml.depends # cached
+# Target: formula.ml.depends, tags: { extension:ml, file:formula.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules formula.ml > formula.ml.depends # cached
+# Target: formula.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:formula.cmo, file:formula.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o formula.cmo formula.ml # cached
 # Target: lexer.mll, tags: { extension:mll, file:lexer.mll, lexer, ocaml, ocamllex, quiet }
-/usr/bin/ocamllex -q lexer.mll
+/usr/bin/ocamllex -q lexer.mll # cached
 # Target: lexer.ml.depends, tags: { extension:ml, file:lexer.ml, ocaml, ocamldep, quiet }
-/usr/bin/ocamldep -modules lexer.ml > lexer.ml.depends
+/usr/bin/ocamldep -modules lexer.ml > lexer.ml.depends # cached
 # Target: parser.mly, tags: { extension:mly, file:parser.mly, ocaml, ocamlyacc, parser, quiet }
 /usr/bin/ocamlyacc -v parser.mly
++ /usr/bin/ocamlyacc -v parser.mly
+8 shift/reduce conflicts.
 # Target: parser.mli.depends, tags: { extension:mli, file:parser.mli, ocaml, ocamldep, quiet }
-/usr/bin/ocamldep -modules parser.mli > parser.mli.depends
-# Target: expr.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:expr.cmo, file:expr.ml, implem, ocaml, quiet }
-/usr/bin/ocamlc -c -o expr.cmo expr.ml
+/usr/bin/ocamldep -modules parser.mli > parser.mli.depends # cached
 # Target: parser.cmi, tags: { byte, compile, extension:mli, file:parser.mli, interf, ocaml, quiet }
-/usr/bin/ocamlc -c -o parser.cmi parser.mli
+/usr/bin/ocamlc -c -o parser.cmi parser.mli # cached
 # Target: lexer.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:lexer.cmo, file:lexer.ml, implem, ocaml, quiet }
-/usr/bin/ocamlc -c -o lexer.cmo lexer.ml
+/usr/bin/ocamlc -c -o lexer.cmo lexer.ml # cached
+# Target: tests.ml.depends, tags: { extension:ml, file:tests.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules tests.ml > tests.ml.depends # cached
+# Target: tests.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:tests.cmo, file:tests.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o tests.cmo tests.ml # cached
 # Target: main.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:main.cmo, file:main.ml, implem, ocaml, quiet }
-/usr/bin/ocamlc -c -o main.cmo main.ml
+/usr/bin/ocamlc -c -o main.cmo main.ml # cached
+# Target: formula.cmx, tags: { compile, extension:cmx, extension:ml, file:formula.cmx, file:formula.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o formula.cmx formula.ml # cached
 # Target: parser.ml.depends, tags: { extension:ml, file:parser.ml, ocaml, ocamldep, quiet }
 /usr/bin/ocamldep -modules parser.ml > parser.ml.depends
-# Target: expr.cmx, tags: { compile, extension:cmx, extension:ml, file:expr.cmx, file:expr.ml, implem, native, ocaml, quiet }
-/usr/bin/ocamlopt -c -o expr.cmx expr.ml
 # Target: parser.cmx, tags: { compile, extension:cmx, extension:ml, file:parser.cmx, file:parser.ml, implem, native, ocaml, quiet }
 /usr/bin/ocamlopt -c -o parser.cmx parser.ml
+# Target: tests.cmx, tags: { compile, extension:cmx, extension:ml, file:tests.cmx, file:tests.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o tests.cmx tests.ml # cached
 # Target: lexer.cmx, tags: { compile, extension:cmx, extension:ml, file:lexer.cmx, file:lexer.ml, implem, native, ocaml, quiet }
 /usr/bin/ocamlopt -c -o lexer.cmx lexer.ml
 # Target: main.cmx, tags: { compile, extension:cmx, extension:ml, file:main.cmx, file:main.ml, implem, native, ocaml, quiet }
 /usr/bin/ocamlopt -c -o main.cmx main.ml
 # Target: main.native, tags: { dont_link_with, extension:native, file:main.native, link, native, ocaml, program, quiet }
-/usr/bin/ocamlopt unix.cmxa expr.cmx parser.cmx lexer.cmx main.cmx -o main.native
+/usr/bin/ocamlopt unix.cmxa formula.cmx parser.cmx lexer.cmx tests.cmx main.cmx -o main.native
 # Compilation successful.

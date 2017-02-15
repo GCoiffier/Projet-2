@@ -1,0 +1,213 @@
+   0  $accept : %entry% $end
+
+   1  main : expr EOL
+
+   2  expr : INT
+   3       | LPAREN expr RPAREN
+   4       | expr AND expr
+   5       | expr OR expr
+   6       | NEG expr
+   7       | expr XOR expr
+
+   8  %entry% : '\001' main
+
+state 0
+	$accept : . %entry% $end  (0)
+
+	'\001'  shift 1
+	.  error
+
+	%entry%  goto 2
+
+
+state 1
+	%entry% : '\001' . main  (8)
+
+	INT  shift 3
+	NEG  shift 4
+	LPAREN  shift 5
+	.  error
+
+	main  goto 6
+	expr  goto 7
+
+
+state 2
+	$accept : %entry% . $end  (0)
+
+	$end  accept
+
+
+state 3
+	expr : INT .  (2)
+
+	.  reduce 2
+
+
+state 4
+	expr : NEG . expr  (6)
+
+	INT  shift 3
+	NEG  shift 4
+	LPAREN  shift 5
+	.  error
+
+	expr  goto 8
+
+
+state 5
+	expr : LPAREN . expr RPAREN  (3)
+
+	INT  shift 3
+	NEG  shift 4
+	LPAREN  shift 5
+	.  error
+
+	expr  goto 9
+
+
+state 6
+	%entry% : '\001' main .  (8)
+
+	.  reduce 8
+
+
+state 7
+	main : expr . EOL  (1)
+	expr : expr . AND expr  (4)
+	expr : expr . OR expr  (5)
+	expr : expr . XOR expr  (7)
+
+	AND  shift 10
+	OR  shift 11
+	XOR  shift 12
+	EOL  shift 13
+	.  error
+
+
+8: shift/reduce conflict (shift 10, reduce 6) on AND
+8: shift/reduce conflict (shift 11, reduce 6) on OR
+8: shift/reduce conflict (shift 12, reduce 6) on XOR
+state 8
+	expr : expr . AND expr  (4)
+	expr : expr . OR expr  (5)
+	expr : NEG expr .  (6)
+	expr : expr . XOR expr  (7)
+
+	AND  shift 10
+	OR  shift 11
+	XOR  shift 12
+	RPAREN  reduce 6
+	EOL  reduce 6
+
+
+state 9
+	expr : LPAREN expr . RPAREN  (3)
+	expr : expr . AND expr  (4)
+	expr : expr . OR expr  (5)
+	expr : expr . XOR expr  (7)
+
+	AND  shift 10
+	OR  shift 11
+	XOR  shift 12
+	RPAREN  shift 14
+	.  error
+
+
+state 10
+	expr : expr AND . expr  (4)
+
+	INT  shift 3
+	NEG  shift 4
+	LPAREN  shift 5
+	.  error
+
+	expr  goto 15
+
+
+state 11
+	expr : expr OR . expr  (5)
+
+	INT  shift 3
+	NEG  shift 4
+	LPAREN  shift 5
+	.  error
+
+	expr  goto 16
+
+
+state 12
+	expr : expr XOR . expr  (7)
+
+	INT  shift 3
+	NEG  shift 4
+	LPAREN  shift 5
+	.  error
+
+	expr  goto 17
+
+
+state 13
+	main : expr EOL .  (1)
+
+	.  reduce 1
+
+
+state 14
+	expr : LPAREN expr RPAREN .  (3)
+
+	.  reduce 3
+
+
+15: shift/reduce conflict (shift 12, reduce 4) on XOR
+state 15
+	expr : expr . AND expr  (4)
+	expr : expr AND expr .  (4)
+	expr : expr . OR expr  (5)
+	expr : expr . XOR expr  (7)
+
+	XOR  shift 12
+	AND  reduce 4
+	OR  reduce 4
+	RPAREN  reduce 4
+	EOL  reduce 4
+
+
+16: shift/reduce conflict (shift 12, reduce 5) on XOR
+state 16
+	expr : expr . AND expr  (4)
+	expr : expr . OR expr  (5)
+	expr : expr OR expr .  (5)
+	expr : expr . XOR expr  (7)
+
+	AND  shift 10
+	XOR  shift 12
+	OR  reduce 5
+	RPAREN  reduce 5
+	EOL  reduce 5
+
+
+17: shift/reduce conflict (shift 10, reduce 7) on AND
+17: shift/reduce conflict (shift 11, reduce 7) on OR
+17: shift/reduce conflict (shift 12, reduce 7) on XOR
+state 17
+	expr : expr . AND expr  (4)
+	expr : expr . OR expr  (5)
+	expr : expr . XOR expr  (7)
+	expr : expr XOR expr .  (7)
+
+	AND  shift 10
+	OR  shift 11
+	XOR  shift 12
+	RPAREN  reduce 7
+	EOL  reduce 7
+
+
+State 8 contains 3 shift/reduce conflicts.
+State 15 contains 1 shift/reduce conflict.
+State 16 contains 1 shift/reduce conflict.
+State 17 contains 3 shift/reduce conflicts.
+
+
+11 terminals, 4 nonterminals
+9 grammar rules, 18 states

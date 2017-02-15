@@ -1,11 +1,11 @@
 open Tests
 open Formula
 
-let _ = affiche f1;;
+let _ = Formula.affiche f1;;
 
 let compile e =
   begin
-    affiche e;
+    Formula.affiche e;
     print_newline()
   end
 
