@@ -41,7 +41,8 @@ module Formula =
 
 
   let rec eval v f = match f with
-    (* given a valuation 'val', computes the value of the formula f *)
+    (* given a valuation 'val', ie a vector of booleans,
+        computes the value of the formula f *)
     | Const(k) -> k
     | Var(x) -> v.(x)
     | OR (f1,f2) -> (eval v f1) || (eval v f2)
