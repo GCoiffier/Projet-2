@@ -1,11 +1,18 @@
 open Tests
 open Formula
+<<<<<<< HEAD
+=======
+open Bdd.BDD
 
-let _ = Formula.affiche f1;;
+let my_bdd = build_from_formula f1;;
+print my_bdd "test";;
+>>>>>>> f76d37916a2bf1bc281ae484e8b63e78f218e5f1
+
+let _ = affiche f1;;
 
 let compile e =
   begin
-    Formula.affiche e;
+    affiche e;
     print_newline()
   end
 
