@@ -17,5 +17,8 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
   | ')'             { RPAREN }
   | '~'             { NEG }
   | 'X'             { XOR }
+  | "=>"            { IMP }
+  | "<=>"           { EQ }
   | ['0'-'9']+ as s { INT (int_of_string s) }
+  | '-'             { MINUS }
   | eof             { raise Eof } 

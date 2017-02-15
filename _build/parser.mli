@@ -4,6 +4,9 @@ type token =
   | OR
   | NEG
   | XOR
+  | IMP
+  | EQ
+  | MINUS
   | LPAREN
   | RPAREN
   | EOL
