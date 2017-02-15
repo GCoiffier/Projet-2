@@ -1,11 +1,17 @@
-open Tests
 open Formula
 open Bdd.BDD
+
+let f1 = AND( Var(1) , XOR( AND( Var(2), Var(3)), NOT(Var(0))));;
+if (eval (Array.make 4 true) f1) then (print_string "true") else (print_string "false"); print_newline ();;
+
+print_int (nb_var f1); print_newline ();;
 
 let my_bdd = build_from_formula f1;;
 print my_bdd "test";;
 
-let _ = affiche f1;;
+(*
+affiche f1;;
+
 
 let compile e =
   begin
@@ -33,3 +39,5 @@ let calc () =
 ;;
 
 let _ = calc()
+
+*)

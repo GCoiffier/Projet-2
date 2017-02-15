@@ -35,7 +35,7 @@ let affiche f =
   affiche_expr f; print_newline ();;
 
 let nb_var f =
-  (* count the number of variables of f. Variables should be 1 to n. *)
+  (* count the number of variables of f. Variables should be 0 to n. *)
   let rec nb_var_aux m f = match f with
      Const(k) -> m
     |Var(x) -> if x>m then x else m
@@ -45,33 +45,21 @@ let nb_var f =
     |NOT(f)-> nb_var_aux m f
     |IMPLIES(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
     |EQUIV(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
-  in nb_var_aux 0 f;;
+  in (nb_var_aux (-1) f)+1;;
 
-  let rec eval v f = match f with
-    (* given a valuation 'val', computes the value of the formula f *)
-    | Const(k) -> k
-    | Var(x) -> v.(x)
-    | OR (f1,f2) -> (eval v f1) || (eval v f2)
-    | AND (f1,f2) -> (eval v f1) && (eval v f2)
-    | NOT(f1) -> not (eval v f1)
-    | XOR (f1,f2) -> let v1 = (eval v f1) and v2 = (eval v f2)
-                        in (v1 || v2) && (not (v1 && v2))
-    | IMPLIES (f1,f2) -> let v1 = (eval v f1) and v2 = (eval v f2)
-                        in v2 || (not v1)
-    | EQUIV (f1,f2) -> let v1 = (eval v f1) and v2 = (eval v f2)
-                        in (v2 && v1) || ( (not v1) && (not v2))
-
-let rec eval v f = match f with
+let rec eval v f =
   (* given a valuation 'val', ie a vector of booleans,
       computes the value of the formula f *)
-  | Const(k) -> k
-  | Var(x) -> v.(x)
-  | OR (f1,f2) -> (eval v f1) || (eval v f2)
-  | AND (f1,f2) -> (eval v f1) && (eval v f2)
-  | NOT(f1) -> not (eval v f1)
-  | XOR (f1,f2) -> let v1 = (eval v f1) and v2 = (eval v f2)
-                      in (v1 || v2) && (not (v1 && v2))
-  | IMPLIES (f1,f2) -> let v1 = (eval v f1) and v2 = (eval v f2)
-                      in v2 || (not v1)
-  | EQUIV (f1,f2) -> let v1 = (eval v f1) and v2 = (eval v f2)
-                      in (v2 && v1) || ( (not v1) && (not v2))
+    let rec eval_aux = function
+      | Const(k) -> k
+      | Var(x) -> v.(x)
+      | OR (f1,f2) -> (eval_aux f1) || (eval_aux f2)
+      | AND (f1,f2) -> (eval_aux f1) && (eval_aux f2)
+      | NOT(f1) -> not (eval_aux f1)
+      | XOR (f1,f2) -> let v1 = (eval_aux f1) and v2 = (eval_aux f2)
+                          in (v1 || v2) && (not (v1 && v2))
+      | IMPLIES (f1,f2) -> let v1 = (eval_aux f1) and v2 = (eval_aux f2)
+                          in v2 || (not v1)
+      | EQUIV (f1,f2) -> let v1 = (eval_aux f1) and v2 = (eval_aux f2)
+                          in (v2 && v1) || ( (not v1) && (not v2))
+    in eval_aux f

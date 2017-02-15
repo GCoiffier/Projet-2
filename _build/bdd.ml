@@ -14,9 +14,17 @@ module BDD : BDD_Sig =
     type bdd =  Leaf of bool
               | Node of int * bdd * bdd
 
-    let build_from_formula f = Node(1,Node(2,Leaf(true),Leaf(false)), Leaf(true))
-    (*  let v = Array.make
-      |Const *)
+    let build_from_formula f =
+      let n = nb_var f in
+      let v = Array.make n false in
+      let rec build_aux_formula f i = match i with
+        |i when ((abs i) = n) -> Leaf(eval v f)
+        |i -> let g = build_aux_formula f (-(i+1)) in
+                let _ = (v.((abs i)) <- true) in
+                let d = build_aux_formula f (i+1) in
+                let _ = (v.((abs i)) <- false) in 
+                Node(i,g,d)
+      in build_aux_formula f 0;;
 
     let satisfy bdd = (true,[])
 
