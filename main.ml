@@ -1,7 +1,7 @@
 open Formula
 open Bdd
 
-let f1 = AND( Var(1) , XOR( AND( Var(2), Var(3)), NOT(Var(0))));;
+let f1 = AND( Var(1) , XOR( AND( Var(2), Var(3)), NOT(Var(4))));;
 
 let my_bdd = BDD.create f1;;
 BDD.print my_bdd "test";;

@@ -4,7 +4,8 @@ module Var = Set.Make(struct
                        let compare = compare
                       end)
 
-(* un type pour des expressions booléennes *)
+(* un type pour des expressions booléennes
+  /!\ Les variables d'une formule doivent être numérotées de 1 à n /!\ *)
 type formula =
     Const of bool
   | Var of int
@@ -60,7 +61,7 @@ let rec eval v f =
       computes the value of the formula f *)
     let rec eval_aux = function
       | Const(k) -> k
-      | Var(x) -> v.(x)
+      | Var(x) -> v.(x-1)
       | OR (f1,f2) -> (eval_aux f1) || (eval_aux f2)
       | AND (f1,f2) -> (eval_aux f1) && (eval_aux f2)
       | NOT(f1) -> not (eval_aux f1)
