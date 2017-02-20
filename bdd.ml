@@ -28,6 +28,7 @@ module BDD : BDD_Sig =
     let create f =
       let n = nb_var f in
       let v = Array.make n false in
+      let ltrue = Leaf(true) and lfalse = Leaf(false) in
       let rec build_aux f i = match (abs i) with
         |x when ((abs x) = n) -> Leaf(eval v f)
         |x -> let g = build_aux f (-(x+1)) in
@@ -37,7 +38,7 @@ module BDD : BDD_Sig =
                 Node(i,g,d)
       in build_aux f 1;;
 
-    let satisfy bdd = (true,[])
+    let satisfy bdd = (true,[]) (* TO DO *)
 
     let print bdd name =
       let dot_file = open_out (name^".dot") in
