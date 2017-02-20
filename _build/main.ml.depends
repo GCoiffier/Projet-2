@@ -1,1 +1,1 @@
-main.ml: Array Bdd Formula
+main.ml: Bdd Formula

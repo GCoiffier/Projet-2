@@ -1,5 +1,7 @@
 open Formula
 
+(* For now, we have BDT : Binary decision tree *)
+
 module type BDD_Sig =
   sig
       type bdd
@@ -17,14 +19,14 @@ module BDD : BDD_Sig =
     let build_from_formula f =
       let n = nb_var f in
       let v = Array.make n false in
-      let rec build_aux_formula f i = match i with
-        |i when ((abs i) = n) -> Leaf(eval v f)
-        |i -> let g = build_aux_formula f (-(i+1)) in
-                let _ = (v.((abs i)) <- true) in
-                let d = build_aux_formula f (i+1) in
-                let _ = (v.((abs i)) <- false) in 
+      let rec build_aux f i = match (abs i) with
+        |x when ((abs x) = n) -> Leaf(eval v f)
+        |x -> let g = build_aux f (-(x+1)) in
+                let _ = (v.(x-1) <- true) in
+                let d = build_aux f (x+1) in
+                let _ = (v.(x-1) <- false) in
                 Node(i,g,d)
-      in build_aux_formula f 0;;
+      in build_aux f 1;;
 
     let satisfy bdd = (true,[])
 
