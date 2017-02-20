@@ -1,10 +1,10 @@
 open Formula
-open Bdd.BDD
+open Bdd
 
 let f1 = AND( Var(1) , XOR( AND( Var(2), Var(3)), NOT(Var(0))));;
 
-let my_bdd = build_from_formula f1;;
-print my_bdd "test";;
+let my_bdd = BDD.create f1;;
+BDD.print my_bdd "test";;
 
 (*
 affiche f1;;

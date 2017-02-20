@@ -5,9 +5,18 @@ open Formula
 module type BDD_Sig =
   sig
       type bdd
-      val build_from_formula : formula -> bdd
+
+      val create : formula -> bdd
+      (* Creates the canonical BDD associated with a formula *)
+
       val satisfy : bdd -> bool* 'a list
+      (* Tests the satisfiability of the formula. If it is satisfiable,
+        also return the list of variables that are set to true (returns [] if
+        not satisfiable)
+      *)
+
       val print : bdd -> string -> unit
+      (* Exports a .dot file representing the diagram *)
   end
 
 module BDD : BDD_Sig =
@@ -16,7 +25,7 @@ module BDD : BDD_Sig =
     type bdd =  Leaf of bool
               | Node of int * bdd * bdd
 
-    let build_from_formula f =
+    let create f =
       let n = nb_var f in
       let v = Array.make n false in
       let rec build_aux f i = match (abs i) with
@@ -34,19 +43,19 @@ module BDD : BDD_Sig =
       let dot_file = open_out (name^".dot") in
         output_string dot_file "digraph BDD { \n size = \"2,2\"; \n";
         let i = ref 0 in
-        let s = string_of_int in
+        let s k = if k>=0 then string_of_int k else "NOT_"^(string_of_int (-k)) in
         let string_of_leaf b =
         let _ = incr i in
           if b then "{ l"^(s !i)^"[label = \"True \"]}" else "{ l"^(s !i)^"[label = \"False \"]}"
         in
         let rec print_aux = function
           |Leaf(b) -> ()
-          |Node(k,g,d) -> match (g,d) with
+          |Node(k,l,h) -> match (l,h) with
               Leaf(a),Leaf(b) ->
                          output_string dot_file (s k);
                          output_string dot_file " -> ";
                          output_string dot_file (string_of_leaf a);
-                         output_string dot_file " ; \n";
+                         output_string dot_file " [style=dashed] ; \n";
                          output_string dot_file (s k);
                          output_string dot_file " -> ";
                          output_string dot_file (string_of_leaf b);
@@ -55,33 +64,33 @@ module BDD : BDD_Sig =
                          output_string dot_file (s k);
                          output_string dot_file " -> ";
                          output_string dot_file (s x);
-                         output_string dot_file " ; \n";
+                         output_string dot_file " [style=dashed] ; \n";
                          output_string dot_file (s k);
                          output_string dot_file " -> ";
                          output_string dot_file (string_of_leaf a);
                          output_string dot_file " ; \n";
-                         print_aux g;
+                         print_aux l;
               |(Leaf(a), Node(x,_,_)) ->
                          output_string dot_file (s k);
                          output_string dot_file " -> ";
                          output_string dot_file (s x);
-                         output_string dot_file " ; \n";
+                         output_string dot_file " [style=dashed] ; \n";
                          output_string dot_file (s k);
                          output_string dot_file " -> ";
                          output_string dot_file (string_of_leaf a);
                          output_string dot_file " ; \n";
-                         print_aux d;
+                         print_aux h;
              |(Node(x,_,_), Node(y,_,_)) ->
                         output_string dot_file (s k);
                         output_string dot_file " -> ";
                         output_string dot_file (s x);
-                        output_string dot_file " ; \n";
+                        output_string dot_file " [style=dashed] ; \n";
                         output_string dot_file (s k);
                         output_string dot_file " -> ";
                         output_string dot_file (s y);
                         output_string dot_file " ; \n";
-                        print_aux g;
-                        print_aux d;
+                        print_aux l;
+                        print_aux h;
       in print_aux bdd;
       output_string dot_file "}" ;
       close_out dot_file;;

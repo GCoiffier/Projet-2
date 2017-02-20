@@ -1,17 +1,17 @@
 digraph BDD { 
  size = "2,2"; 
-1 -> -2 ; 
+1 -> NOT_2 [style=dashed] ; 
 1 -> 2 ; 
--2 -> -3 ; 
--2 -> 3 ; 
--3 -> { l1[label = "False "]} ; 
--3 -> { l2[label = "False "]} ; 
-3 -> { l3[label = "True "]} ; 
+NOT_2 -> NOT_3 [style=dashed] ; 
+NOT_2 -> 3 ; 
+NOT_3 -> { l1[label = "False "]} [style=dashed] ; 
+NOT_3 -> { l2[label = "False "]} ; 
+3 -> { l3[label = "True "]} [style=dashed] ; 
 3 -> { l4[label = "True "]} ; 
-2 -> -3 ; 
+2 -> NOT_3 [style=dashed] ; 
 2 -> 3 ; 
--3 -> { l5[label = "False "]} ; 
--3 -> { l6[label = "False "]} ; 
-3 -> { l7[label = "False "]} ; 
+NOT_3 -> { l5[label = "False "]} [style=dashed] ; 
+NOT_3 -> { l6[label = "False "]} ; 
+3 -> { l7[label = "False "]} [style=dashed] ; 
 3 -> { l8[label = "False "]} ; 
 }

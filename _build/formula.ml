@@ -1,3 +1,9 @@
+module Var = Set.Make(struct
+                       type t = int
+                       (* use Pervasives compare *)
+                       let compare = compare
+                      end)
+
 (* un type pour des expressions booléennes *)
 type formula =
     Const of bool
@@ -34,18 +40,20 @@ let affiche f =
   in
   affiche_expr f; print_newline ();;
 
-let nb_var f =
-  (* count the number of variables of f. Variables should be 0 to n. *)
-  let rec nb_var_aux m f = match f with
-     Const(k) -> m
-    |Var(x) -> if x>m then x else m
-    |OR(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
-    |AND(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
-    |XOR(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
-    |NOT(f)-> nb_var_aux m f
-    |IMPLIES(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
-    |EQUIV(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
-  in (nb_var_aux (-1) f)+1;;
+let get_variables f =
+  (* get the list of variables of f  *)
+  let rec get_variables_aux s = function
+     Const(k) -> s
+    |Var(x) -> (Var.add x s)
+    |OR(f1,f2) -> let s2 = (get_variables_aux s f1) in (get_variables_aux s2 f2)
+    |AND(f1,f2) -> let s2 = (get_variables_aux s f1) in (get_variables_aux s2 f2)
+    |XOR(f1,f2) -> let s2 = (get_variables_aux s f1) in (get_variables_aux s2 f2)
+    |NOT(f)-> get_variables_aux s f
+    |IMPLIES(f1,f2) -> let s2 = (get_variables_aux s f1) in (get_variables_aux s2 f2)
+    |EQUIV(f1,f2) -> let s2 = (get_variables_aux s f1) in (get_variables_aux s2 f2)
+  in Var.elements (get_variables_aux Var.empty f);;
+
+let nb_var f = List.length (get_variables f)
 
 let rec eval v f =
   (* given a valuation 'val', ie a vector of booleans,
