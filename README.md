@@ -11,12 +11,19 @@ Coiffier Guillaume - Valque Léo
 
 ## Avancement
 
-  [x] Lexer et parser pour les formules booléennes
-  [x] Type formula et fonctions utilitaires sur ce type
-  [] Implémentation des BDD avec la compression
-  [] Affichage d'un BDD en format .dot
-  [] Transformation de Tseitin pour renvoyer des formules en forme SAT
-  [] Exportation des fichiers pour minisat et comparaison du résultat avec le BDD
+[x] Lexer et parser pour les formules booléennes
+
+[x] Type formula et fonctions utilitaires sur ce type
+
+[x] Implémentation des BDD sans la compression
+
+[] Implémentation des BDD avec la compression
+
+[] Affichage d'un BDD en format .dot
+
+[] Transformation de Tseitin pour renvoyer des formules en forme SAT
+
+[] Exportation des fichiers pour minisat et comparaison du résultat avec le BDD
 
 ## Liste et contenu des fichiers
 
