@@ -129,10 +129,13 @@ let rec del_not_not e = match e with
   |OR(e1,e2) -> OR(del_not_not e1, del_not_not e2)
   |_ -> e
 
-let rec reduction expr = (* c'est un O(n**2)avec n le nombre de termes *)
+exception Nbeg of formula
+let rec reduction expr = (* c'est un O(n**2) avec n le nombre de termes *)
   let rec red_aux e = match e with
-  |AND(Var(k),e2) -> let expr' = replace expr k true in reduction expr' (*On reprend depuis le debut, on le fera au plus n fois *)
-  |AND(e2,Var(k)) -> let expr' = replace expr k true in reduction expr' (* pause problème *)
+  |AND(Var(k),e2) -> let expr' = replace expr k true in raise (Nbeg expr') (*On reprend depuis le debut *)
+  |AND(e2,Var(k)) -> let expr' = replace expr k true in raise (Nbeg expr') 
+  |AND(e2,NOT(Var(k))) -> let expr' = replace expr k false in raise (Nbeg expr') 
+  |AND(NOT(Var(k)),e2) -> let expr' = replace expr k false in raise (Nbeg expr') 
   |AND(e1,e2) -> let red_e1 = red_aux e1 in let red_e2 = red_aux e2 in
 		 (match red_e1,red_e2 with
 		 |Const(true), _ -> red_e2
@@ -148,7 +151,10 @@ let rec reduction expr = (* c'est un O(n**2)avec n le nombre de termes *)
 		 |_, Const(true) -> Const(true)
 		 |_,_ -> OR(red_e1,red_e2) )
   |_ -> e in
-  red_aux (del_not_not expr);;
+  try
+    red_aux (del_not_not expr)
+  with
+    Nbeg expr' -> reduction expr';;
 
 
 
@@ -156,4 +162,5 @@ let e = AND(Var(1),OR(NOT(Var(1)),Var(2)));;
 reduction e;;
 replace e 1 false;;
 tseitin e;;
-reduction (tseitin e);;
+affiche (reduction (tseitin e));;
+reduction (reduction (tseitin e));;
