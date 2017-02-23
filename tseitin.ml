@@ -156,11 +156,14 @@ let rec reduction expr = (* c'est un O(n**2) avec n le nombre de termes *)
   with
     Nbeg expr' -> reduction expr';;
 
-
+let rec reduction_full expr = let expr' = reduction expr in
+	if expr = expr'
+	then expr
+	else reduction_full expr'
 
 let e = AND(Var(1),OR(NOT(Var(1)),Var(2)));;
 reduction e;;
 replace e 1 false;;
 tseitin e;;
 reduction (tseitin e);;
-reduction (reduction (tseitin e));;
+reduction_full (tseitin e);;

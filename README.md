@@ -19,6 +19,9 @@ reduction : formula -> formula
 reduit la taille d'une expression de type CNF (normalement elle marche aussi sur les autres expressions mais est moins efficace)
 il peut nécessaire de l'appeler plusieurs fois pour avoir quelque chose de taille minimale
 
+reduction_full : formula -> formula
+applique reduction jusqu'a que l'expression soit de taille minimale
+
 #API.ml
 contient read_formula pour les lires les entrées du terminal
 
