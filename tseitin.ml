@@ -162,5 +162,5 @@ let e = AND(Var(1),OR(NOT(Var(1)),Var(2)));;
 reduction e;;
 replace e 1 false;;
 tseitin e;;
-affiche (reduction (tseitin e));;
+reduction (tseitin e);;
 reduction (reduction (tseitin e));;
