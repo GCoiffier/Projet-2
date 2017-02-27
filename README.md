@@ -25,9 +25,33 @@ Coiffier Guillaume - Valque Léo
 
 [] Exportation des fichiers pour minisat et comparaison du résultat avec le BDD
 
-## Liste et contenu des fichiers
+# Liste et contenu des fichiers
 
-- main.ml :
-- formula.ml :
-- BDD.ml :
-- input.txt :
+##main.ml :
+
+##formula.ml :
+
+##BDD.ml :
+
+##input.txt :
+
+##Tseitin.ml :
+contient les fonctions tseitin et reduction (et les fonctions qu'ils
+appellent)
+
+tseitin : formula -> formula
+transforme une expression en une variante CNF par la méthode de tseitin
+
+reduction : formula -> formula
+reduit la taille d'une expression de type CNF (normalement elle marche aussi sur les autres expressions mais est moins efficace)
+il peut nécessaire de l'appeler plusieurs fois pour avoir quelque chose de taille minimale
+
+reduction_full : formula -> formula
+applique reduction jusqu'a que l'expression soit de taille minimale
+
+##API.ml
+contient read_formula pour les lires les entrées du terminal
+
+read_formula : unit -> formula
+transforme la chaine de caractère de l'entrée standart en une
+formula
