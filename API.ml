@@ -12,6 +12,5 @@ let parse () = Parser.main Lexer.token lexbuf
 (* la fonction que l'on lance ci-dessous *)
 let read_formula () =
   try
-      parse () 
-  with _ -> (print_string "erreur de saisie\n")
-
+      parse ()
+  with _ -> failwith "erreur de saisie\n"
