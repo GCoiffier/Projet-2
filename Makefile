@@ -7,3 +7,4 @@ byte:
 clean:
 	rm -rf _build
 	rm *.native
+	rm *~

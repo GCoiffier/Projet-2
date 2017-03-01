@@ -16,4 +16,4 @@ let compile e =
     print_newline()
   end
 
-let _ = print_for_minisat ( reduction_full( tseitin ( read_formula() )));;
+let _ = minisat ( reduction_full( tseitin ( read_formula() )));;

@@ -23,7 +23,7 @@ let output_int f q =
 	output_string f ( string_of_int( q ) )
 
 let print_for_minisat expr =
-	let f = open_out "input.cnf" in
+	let f = open_out "_build/input.cnf" in
 	output_string f "p cnf ";
 	output_int f (max_var expr);
 	output_string f " ";
@@ -42,6 +42,11 @@ let print_for_minisat expr =
 	
 	print_cnf expr;
 	close_out f
+	
+let minisat expr =
+	print_for_minisat expr;
+	Sys.command "minisat _build/input.cnf output.txt";
+	
 	
 
 	
