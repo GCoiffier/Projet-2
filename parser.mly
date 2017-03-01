@@ -12,6 +12,7 @@ open Formula   (* rappel: dans expr.ml:
 %token LPAREN RPAREN
 %token EOL             /* retour à la ligne */
 
+%left END
 %left EQ
 %left IMP
 %left OR  /* associativité gauche: a*b*c, c'est (a*b)*c */
@@ -32,6 +33,7 @@ main:                       /* <- le point d'entrée (cf. + haut, "start") */
     expr EOL                { $1 }  /* on veut reconnaître un "expr" */
 ;
 expr:			    /* règles de grammaire pour les expressions */
+  | expr FIN		  { $1 }
   | INT                   { Var $1 }
   | MINUS INT             { NOT(Var $2) }
   | LPAREN expr RPAREN    { $2 } /* on récupère le deuxième élément */
