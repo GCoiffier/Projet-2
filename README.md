@@ -7,7 +7,9 @@ Coiffier Guillaume - Valque Léo
 [x] La formule d'entrée est écrite dans le fichier input.txt
     ATTENTION : Ses variables doivent être étiquetées par les entiers de 1 à n.
 
-[x] Pour visualiser les fichiers dot, utilisez le script convert_dot.sh
+[x] Pour executer le programme, utilisez le script exec.sh.
+      ./exec.sh "file.txt"  execute le programme sur la formule contenue dans le fichier file.txt
+      ./exec.sh seul execute le programme en mode interactif. Il faut alors entrer à la main la formule dans la console.
 
 ## Avancement
 
