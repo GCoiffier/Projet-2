@@ -19,7 +19,7 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
   | 'X'             { XOR }
   | "=>"            { IMP }
   | "<=>"           { EQ }
-  | ['0'-'9']+ as s { INT (int_of_string s) }
+  | ['1'-'9']+ as s { INT (int_of_string s) }
   | '-'             { MINUS }
   | '0'		    { FIN }
   | eof             { raise Eof } 

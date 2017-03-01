@@ -1,1 +1,1 @@
-main.ml: API Bdd Formula Tests
+main.ml: API Bdd Formula Minisat Tests Tseitin

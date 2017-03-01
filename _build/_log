@@ -1,6 +1,6 @@
 ### Starting build.
 # Target: main.ml.depends, tags: { extension:ml, file:main.ml, ocaml, ocamldep, quiet }
-/usr/bin/ocamldep -modules main.ml > main.ml.depends # cached
+/usr/bin/ocamldep -modules main.ml > main.ml.depends
 # Target: API.ml.depends, tags: { extension:ml, file:API.ml, ocaml, ocamldep, quiet }
 /usr/bin/ocamldep -modules API.ml > API.ml.depends # cached
 # Target: formula.ml.depends, tags: { extension:ml, file:formula.ml, ocaml, ocamldep, quiet }
@@ -19,15 +19,46 @@
 /usr/bin/ocamlc -c -o parser.cmi parser.mli # cached
 # Target: lexer.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:lexer.cmo, file:lexer.ml, implem, ocaml, quiet }
 /usr/bin/ocamlc -c -o lexer.cmo lexer.ml # cached
+# Target: API.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:API.cmo, file:API.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o API.cmo API.ml # cached
 # Target: bdd.ml.depends, tags: { extension:ml, file:bdd.ml, ocaml, ocamldep, quiet }
 /usr/bin/ocamldep -modules bdd.ml > bdd.ml.depends # cached
+# Target: bdd.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:bdd.cmo, file:bdd.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o bdd.cmo bdd.ml # cached
+# Target: minisat.ml.depends, tags: { extension:ml, file:minisat.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules minisat.ml > minisat.ml.depends
 # Target: tests.ml.depends, tags: { extension:ml, file:tests.ml, ocaml, ocamldep, quiet }
 /usr/bin/ocamldep -modules tests.ml > tests.ml.depends # cached
-# Target: API.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:API.cmo, file:API.ml, implem, ocaml, quiet }
-/usr/bin/ocamlc -c -o API.cmo API.ml
-+ /usr/bin/ocamlc -c -o API.cmo API.ml
-File "API.ml", line 16, characters 12-47:
-Error: This expression has type unit but an expression was expected of type
-         Formula.formula
-Command exited with code 2.
-# Compilation unsuccessful.
+# Target: tests.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:tests.cmo, file:tests.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o tests.cmo tests.ml # cached
+# Target: tseitin.ml.depends, tags: { extension:ml, file:tseitin.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules tseitin.ml > tseitin.ml.depends # cached
+# Target: tseitin.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:tseitin.cmo, file:tseitin.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o tseitin.cmo tseitin.ml # cached
+# Target: minisat.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:minisat.cmo, file:minisat.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o minisat.cmo minisat.ml
+# Target: main.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:main.cmo, file:main.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o main.cmo main.ml
+# Target: formula.cmx, tags: { compile, extension:cmx, extension:ml, file:formula.cmx, file:formula.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o formula.cmx formula.ml # cached
+# Target: parser.ml.depends, tags: { extension:ml, file:parser.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules parser.ml > parser.ml.depends # cached
+# Target: parser.cmx, tags: { compile, extension:cmx, extension:ml, file:parser.cmx, file:parser.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o parser.cmx parser.ml # cached
+# Target: lexer.cmx, tags: { compile, extension:cmx, extension:ml, file:lexer.cmx, file:lexer.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o lexer.cmx lexer.ml # cached
+# Target: API.cmx, tags: { compile, extension:cmx, extension:ml, file:API.cmx, file:API.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o API.cmx API.ml # cached
+# Target: bdd.cmx, tags: { compile, extension:cmx, extension:ml, file:bdd.cmx, file:bdd.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o bdd.cmx bdd.ml # cached
+# Target: tests.cmx, tags: { compile, extension:cmx, extension:ml, file:tests.cmx, file:tests.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o tests.cmx tests.ml # cached
+# Target: tseitin.cmx, tags: { compile, extension:cmx, extension:ml, file:tseitin.cmx, file:tseitin.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o tseitin.cmx tseitin.ml # cached
+# Target: minisat.cmx, tags: { compile, extension:cmx, extension:ml, file:minisat.cmx, file:minisat.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o minisat.cmx minisat.ml
+# Target: main.cmx, tags: { compile, extension:cmx, extension:ml, file:main.cmx, file:main.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o main.cmx main.ml
+# Target: main.native, tags: { dont_link_with, extension:native, file:main.native, link, native, ocaml, program, quiet }
+/usr/bin/ocamlopt unix.cmxa formula.cmx parser.cmx lexer.cmx API.cmx bdd.cmx minisat.cmx tests.cmx tseitin.cmx main.cmx -o main.native
+# Compilation successful.
