@@ -3,6 +3,8 @@
 /usr/bin/ocamldep -modules main.ml > main.ml.depends
 # Target: bdd.ml.depends, tags: { extension:ml, file:bdd.ml, ocaml, ocamldep, quiet }
 /usr/bin/ocamldep -modules bdd.ml > bdd.ml.depends
+# Target: bddsig.mli.depends, tags: { extension:mli, file:bddsig.mli, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules bddsig.mli > bddsig.mli.depends
 # Target: formula.ml.depends, tags: { extension:ml, file:formula.ml, ocaml, ocamldep, quiet }
 /usr/bin/ocamldep -modules formula.ml > formula.ml.depends
 # Target: visited.ml.depends, tags: { extension:ml, file:visited.ml, ocaml, ocamldep, quiet }
@@ -11,6 +13,8 @@
 /usr/bin/ocamlc -c -o formula.cmo formula.ml
 # Target: visited.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:visited.cmo, file:visited.ml, implem, ocaml, quiet }
 /usr/bin/ocamlc -c -o visited.cmo visited.ml
+# Target: bddsig.cmi, tags: { byte, compile, extension:mli, file:bddsig.mli, interf, ocaml, quiet }
+/usr/bin/ocamlc -c -o bddsig.cmi bddsig.mli
 # Target: lexParInterface.ml.depends, tags: { extension:ml, file:lexParInterface.ml, ocaml, ocamldep, quiet }
 /usr/bin/ocamldep -modules lexParInterface.ml > lexParInterface.ml.depends
 # Target: lexer.mll, tags: { extension:mll, file:lexer.mll, lexer, ocaml, ocamllex, quiet }

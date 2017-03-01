@@ -34,8 +34,12 @@ Coiffier Guillaume - Valque Léo
 ##formula.ml :
 
 ##BDD.ml :
+  
+##visited.ml :
+  Contient un module Lookup qui sert de dictionnaire lors de la construction d'un BDD. Permet d'implémenter le partage de mémoire
 
 ##input.txt :
+  Le fichier principal d'entrée. Ecrivez ici une formule à envoyer au programme
 
 ##Tseitin.ml :
 contient les fonctions tseitin et reduction (et les fonctions qu'ils
