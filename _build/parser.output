@@ -1,0 +1,312 @@
+   0  $accept : %entry% $end
+
+   1  main : expr EOL
+
+   2  expr : expr FIN
+   3       | INT
+   4       | MINUS INT
+   5       | LPAREN expr RPAREN
+   6       | expr AND expr
+   7       | expr OR expr
+   8       | NEG expr
+   9       | expr XOR expr
+  10       | expr IMP expr
+  11       | expr EQ expr
+
+  12  %entry% : '\001' main
+
+state 0
+	$accept : . %entry% $end  (0)
+
+	'\001'  shift 1
+	.  error
+
+	%entry%  goto 2
+
+
+state 1
+	%entry% : '\001' . main  (12)
+
+	INT  shift 3
+	NEG  shift 4
+	MINUS  shift 5
+	LPAREN  shift 6
+	.  error
+
+	main  goto 7
+	expr  goto 8
+
+
+state 2
+	$accept : %entry% . $end  (0)
+
+	$end  accept
+
+
+state 3
+	expr : INT .  (3)
+
+	.  reduce 3
+
+
+state 4
+	expr : NEG . expr  (8)
+
+	INT  shift 3
+	NEG  shift 4
+	MINUS  shift 5
+	LPAREN  shift 6
+	.  error
+
+	expr  goto 9
+
+
+state 5
+	expr : MINUS . INT  (4)
+
+	INT  shift 10
+	.  error
+
+
+state 6
+	expr : LPAREN . expr RPAREN  (5)
+
+	INT  shift 3
+	NEG  shift 4
+	MINUS  shift 5
+	LPAREN  shift 6
+	.  error
+
+	expr  goto 11
+
+
+state 7
+	%entry% : '\001' main .  (12)
+
+	.  reduce 12
+
+
+state 8
+	main : expr . EOL  (1)
+	expr : expr . FIN  (2)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . XOR expr  (9)
+	expr : expr . IMP expr  (10)
+	expr : expr . EQ expr  (11)
+
+	AND  shift 12
+	OR  shift 13
+	XOR  shift 14
+	IMP  shift 15
+	EQ  shift 16
+	FIN  shift 17
+	EOL  shift 18
+	.  error
+
+
+state 9
+	expr : expr . FIN  (2)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : NEG expr .  (8)
+	expr : expr . XOR expr  (9)
+	expr : expr . IMP expr  (10)
+	expr : expr . EQ expr  (11)
+
+	.  reduce 8
+
+
+state 10
+	expr : MINUS INT .  (4)
+
+	.  reduce 4
+
+
+state 11
+	expr : expr . FIN  (2)
+	expr : LPAREN expr . RPAREN  (5)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . XOR expr  (9)
+	expr : expr . IMP expr  (10)
+	expr : expr . EQ expr  (11)
+
+	AND  shift 12
+	OR  shift 13
+	XOR  shift 14
+	IMP  shift 15
+	EQ  shift 16
+	FIN  shift 17
+	RPAREN  shift 19
+	.  error
+
+
+state 12
+	expr : expr AND . expr  (6)
+
+	INT  shift 3
+	NEG  shift 4
+	MINUS  shift 5
+	LPAREN  shift 6
+	.  error
+
+	expr  goto 20
+
+
+state 13
+	expr : expr OR . expr  (7)
+
+	INT  shift 3
+	NEG  shift 4
+	MINUS  shift 5
+	LPAREN  shift 6
+	.  error
+
+	expr  goto 21
+
+
+state 14
+	expr : expr XOR . expr  (9)
+
+	INT  shift 3
+	NEG  shift 4
+	MINUS  shift 5
+	LPAREN  shift 6
+	.  error
+
+	expr  goto 22
+
+
+state 15
+	expr : expr IMP . expr  (10)
+
+	INT  shift 3
+	NEG  shift 4
+	MINUS  shift 5
+	LPAREN  shift 6
+	.  error
+
+	expr  goto 23
+
+
+state 16
+	expr : expr EQ . expr  (11)
+
+	INT  shift 3
+	NEG  shift 4
+	MINUS  shift 5
+	LPAREN  shift 6
+	.  error
+
+	expr  goto 24
+
+
+state 17
+	expr : expr FIN .  (2)
+
+	.  reduce 2
+
+
+state 18
+	main : expr EOL .  (1)
+
+	.  reduce 1
+
+
+state 19
+	expr : LPAREN expr RPAREN .  (5)
+
+	.  reduce 5
+
+
+state 20
+	expr : expr . FIN  (2)
+	expr : expr . AND expr  (6)
+	expr : expr AND expr .  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . XOR expr  (9)
+	expr : expr . IMP expr  (10)
+	expr : expr . EQ expr  (11)
+
+	.  reduce 6
+
+
+state 21
+	expr : expr . FIN  (2)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr OR expr .  (7)
+	expr : expr . XOR expr  (9)
+	expr : expr . IMP expr  (10)
+	expr : expr . EQ expr  (11)
+
+	AND  shift 12
+	XOR  shift 14
+	OR  reduce 7
+	IMP  reduce 7
+	EQ  reduce 7
+	FIN  reduce 7
+	RPAREN  reduce 7
+	EOL  reduce 7
+
+
+state 22
+	expr : expr . FIN  (2)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . XOR expr  (9)
+	expr : expr XOR expr .  (9)
+	expr : expr . IMP expr  (10)
+	expr : expr . EQ expr  (11)
+
+	AND  shift 12
+	OR  reduce 9
+	XOR  reduce 9
+	IMP  reduce 9
+	EQ  reduce 9
+	FIN  reduce 9
+	RPAREN  reduce 9
+	EOL  reduce 9
+
+
+state 23
+	expr : expr . FIN  (2)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . XOR expr  (9)
+	expr : expr . IMP expr  (10)
+	expr : expr IMP expr .  (10)
+	expr : expr . EQ expr  (11)
+
+	AND  shift 12
+	OR  shift 13
+	XOR  shift 14
+	IMP  reduce 10
+	EQ  reduce 10
+	FIN  reduce 10
+	RPAREN  reduce 10
+	EOL  reduce 10
+
+
+state 24
+	expr : expr . FIN  (2)
+	expr : expr . AND expr  (6)
+	expr : expr . OR expr  (7)
+	expr : expr . XOR expr  (9)
+	expr : expr . IMP expr  (10)
+	expr : expr . EQ expr  (11)
+	expr : expr EQ expr .  (11)
+
+	AND  shift 12
+	OR  shift 13
+	XOR  shift 14
+	IMP  shift 15
+	EQ  reduce 11
+	FIN  reduce 11
+	RPAREN  reduce 11
+	EOL  reduce 11
+
+
+15 terminals, 4 nonterminals
+13 grammar rules, 25 states

@@ -1,5 +1,6 @@
 (* stdin désigne l'entrée standard (le clavier) *)
 (* lexbuf est un canal ouvert sur stdin *)
+open Formula
 
 let lexbuf = Lexing.from_channel stdin
 
@@ -9,12 +10,7 @@ let lexbuf = Lexing.from_channel stdin
 let parse () = Parser.main Lexer.token lexbuf
 
 (* la fonction que l'on lance ci-dessous *)
-let calc () =
+let read_formula () =
   try
-      let result = parse () in
-      (* Expr.affiche_expr result; print_newline (); flush stdout *)
-	compile result; flush stdout
-  with _ -> (print_string "erreur de saisie\n")
-;;
-
-let _ = calc()
+      parse ()
+  with _ -> failwith "erreur de saisie"
