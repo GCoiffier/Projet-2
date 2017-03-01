@@ -5,6 +5,7 @@ byte:
 	ocamlbuild -yaccflag -v main.byte
 
 clean:
-	rm -rf _build
-	rm *.native
-	rm *.byte
+	rm -rf -f _build
+	rm -f *.native
+	rm -f *.byte
+	rm -f *.dot

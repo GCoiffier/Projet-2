@@ -17,7 +17,7 @@ type formula =
   | EQUIV of formula * formula
 
 (* fonction d'affichage *)
-let affiche f =
+let print_formula f =
   let rec affiche_expr f =
     let aff_aux s a b =
         begin
