@@ -1,4 +1,5 @@
 open Formula
+open Visited
 
 module type BDD_Sig =
   sig
@@ -6,6 +7,9 @@ module type BDD_Sig =
 
       val create : formula -> bdd
       (* Creates the canonical ROBDD associated with a formula *)
+
+      val create_without_compression : formula -> bdd
+      (* Creates a decision tree associated with formula, without any compression and memory sharing *)
 
       val satisfy : bdd -> bool* 'a list
       (* Tests the satisfiability of the formula. If it is satisfiable,
@@ -18,7 +22,7 @@ module type BDD_Sig =
   end
 
 module BDD : BDD_Sig =
-  struct
+   struct
   (* For now, BDD don't use compression *)
     type bdd =  Leaf of bool
               | Node of int * bdd * bdd
@@ -29,6 +33,18 @@ module BDD : BDD_Sig =
       let ltrue = Leaf(true) and lfalse = Leaf(false) in
       let rec create_aux = function
         |i when (i > n) -> if (eval v f) then ltrue else lfalse
+        |i ->  let l = create_aux (i+1) in
+               let _ = (v.(i-1) <- true) in
+               let h = create_aux (i+1) in
+               let _ = (v.(i-1) <- false) in
+                  Node(i,l,h)
+      in create_aux 1;;
+
+    let create_without_compression f =
+      let n = nb_var f in
+      let v = Array.make n false in
+      let rec create_aux = function
+        |i when (i > n) -> if (eval v f) then Leaf(true) else Leaf(false)
         |i ->  let l = create_aux (i+1) in
                let _ = (v.(i-1) <- true) in
                let h = create_aux (i+1) in

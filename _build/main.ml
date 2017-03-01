@@ -1,6 +1,6 @@
 open Formula
 open Bdd
-open API
+open LexParInterface
 
 let f1 = read_formula();;
 print_formula f1;;

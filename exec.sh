@@ -1,8 +1,9 @@
-make;
+make clean;
+make byte;
 if [ $# -eq 0 ]; then
-  ./main.native;
+  ./main.byte;
 else
-  ./main.native < $0;
+  ./main.byte < $0;
 fi
 for file in *.dot; do
   dot -Tpdf $file -o $file.pdf;
