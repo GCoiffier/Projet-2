@@ -8,7 +8,7 @@ open Formula   (* rappel: dans expr.ml:
 /* description des lexèmes, ceux-ci sont décrits (par vous) dans lexer.mll */
 
 %token <int> INT       /* le lexème INT a un attribut entier */
-%token AND OR NEG XOR IMP EQ MINUS
+%token AND OR NEG XOR IMP EQ MINUS FIN
 %token LPAREN RPAREN
 %token EOL             /* retour à la ligne */
 

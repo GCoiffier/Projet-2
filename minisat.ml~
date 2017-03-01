@@ -23,17 +23,5 @@ let minisat expr =
 	print_string "p cnf ";
 	print_int (max_var expr);
 	print_int (nb_Clause expr);
-	print_string "\n";
 	
-	let rec print_clause cl = match cl with
-		|OR(e1, e2) -> print_clause e1; print_clause e2
-		|Var(q) -> print_int q; print_string " "
-		|NOT(Var(q)) -> print_int (-q); print_string "  "
-		|_ -> failwith "Not a cnf expression" in
-	
-	let rec print_cnf expr = match expr with
-		|AND(e1, e2) -> print_cnf e1; print_cnf e2
-		|_ -> print_clause expr; print_string "0\n" in
-	
-	print_cnf expr 
 	
