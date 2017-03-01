@@ -15,4 +15,15 @@ module VisitedBDD =
         |a::q when (a == t) -> true
         |a::q -> aux q
       in aux !r;;
+
+    (* find : bdd -> bdd list -> bdd
+        checks if t is in the structure r. Is yes, t is returned.
+        If not, t is added to the structure and returned *)
+    let find t r =
+    let rec aux = function
+      | [] -> let _ =  r := t::(!r) in t
+      |a::q when (a == t) -> a
+      |a::q -> aux q
+    in aux !r;;
+
   end;;

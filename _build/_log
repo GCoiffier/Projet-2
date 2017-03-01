@@ -31,10 +31,22 @@
 /usr/bin/ocamlc -c -o lexParInterface.cmo lexParInterface.ml
 # Target: main.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:main.cmo, file:main.ml, implem, ocaml, quiet }
 /usr/bin/ocamlc -c -o main.cmo main.ml
+# Target: formula.cmx, tags: { compile, extension:cmx, extension:ml, file:formula.cmx, file:formula.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o formula.cmx formula.ml
+# Target: visited.cmx, tags: { compile, extension:cmx, extension:ml, file:visited.cmx, file:visited.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o visited.cmx visited.ml
 # Target: parser.ml.depends, tags: { extension:ml, file:parser.ml, ocaml, ocamldep, quiet }
 /usr/bin/ocamldep -modules parser.ml > parser.ml.depends
-# Target: parser.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:parser.cmo, file:parser.ml, implem, ocaml, quiet }
-/usr/bin/ocamlc -c -o parser.cmo parser.ml
-# Target: main.byte, tags: { byte, dont_link_with, extension:byte, file:main.byte, link, ocaml, program, quiet }
-/usr/bin/ocamlc formula.cmo visited.cmo bdd.cmo parser.cmo lexer.cmo lexParInterface.cmo main.cmo -o main.byte
+# Target: parser.cmx, tags: { compile, extension:cmx, extension:ml, file:parser.cmx, file:parser.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o parser.cmx parser.ml
+# Target: lexer.cmx, tags: { compile, extension:cmx, extension:ml, file:lexer.cmx, file:lexer.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o lexer.cmx lexer.ml
+# Target: bdd.cmx, tags: { compile, extension:cmx, extension:ml, file:bdd.cmx, file:bdd.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o bdd.cmx bdd.ml
+# Target: lexParInterface.cmx, tags: { compile, extension:cmx, extension:ml, file:lexParInterface.cmx, file:lexParInterface.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o lexParInterface.cmx lexParInterface.ml
+# Target: main.cmx, tags: { compile, extension:cmx, extension:ml, file:main.cmx, file:main.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o main.cmx main.ml
+# Target: main.native, tags: { dont_link_with, extension:native, file:main.native, link, native, ocaml, program, quiet }
+/usr/bin/ocamlopt unix.cmxa formula.cmx visited.cmx bdd.cmx parser.cmx lexer.cmx lexParInterface.cmx main.cmx -o main.native
 # Compilation successful.

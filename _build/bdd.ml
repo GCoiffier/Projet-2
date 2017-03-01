@@ -18,7 +18,7 @@ module type BDD_Sig =
       *)
 
       val print : bdd -> string -> unit
-      (* Exports a .dot file representing the diagram *)
+      (* Exports a .dot file representing the BDD *)
   end
 
 module BDD : BDD_Sig =
@@ -31,13 +31,14 @@ module BDD : BDD_Sig =
       let n = nb_var f in
       let v = Array.make n false in
       let ltrue = Leaf(true) and lfalse = Leaf(false) in
+      let visited = VisitedBDD.create () in
       let rec create_aux = function
         |i when (i > n) -> if (eval v f) then ltrue else lfalse
-        |i ->  let l = create_aux (i+1) in
+        |i ->  let l = VisitedBDD.find (create_aux (i+1)) visited in
                let _ = (v.(i-1) <- true) in
-               let h = create_aux (i+1) in
+               let h = VisitedBDD.find (create_aux (i+1)) visited in
                let _ = (v.(i-1) <- false) in
-                  Node(i,l,h)
+                  VisitedBDD.find (Node(i,l,h)) visited
       in create_aux 1;;
 
     let create_without_compression f =
