@@ -12,7 +12,7 @@ open Formula   (* rappel: dans expr.ml:
 %token LPAREN RPAREN
 %token EOL             /* retour à la ligne */
 
-%left FIN
+%left END
 %left EQ
 %left IMP
 %left OR  /* associativité gauche: a*b*c, c'est (a*b)*c */
