@@ -21,25 +21,32 @@ module type BDD_Sig =
       (* Exports a .dot file representing the BDD *)
   end
 
+
+
 module BDD : BDD_Sig =
    struct
-  (* For now, BDD don't use compression *)
     type bdd =  Leaf of bool
               | Node of int * bdd * bdd
+
 
     let create f =
       let n = nb_var f in
       let v = Array.make n false in
       let ltrue = Leaf(true) and lfalse = Leaf(false) in
-      let visited = VisitedBDD.create () in
+      let visited = Lookup.create () in
       let rec create_aux = function
         |i when (i > n) -> if (eval v f) then ltrue else lfalse
-        |i ->  let l = VisitedBDD.find (create_aux (i+1)) visited in
+        |i ->  let l = create_aux (i+1) in
                let _ = (v.(i-1) <- true) in
-               let h = VisitedBDD.find (create_aux (i+1)) visited in
+               let h = create_aux (i+1) in
                let _ = (v.(i-1) <- false) in
-                  VisitedBDD.find (Node(i,l,h)) visited
+                 let node = Node(i,l,h) in
+                  if l = h then l (* useless test *)
+                    else if Lookup.mem node visited then Lookup.find node visited
+                      else (Lookup.add node visited; node)
       in create_aux 1;;
+
+
 
     let create_without_compression f =
       let n = nb_var f in

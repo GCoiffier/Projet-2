@@ -15,9 +15,9 @@ type token =
 open Parsing;;
 let _ = parse_error;;
 # 2 "parser.mly"
-(* --- préambule: ici du code Caml --- *)
+(* --- prï¿½ambule: ici du code Caml --- *)
 
-open Formula   (* rappel: dans expr.ml: 
+open Formula   (* rappel: dans expr.ml:
              type expr = Const of int | Add of expr*expr | Mull of expr*expr *)
 
 # 24 "parser.ml"

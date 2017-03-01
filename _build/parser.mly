@@ -1,42 +1,42 @@
 %{
-(* --- préambule: ici du code Caml --- *)
+(* --- prï¿½ambule: ici du code Caml --- *)
 
-open Formula   (* rappel: dans expr.ml: 
+open Formula   (* rappel: dans expr.ml:
              type expr = Const of int | Add of expr*expr | Mull of expr*expr *)
 
 %}
-/* description des lexèmes, ceux-ci sont décrits (par vous) dans lexer.mll */
+/* description des lexï¿½mes, ceux-ci sont dï¿½crits (par vous) dans lexer.mll */
 
-%token <int> INT       /* le lexème INT a un attribut entier */
+%token <int> INT       /* le lexï¿½me INT a un attribut entier */
 %token AND OR NEG XOR IMP EQ MINUS FIN
 %token LPAREN RPAREN
-%token EOL             /* retour à la ligne */
+%token EOL             /* retour ï¿½ la ligne */
 
 %left FIN
 %left EQ
 %left IMP
-%left OR  /* associativité gauche: a*b*c, c'est (a*b)*c */
+%left OR  /* associativitï¿½ gauche: a*b*c, c'est (a*b)*c */
 %left XOR
-%left AND  /* associativité gauche: a+b+c, c'est (a+b)+c */
+%left AND  /* associativitï¿½ gauche: a+b+c, c'est (a+b)+c */
 %left NEG
 
-%start main             /* "start" signale le point d'entrée: */
-                        /* c'est ici main, qui est défini plus bas */
-%type <Formula.formula> main     /* on _doit_ donner le type associé au point d'entrée */
+%start main             /* "start" signale le point d'entrï¿½e: */
+                        /* c'est ici main, qui est dï¿½fini plus bas */
+%type <Formula.formula> main     /* on _doit_ donner le type associï¿½ au point d'entrï¿½e */
 
 %%
-    /* --- début des règles de grammaire --- */
-                            /* à droite, les valeurs associées */
+    /* --- dï¿½but des rï¿½gles de grammaire --- */
+                            /* ï¿½ droite, les valeurs associï¿½es */
 
 
-main:                       /* <- le point d'entrée (cf. + haut, "start") */
-    expr EOL                { $1 }  /* on veut reconnaître un "expr" */
+main:                       /* <- le point d'entrï¿½e (cf. + haut, "start") */
+    expr EOL                { $1 }  /* on veut reconnaï¿½tre un "expr" */
 ;
-expr:			    /* règles de grammaire pour les expressions */
+expr:			    /* rï¿½gles de grammaire pour les expressions */
   | expr FIN		  { $1 }
   | INT                   { Var $1 }
   | MINUS INT             { NOT(Var $2) }
-  | LPAREN expr RPAREN    { $2 } /* on récupère le deuxième élément */
+  | LPAREN expr RPAREN    { $2 } /* on rï¿½cupï¿½re le deuxiï¿½me ï¿½lï¿½ment */
   | expr AND expr         { AND($1,$3) }
   | expr OR expr          { OR($1,$3) }
   | NEG expr              { NOT($2) }
@@ -44,4 +44,3 @@ expr:			    /* règles de grammaire pour les expressions */
   | expr IMP expr         { IMPLIES($1,$3) }
   | expr EQ  expr         { EQUIV($1,$3) }
 ;
-

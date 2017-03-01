@@ -1,15 +1,15 @@
 {
-  open Parser;;        (* le type "token" est défini dans parser.mli *)
-(* ce n'est pas à vous d'écrire ce fichier, il est engendré automatiquement *)
+  open Parser;;        (* le type "token" est dï¿½fini dans parser.mli *)
+(* ce n'est pas ï¿½ vous d'ï¿½crire ce fichier, il est engendrï¿½ automatiquement *)
 exception Eof;;
 }
 
 rule token = parse    (* la "fonction" aussi s'appelle token .. *)
   | [' ' '\t']     { token lexbuf }    (* on saute les blancs et les tabulations *)
- 	     	   	           (* token: appel récursif *)
+ 	     	   	           (* token: appel rï¿½cursif *)
                                    (* lexbuf: argument implicite
-                                      associé au tampon où sont
-                                      lus les caractères *)
+                                      associï¿½ au tampon oï¿½ sont
+                                      lus les caractï¿½res *)
   | '\n'            { EOL }
   | "/\\"           { AND }
   | "\\/"           { OR }
@@ -19,7 +19,7 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
   | 'X'             { XOR }
   | "=>"            { IMP }
   | "<=>"           { EQ }
-  | ['0'-'9']+ as s { INT (int_of_string s) }
+  | ['1'-'9']+ as s { INT (int_of_string s) }
   | '-'             { MINUS }
   | '0'		    { FIN }
-  | eof             { raise Eof } 
+  | eof             { raise Eof }
