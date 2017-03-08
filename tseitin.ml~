@@ -161,9 +161,9 @@ let rec reduction_full expr = let expr' = reduction expr in
 	then expr
 	else reduction_full expr'
 
-(*let e = AND(Var(1),OR(NOT(Var(1)),Var(2)));;
+let e = AND(Var(1),OR(NOT(Var(1)),Var(2)));;
 reduction e;;
 replace e 1 false;;
 tseitin e;;
 reduction (tseitin e);;
-reduction_full (tseitin e);;*)
+reduction_full (tseitin e);;
