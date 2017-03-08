@@ -7,7 +7,6 @@ module BDD : BDD_Sig =
     type bdd =  Leaf of bool
               | Node of int * bdd * bdd
 
-
     let create f =
       let n = nb_var f in
       let v = Array.make n false in
@@ -27,7 +26,7 @@ module BDD : BDD_Sig =
 
     let satisfy bdd = (true,[]) (* TO DO *)
 
-    let nb_node bdd =
+    let size bdd =
       let visited = Lookup.create () in
       let rec nb_node_aux = function
          |Leaf(x) -> 0
