@@ -8,8 +8,6 @@ Coiffier Guillaume - Valque Léo
     ATTENTION : Ses variables doivent être étiquetées par les entiers de 1 à n.
 
 [x] Pour executer le programme, utilisez le script exec.sh.
-      ./exec.sh "file.txt"  execute le programme sur la formule contenue dans le fichier file.txt
-      ./exec.sh seul execute le programme en mode interactif. Il faut alors entrer à la main la formule dans la console.
 
 ## Avancement
 
