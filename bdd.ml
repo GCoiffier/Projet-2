@@ -21,12 +21,19 @@ module BDD : BDD_Sig =
                let _ = (v.(i-1) <- false) in
                  let node = Node(i,l,h) in
                   if l=h then l (* useless test *)
-                    else if (Lookup.mem node visited) then Lookup.find node visited
+                    else if (Lookup.mem node visited) then (Lookup.find node visited)
                       else (Lookup.add node visited; node)
       in create_aux 1;;
 
     let satisfy bdd = (true,[]) (* TO DO *)
 
+    let nb_node bdd =
+      let visited = Lookup.create () in
+      let rec nb_node_aux = function
+         |Leaf(x) -> 0
+         |Node(k,l,h) as x when (not (Lookup.mem x visited))-> let _ = Lookup.add x visited in 1 + (nb_node_aux l) + (nb_node_aux h)
+         |x -> 0
+      in (2 + nb_node_aux bdd) (* 2 for true and false leaves *)
 
     (*------ print auxilliary functions ------ *)
 
@@ -34,9 +41,9 @@ module BDD : BDD_Sig =
       let visited = Lookup.create() in
       let rec node_list_aux = function
         |Leaf(x) -> ()
-        |Node(k,g,d) as x when (not (Lookup.mem x visited)) -> Lookup.add x visited;
-                                                              node_list_aux g;
-                                                              node_list_aux d
+        |Node(k,g,d) as x when (not (Lookup.mem x visited )) -> Lookup.add x visited;
+                                                                    node_list_aux g;
+                                                                    node_list_aux d
         |Node(k,g,d) -> node_list_aux g;
                         node_list_aux d
       in let _ = node_list_aux bdd in (Lookup.tolist visited)
