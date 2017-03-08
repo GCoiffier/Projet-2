@@ -14,6 +14,6 @@ let parse entree = Parser.main Lexer.token (lexbuf entree)
 let read_formula entree = let fd = open_in entree in
   try
       let a = parse fd in
-      close_in fd;
+      close fd;
       a
   with _ -> failwith "erreur de saisie"

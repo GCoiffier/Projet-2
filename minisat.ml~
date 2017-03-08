@@ -19,7 +19,7 @@ let nb_clause expr =
 	|_ -> 0 in
    1 + aux expr
 
-let print_minisat expr =
+let minisat expr =
 	print_string "p cnf ";
 	print_int (max_var expr);
 	print_int (nb_Clause expr);
