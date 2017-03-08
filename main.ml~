@@ -1,5 +1,5 @@
 open Formula
-open Bdd
+open Bdd.BDD
 open LexParInterface
 open Minisat
 open Tseitin
