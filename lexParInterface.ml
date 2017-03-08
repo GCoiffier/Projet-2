@@ -12,6 +12,11 @@ let parse () = Parser.main Lexer.token lexbuf
 (* la fonction que l'on lance ci-dessous *)
 let read_formula () =
   try
+<<<<<<< HEAD:API.ml
       parse () 
   with _ -> (failwith "erreur de saisie\n")
 
+=======
+      parse ()
+  with _ -> failwith "erreur de saisie"
+>>>>>>> master:lexParInterface.ml

@@ -1,4 +1,11 @@
-(* un type pour des expressions booléennes *)
+module Var = Set.Make(struct
+                       type t = int
+                       (* use Pervasives compare *)
+                       let compare = compare
+                      end)
+
+(* un type pour des expressions booléennes
+  /!\ Les variables d'une formule doivent être numérotées de 1 à n /!\ *)
 type formula =
     Const of bool
   | Var of int
@@ -10,7 +17,7 @@ type formula =
   | EQUIV of formula * formula
 
 (* fonction d'affichage *)
-let affiche f =
+let print_formula f =
   let rec affiche_expr f =
     let aff_aux s a b =
         begin
@@ -34,44 +41,34 @@ let affiche f =
   in
   affiche_expr f; print_newline ();;
 
-let nb_var f =
-  (* count the number of variables of f. Variables should be 1 to n. *)
-  let rec nb_var_aux m f = match f with
-     Const(k) -> m
-    |Var(x) -> if x>m then x else m
-    |OR(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
-    |AND(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
-    |XOR(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
-    |NOT(f)-> nb_var_aux m f
-    |IMPLIES(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
-    |EQUIV(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
-  in nb_var_aux 0 f;;
+let get_variables f =
+  (* get the list of variables of f  *)
+  let rec get_variables_aux s = function
+     Const(k) -> s
+    |Var(x) -> (Var.add x s)
+    |OR(f1,f2) -> let s2 = (get_variables_aux s f1) in (get_variables_aux s2 f2)
+    |AND(f1,f2) -> let s2 = (get_variables_aux s f1) in (get_variables_aux s2 f2)
+    |XOR(f1,f2) -> let s2 = (get_variables_aux s f1) in (get_variables_aux s2 f2)
+    |NOT(f)-> get_variables_aux s f
+    |IMPLIES(f1,f2) -> let s2 = (get_variables_aux s f1) in (get_variables_aux s2 f2)
+    |EQUIV(f1,f2) -> let s2 = (get_variables_aux s f1) in (get_variables_aux s2 f2)
+  in Var.elements (get_variables_aux Var.empty f);;
 
-  let rec eval v f = match f with
-    (* given a valuation 'val', computes the value of the formula f *)
-    | Const(k) -> k
-    | Var(x) -> v.(x)
-    | OR (f1,f2) -> (eval v f1) || (eval v f2)
-    | AND (f1,f2) -> (eval v f1) && (eval v f2)
-    | NOT(f1) -> not (eval v f1)
-    | XOR (f1,f2) -> let v1 = (eval v f1) and v2 = (eval v f2)
-                        in (v1 || v2) && (not (v1 && v2))
-    | IMPLIES (f1,f2) -> let v1 = (eval v f1) and v2 = (eval v f2)
-                        in v2 || (not v1)
-    | EQUIV (f1,f2) -> let v1 = (eval v f1) and v2 = (eval v f2)
-                        in (v2 && v1) || ( (not v1) && (not v2))
+let nb_var f = List.length (get_variables f)
 
-let rec eval v f = match f with
+let rec eval v f =
   (* given a valuation 'val', ie a vector of booleans,
       computes the value of the formula f *)
-  | Const(k) -> k
-  | Var(x) -> v.(x)
-  | OR (f1,f2) -> (eval v f1) || (eval v f2)
-  | AND (f1,f2) -> (eval v f1) && (eval v f2)
-  | NOT(f1) -> not (eval v f1)
-  | XOR (f1,f2) -> let v1 = (eval v f1) and v2 = (eval v f2)
-                      in (v1 || v2) && (not (v1 && v2))
-  | IMPLIES (f1,f2) -> let v1 = (eval v f1) and v2 = (eval v f2)
-                      in v2 || (not v1)
-  | EQUIV (f1,f2) -> let v1 = (eval v f1) and v2 = (eval v f2)
-                      in (v2 && v1) || ( (not v1) && (not v2))
+    let rec eval_aux = function
+      | Const(k) -> k
+      | Var(x) -> v.(x-1)
+      | OR (f1,f2) -> (eval_aux f1) || (eval_aux f2)
+      | AND (f1,f2) -> (eval_aux f1) && (eval_aux f2)
+      | NOT(f1) -> not (eval_aux f1)
+      | XOR (f1,f2) -> let v1 = (eval_aux f1) and v2 = (eval_aux f2)
+                          in (v1 || v2) && (not (v1 && v2))
+      | IMPLIES (f1,f2) -> let v1 = (eval_aux f1) and v2 = (eval_aux f2)
+                          in v2 || (not v1)
+      | EQUIV (f1,f2) -> let v1 = (eval_aux f1) and v2 = (eval_aux f2)
+                          in (v2 && v1) || ( (not v1) && (not v2))
+    in eval_aux f

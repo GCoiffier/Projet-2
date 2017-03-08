@@ -1,7 +1,0 @@
-digraph BDD { 
- size = "2,2"; 
-1 -> 2 ; 
-1 -> { l1[label = "True "]} ; 
-2 -> { l2[label = "True "]} ; 
-2 -> { l3[label = "False "]} ; 
-}

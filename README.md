@@ -5,10 +5,39 @@ Coiffier Guillaume - Valque Léo
 ## Remarques générales
 
 [x] La formule d'entrée est écrite dans le fichier input.txt
+    ATTENTION : Ses variables doivent être étiquetées par les entiers de 1 à n.
 
-## Liste et contenu des fichiers
+[x] Pour executer le programme, utilisez le script exec.sh.
+      ./exec.sh "file.txt"  execute le programme sur la formule contenue dans le fichier file.txt
+      ./exec.sh seul execute le programme en mode interactif. Il faut alors entrer à la main la formule dans la console.
 
-#Tseitin.ml :
+## Avancement
+
+[x] Lexer et parser pour les formules booléennes
+
+[x] Type formula et fonctions utilitaires sur ce type
+
+[x] Implémentation des BDD sans la compression
+
+[] Implémentation des BDD avec la compression
+
+[] Affichage d'un BDD en format .dot
+
+[] Transformation de Tseitin pour renvoyer des formules en forme SAT
+
+[] Exportation des fichiers pour minisat et comparaison du résultat avec le BDD
+
+# Liste et contenu des fichiers
+
+##main.ml :
+
+##formula.ml :
+
+##BDD.ml :
+
+##input.txt :
+
+##Tseitin.ml :
 contient les fonctions tseitin et reduction (et les fonctions qu'ils
 appellent)
 
@@ -22,7 +51,7 @@ il peut nécessaire de l'appeler plusieurs fois pour avoir quelque chose de tail
 reduction_full : formula -> formula
 applique reduction jusqu'a que l'expression soit de taille minimale
 
-#API.ml
+##API.ml
 contient read_formula pour les lires les entrées du terminal
 
 read_formula : unit -> formula
