@@ -1,0 +1,49 @@
+### Starting build.
+# Target: main.ml.depends, tags: { extension:ml, file:main.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules main.ml > main.ml.depends # cached
+# Target: argv.ml.depends, tags: { extension:ml, file:argv.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules argv.ml > argv.ml.depends # cached
+# Target: bdd.ml.depends, tags: { extension:ml, file:bdd.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules bdd.ml > bdd.ml.depends # cached
+# Target: formula.ml.depends, tags: { extension:ml, file:formula.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules formula.ml > formula.ml.depends # cached
+# Target: formula.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:formula.cmo, file:formula.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o formula.cmo formula.ml # cached
+# Target: visited.ml.depends, tags: { extension:ml, file:visited.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules visited.ml > visited.ml.depends # cached
+# Target: visited.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:visited.cmo, file:visited.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o visited.cmo visited.ml # cached
+# Target: bdd.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:bdd.cmo, file:bdd.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o bdd.cmo bdd.ml # cached
+# Target: lexParInterface.ml.depends, tags: { extension:ml, file:lexParInterface.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules lexParInterface.ml > lexParInterface.ml.depends # cached
+# Target: lexer.mll, tags: { extension:mll, file:lexer.mll, lexer, ocaml, ocamllex, quiet }
+/usr/bin/ocamllex -q lexer.mll # cached
+# Target: lexer.ml.depends, tags: { extension:ml, file:lexer.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules lexer.ml > lexer.ml.depends # cached
+# Target: parser.mly, tags: { extension:mly, file:parser.mly, ocaml, ocamlyacc, parser, quiet }
+/usr/bin/ocamlyacc -v parser.mly # cached
+# Target: parser.mli.depends, tags: { extension:mli, file:parser.mli, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules parser.mli > parser.mli.depends # cached
+# Target: parser.cmi, tags: { byte, compile, extension:mli, file:parser.mli, interf, ocaml, quiet }
+/usr/bin/ocamlc -c -o parser.cmi parser.mli # cached
+# Target: lexer.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:lexer.cmo, file:lexer.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o lexer.cmo lexer.ml # cached
+# Target: lexParInterface.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:lexParInterface.cmo, file:lexParInterface.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o lexParInterface.cmo lexParInterface.ml # cached
+# Target: minisat.ml.depends, tags: { extension:ml, file:minisat.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules minisat.ml > minisat.ml.depends
+# Target: tseitin.ml.depends, tags: { extension:ml, file:tseitin.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules tseitin.ml > tseitin.ml.depends # cached
+# Target: tseitin.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:tseitin.cmo, file:tseitin.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o tseitin.cmo tseitin.ml # cached
+# Target: minisat.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:minisat.cmo, file:minisat.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o minisat.cmo minisat.ml
+# Target: argv.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:argv.cmo, file:argv.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o argv.cmo argv.ml
++ /usr/bin/ocamlc -c -o argv.cmo argv.ml
+File "argv.ml", line 28, characters 16-38:
+Error: This expression has type Formula.formula
+       but an expression was expected of type int
+Command exited with code 2.
+# Compilation unsuccessful.
