@@ -18,13 +18,16 @@ module BDD : BDD_Sig =
                let _ = (v.(i-1) <- true) in
                let h = create_aux (i+1) in
                let _ = (v.(i-1) <- false) in
-                 let node = Node(i,l,h) in
-                  if l=h then l (* useless test *)
-                    else if (Lookup.mem node visited) then (Lookup.find node visited)
+                 let node = if (l=h) then l else Node(i,l,h) in
+                    if (Lookup.mem node visited) then (Lookup.find node visited)
                       else (Lookup.add node visited; node)
       in create_aux 1;;
 
-    let satisfy bdd val = true (* TO DO *)
+
+    let rec satisfy bdd v = match bdd with
+        |Leaf(x) -> x
+        |Node(i,l,h) -> if v.(i-1) then (satisfy h v) else (satisfy l v)
+
 
     let size bdd =
       let visited = Lookup.create () in
@@ -34,30 +37,34 @@ module BDD : BDD_Sig =
          |x -> 0
       in (2 + nb_node_aux bdd) (* 2 for true and false leaves *)
 
-    (*------ print auxilliary functions ------ *)
 
-    let node_list bdd =
-      let visited = Lookup.create() in
-      let rec node_list_aux = function
-        |Leaf(x) -> ()
-        |Node(k,g,d) as x when (not (Lookup.mem x visited )) -> Lookup.add x visited;
-                                                                    node_list_aux g;
-                                                                    node_list_aux d
-        |Node(k,g,d) -> node_list_aux g;
-                        node_list_aux d
-      in let _ = node_list_aux bdd in (Lookup.tolist visited)
+      let node_list bdd =
+        (* La liste des noeuds d'un BDD *)
+        let visited = Lookup.create() in
+        let rec node_list_aux = function
+          |Leaf(x) -> ()
+          |Node(k,g,d) as x when (not (Lookup.mem x visited )) -> Lookup.add x visited;
+                                                                      node_list_aux g;
+                                                                      node_list_aux d
+          |Node(k,g,d) -> node_list_aux g;
+                          node_list_aux d
+        in let _ = node_list_aux bdd in (Lookup.tolist visited)
+
 
     let get_id node l =
+      (*  Indice dans une liste. Permet d'associer un entier à chaque noeud. Fonction auxilliaire de print *)
       let rec get_id_aux i = function
       |[] -> raise Not_found
       |t::q when t==node -> i
       |t::q -> get_id_aux (i+1) q
     in get_id_aux 1 l
 
+
     let print bdd name =
       let dot_file = open_out (name^".dot") in
         output_string dot_file "digraph BDD { \n size = \"2,2\"; \n";
         let ids = node_list bdd in
+        let seen = ref [] in
         let string_of_leaf b =
           if b then "True" else "False"
         in
@@ -68,17 +75,22 @@ module BDD : BDD_Sig =
           |Leaf(a) -> string_of_leaf a
           |Node(i,h,l) as x -> string_of_node i (get_id x ids)
         in
+        let edge_to_string a b t =
+          if not (List.mem (a,b) (!seen)) then
+          begin
+            seen := (a,b)::(!seen);
+            output_string dot_file (to_string a);
+            output_string dot_file " -> ";
+            output_string dot_file (to_string b);
+            if t then (output_string dot_file " [style=dashed]") else ();
+              output_string dot_file " ;\n"
+          end
+        in
         let rec print_aux = function
           |Leaf(b) -> ()
           |Node(k,l,h) as x ->
-                        output_string dot_file (to_string x);
-                        output_string dot_file " -> ";
-                        output_string dot_file (to_string l);
-                        output_string dot_file " [style=dashed] ; \n";
-                        output_string dot_file (to_string x);
-                        output_string dot_file " -> ";
-                        output_string dot_file (to_string h);
-                        output_string dot_file " ; \n";
+                        edge_to_string x l false;
+                        edge_to_string x h true;
                         print_aux l;
                         print_aux h;
       in print_aux bdd;
