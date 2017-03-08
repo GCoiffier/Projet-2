@@ -8,7 +8,7 @@ module type BDD_Sig =
       val create : formula -> bdd
       (* Creates the canonical ROBDD associated with a formula *)
 
-      val satisfy : bdd -> bool* 'a list
+      val satisfy : bdd -> bool vect -> bool
       (* Tests the satisfiability of the formula. If it is satisfiable,
         also return the list of variables that are set to true (returns [] if
         not satisfiable)

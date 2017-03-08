@@ -9,3 +9,4 @@ clean:
 	rm -f *.native
 	rm -f *.byte
 	rm -f *.dot
+	rm -f *.dot.pdf

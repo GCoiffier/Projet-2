@@ -24,7 +24,7 @@ module BDD : BDD_Sig =
                       else (Lookup.add node visited; node)
       in create_aux 1;;
 
-    let satisfy bdd = (true,[]) (* TO DO *)
+    let satisfy bdd val = true (* TO DO *)
 
     let size bdd =
       let visited = Lookup.create () in
