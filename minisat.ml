@@ -14,7 +14,7 @@ let max_var f =
   in nb_var_aux 0 f;;
   
 let nb_clause expr = 
-	let aux expr = match expr with
+	let rec aux expr = match expr with
 	|AND(e1,e2) -> 1 + aux e1 + aux e2
 	|_ -> 0 in
    1 + aux expr
@@ -22,7 +22,7 @@ let nb_clause expr =
 let print_minisat expr =
 	print_string "p cnf ";
 	print_int (max_var expr);
-	print_int (nb_Clause expr);
+	print_int (nb_clause expr);
 	print_string "\n";
 	
 	let rec print_clause cl = match cl with

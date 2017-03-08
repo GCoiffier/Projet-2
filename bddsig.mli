@@ -14,6 +14,8 @@ module type BDD_Sig =
         not satisfiable)
       *)
 
+      val nb_node : bdd -> int
+
       val print : bdd -> string -> unit
       (* Exports a .dot file representing the BDD *)
   end

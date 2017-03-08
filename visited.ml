@@ -8,7 +8,7 @@ module Lookup =
 
     (* mem : bdd -> bdd list -> bool
         checks if t is in the structure r. *)
-    let mem t r = List.mem t (!r)
+    let rec mem t r = List.mem t (!r)
 
     (* find : bdd -> bdd list -> bdd
         checks if t is in the structure r. Is yes, t is returned.
@@ -18,7 +18,7 @@ module Lookup =
     let find t r =
       let rec aux = function
         | [] -> raise Not_found
-        |a::q when (a = t) -> a
+        |a::q when (a=t) -> a
         |a::q -> aux q
       in aux !r;;
 
@@ -26,5 +26,5 @@ module Lookup =
     let add t r = r := t::(!r)
 
     let tolist r = !r
-    
+
   end;;
