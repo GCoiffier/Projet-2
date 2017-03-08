@@ -20,23 +20,9 @@ module BDD : BDD_Sig =
                let h = create_aux (i+1) in
                let _ = (v.(i-1) <- false) in
                  let node = Node(i,l,h) in
-                  if l = h then l (* useless test *)
-                    else if Lookup.mem node visited then Lookup.find node visited
+                  if l=h then l (* useless test *)
+                    else if (Lookup.mem node visited) then Lookup.find node visited
                       else (Lookup.add node visited; node)
-      in create_aux 1;;
-
-
-
-    let create_without_compression f =
-      let n = nb_var f in
-      let v = Array.make n false in
-      let rec create_aux = function
-        |i when (i > n) -> if (eval v f) then Leaf(true) else Leaf(false)
-        |i ->  let l = create_aux (i+1) in
-               let _ = (v.(i-1) <- true) in
-               let h = create_aux (i+1) in
-               let _ = (v.(i-1) <- false) in
-                  Node(i,l,h)
       in create_aux 1;;
 
     let satisfy bdd = (true,[]) (* TO DO *)
@@ -44,9 +30,16 @@ module BDD : BDD_Sig =
 
     (*------ print auxilliary functions ------ *)
 
-    let rec node_list = function
-      |Leaf(x) -> []
-      |Node(k,g,d) as x -> let l = node_list d in (x::node_list g)@l
+    let node_list bdd =
+      let visited = Lookup.create() in
+      let rec node_list_aux = function
+        |Leaf(x) -> ()
+        |Node(k,g,d) as x when (not (Lookup.mem x visited)) -> Lookup.add x visited;
+                                                              node_list_aux g;
+                                                              node_list_aux d
+        |Node(k,g,d) -> node_list_aux g;
+                        node_list_aux d
+      in let _ = node_list_aux bdd in (Lookup.tolist visited)
 
     let get_id node l =
       let rec get_id_aux i = function

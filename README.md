@@ -30,11 +30,15 @@ Coiffier Guillaume - Valque Léo
 # Liste et contenu des fichiers
 
 ##main.ml :
+Fichier principal. Le main lit la formule en entrée (soit de input.txt, soit donnée dans la console),
+crée l'objet formula associé, construit le ROBDD associé et l'exporte au format .dot
 
 ##formula.ml :
+Type formula et définition de quelques fonctions utilitaires sur les formules logiques.
+
 
 ##BDD.ml :
-  
+
 ##visited.ml :
   Contient un module Lookup qui sert de dictionnaire lors de la construction d'un BDD. Permet d'implémenter le partage de mémoire
 
@@ -46,18 +50,17 @@ contient les fonctions tseitin et reduction (et les fonctions qu'ils
 appellent)
 
 tseitin : formula -> formula
-transforme une expression en une variante CNF par la méthode de tseitin
+  transforme une expression en une variante CNF par la méthode de tseitin
 
 reduction : formula -> formula
-reduit la taille d'une expression de type CNF (normalement elle marche aussi sur les autres expressions mais est moins efficace)
-il peut nécessaire de l'appeler plusieurs fois pour avoir quelque chose de taille minimale
+  reduit la taille d'une expression de type CNF (normalement elle marche aussi sur les autres expressions mais est moins efficace)
+  il peut nécessaire de l'appeler plusieurs fois pour avoir quelque chose de taille minimale
 
 reduction_full : formula -> formula
-applique reduction jusqu'a que l'expression soit de taille minimale
+  applique reduction jusqu'a que l'expression soit de taille minimale
 
-##API.ml
-contient read_formula pour les lires les entrées du terminal
+##LexParInterface.ml
+contient read_formula pour les lires les entrées du terminal. Fichier .ml faisait l'interface avec parser.mly et lexer.mll
 
 read_formula : unit -> formula
-transforme la chaine de caractère de l'entrée standart en une
-formula
+  transforme la chaine de caractère de l'entrée standard en une formula

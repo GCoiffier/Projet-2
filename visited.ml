@@ -25,4 +25,6 @@ module Lookup =
     (* add : bdd -> bdd list -> unit  *)
     let add t r = r := t::(!r)
 
+    let tolist r = !r
+    
   end;;
