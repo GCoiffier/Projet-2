@@ -1,4 +1,5 @@
 open Formula
+<<<<<<< HEAD
 open Bdd.BDD
 open LexParInterface
 open Minisat
@@ -10,3 +11,17 @@ truc ();;
 let my_bdd = BDD.create f1;;
 BDD.print my_bdd "test";;*)
 
+=======
+open Bdd
+open LexParInterface
+open Argv
+
+(* let f1 = read_formula();;
+print_formula f1;;
+let my_bdd = BDD.create f1;;
+<<<<<<< HEAD
+BDD.print my_bdd "test";; *)
+
+(*print_int (BDD.nb_node my_bdd); print_newline ();;
+BDD.print my_bdd "test";;*)
+>>>>>>> 4182964187907ac46e6c166dc39e400c68e978a2

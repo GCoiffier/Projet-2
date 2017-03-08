@@ -19,6 +19,7 @@ let nb_clause expr =
 	|_ -> 0 in
    1 + aux expr
 
+<<<<<<< HEAD
 let output_int f q =
 	output_string f ( string_of_int( q ) )
 
@@ -34,10 +35,23 @@ let print_for_minisat expr =
 		|OR(e1, e2) -> print_clause e1; print_clause e2
 		|Var(q) -> output_int f q; output_string f " "
 		|NOT(Var(q)) -> output_int f (-q); output_string f "  "
+=======
+let print_minisat expr =
+	print_string "p cnf ";
+	print_int (max_var expr);
+	print_int (nb_Clause expr);
+	print_string "\n";
+	
+	let rec print_clause cl = match cl with
+		|OR(e1, e2) -> print_clause e1; print_clause e2
+		|Var(q) -> print_int q; print_string " "
+		|NOT(Var(q)) -> print_int (-q); print_string "  "
+>>>>>>> 4182964187907ac46e6c166dc39e400c68e978a2
 		|_ -> failwith "Not a cnf expression" in
 	
 	let rec print_cnf expr = match expr with
 		|AND(e1, e2) -> print_cnf e1; print_cnf e2
+<<<<<<< HEAD
 		|_ -> print_clause expr; output_string f "0\n" in
 	
 	print_cnf expr;
@@ -51,3 +65,9 @@ let minisat expr =
 
 	
 
+=======
+		|_ -> print_clause expr; print_string "0\n" in
+	
+	print_cnf expr 
+	
+>>>>>>> 4182964187907ac46e6c166dc39e400c68e978a2
