@@ -32,14 +32,14 @@ Fichier principal. Le main lit la formule en entrée (soit de input.txt, soit do
 crée l'objet formula associé, construit le ROBDD associé et l'exporte au format .dot
 
 ## formula.ml :
-Type formula et définition de quelques fonctions utilitaires sur les formules logiques.
-
+Type formula et définition de quelques fonctions utilitaires sur les formules logiques :
+  affichage dans la console, calcul de taille et test d'une valuation
 
 ## BDDsig.mli / BDD.ml :
   La signature et la définition du module permettant de construire des ROBDD. Voir BDDsig.mli pour la documentation
 
 ## visited.ml :
-  Contient un module Lookup qui sert de dictionnaire lors de la construction d'un BDD. Permet d'implémenter le partage de mémoire
+  Contient un module Lookup qui sert de dictionnaire lors de la construction d'un BDD. Permet d'implémenter le partage de mémoire des BDD.
 
 ## input.txt :
   Le fichier principal d'entrée. Ecrivez ici une formule à envoyer au programme
