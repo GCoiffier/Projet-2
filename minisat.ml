@@ -1,7 +1,6 @@
 open Formula
 
 let max_var f =
-  (* count the number of variables of f. Variables should be 1 to n. *)
   let rec nb_var_aux m f = match f with
      Const(k) -> m
     |Var(x) -> if x>m then x else m
