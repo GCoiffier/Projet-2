@@ -19,7 +19,8 @@ let do_minisat entree sortie =
 	let _ = Sys.command("minisat _build/m.cnf _build/output.txt > _build/stuff.txt") in ()
 	(*lire la sortie de minisat et faire la comparaison BDD *)
 
-let truc () = let t = Sys.argv in let n = (Array.length t) in let entree = t.(n-1) in
+let truc () = let t = Sys.argv in
+	let n = (Array.length t) in let entree = t.(n-1) in
 	let a = read_formula entree in
 	match t.(1) with
 	|"-minisat" ->  if(t.(2) = "-tseitin")

@@ -58,8 +58,11 @@ reduction : formula -> formula
 reduction_full : formula -> formula
   applique reduction jusqu'a que l'expression soit de taille minimale
 
-##LexParInterface.ml
+## lexParInterface.ml
 contient read_formula pour les lires les entrées du terminal. Fichier .ml faisait l'interface avec parser.mly et lexer.mll
 
 read_formula : unit -> formula
   transforme la chaine de caractère de l'entrée standard en une formula
+
+## argv.ml :
+  
