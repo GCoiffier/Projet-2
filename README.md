@@ -17,9 +17,9 @@ Coiffier Guillaume - Valque Léo
 
 [x] Implémentation des BDD sans la compression
 
-[] Implémentation des BDD avec la compression
+[x] Implémentation des BDD avec la compression
 
-[] Affichage d'un BDD en format .dot
+[x] Affichage d'un BDD en format .dot
 
 [] Transformation de Tseitin pour renvoyer des formules en forme SAT
 
@@ -27,23 +27,24 @@ Coiffier Guillaume - Valque Léo
 
 # Liste et contenu des fichiers
 
-##main.ml :
+## main.ml :
 Fichier principal. Le main lit la formule en entrée (soit de input.txt, soit donnée dans la console),
 crée l'objet formula associé, construit le ROBDD associé et l'exporte au format .dot
 
-##formula.ml :
-Type formula et définition de quelques fonctions utilitaires sur les formules logiques.
+## formula.ml :
+Type formula et définition de quelques fonctions utilitaires sur les formules logiques :
+  affichage dans la console, calcul de taille et test d'une valuation
 
+## BDDsig.mli / BDD.ml :
+  La signature et la définition du module permettant de construire des ROBDD. Voir BDDsig.mli pour la documentation
 
-##BDD.ml :
+## visited.ml :
+  Contient un module Lookup qui sert de dictionnaire lors de la construction d'un BDD. Permet d'implémenter le partage de mémoire des BDD.
 
-##visited.ml :
-  Contient un module Lookup qui sert de dictionnaire lors de la construction d'un BDD. Permet d'implémenter le partage de mémoire
-
-##input.txt :
+## input.txt :
   Le fichier principal d'entrée. Ecrivez ici une formule à envoyer au programme
 
-##Tseitin.ml :
+## Tseitin.ml :
 contient les fonctions tseitin et reduction (et les fonctions qu'ils
 appellent)
 
