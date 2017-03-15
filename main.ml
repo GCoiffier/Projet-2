@@ -1,12 +1,9 @@
 open Formula
-open Bdd.BDD
+open Bdd
 open LexParInterface
 open Minisat
 open Tseitin
-open Argv
-
-let _ = truc ();;
-
+(* open Argv *)
 
 let f1 = read_formula "input.txt";;
 print_formula f1;;
