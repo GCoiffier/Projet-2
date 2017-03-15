@@ -16,8 +16,7 @@ let do_tseitin (entree : formula) sortie =
 let do_minisat entree sortie =
 	let tsei = do_tseitin entree sortie in
 	print_for_minisat tsei "_build/m.cnf";
-	Sys.command("minisat _build/m.cnf _build/output.txt > _build/stuff.txt");
-	()
+	let _ = Sys.command("minisat _build/m.cnf _build/output.txt > _build/stuff.txt") in ()
 	(*lire la sortie de minisat et faire la comparaison BDD *)
 
 let truc () = let t = Sys.argv in let n = (Array.length t) in let entree = t.(n-1) in
@@ -33,7 +32,7 @@ let truc () = let t = Sys.argv in let n = (Array.length t) in let entree = t.(n-
 				else failwith "invalid argument"
 			     )
 	|"-tseitin" -> if(n=3)
-		       then let b = do_tseitin a (t.(n-2)) in ()
+		       then let _ = do_tseitin a (t.(n-2)) in ()
 		       else failwith "invalid argument"
 	|_ -> if n=2
 	      then do_BDD entree

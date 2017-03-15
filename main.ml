@@ -3,7 +3,7 @@ open Bdd
 open LexParInterface
 open Minisat
 open Tseitin
-(* open Argv *)
+open Argv
 
 let f1 = read_formula "input.txt";;
 print_formula f1;;
