@@ -82,7 +82,7 @@ module BDD : BDD_Sig =
             output_string dot_file (to_string a);
             output_string dot_file " -> ";
             output_string dot_file (to_string b);
-            if t then (output_string dot_file " [style=dashed]") else ();
+            if (not t) then (output_string dot_file " [style=dashed]") else ();
               output_string dot_file " ;\n"
           end
         in

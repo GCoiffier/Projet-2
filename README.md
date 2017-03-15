@@ -17,9 +17,9 @@ Coiffier Guillaume - Valque Léo
 
 [x] Implémentation des BDD sans la compression
 
-[] Implémentation des BDD avec la compression
+[x] Implémentation des BDD avec la compression
 
-[] Affichage d'un BDD en format .dot
+[x] Affichage d'un BDD en format .dot
 
 [] Transformation de Tseitin pour renvoyer des formules en forme SAT
 
