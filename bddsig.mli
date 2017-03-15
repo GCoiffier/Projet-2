@@ -1,5 +1,5 @@
 open Formula
-open Visited
+open Valuation
 
 module type BDD_Sig =
   sig
@@ -8,7 +8,7 @@ module type BDD_Sig =
       val create : formula -> bdd
       (* Creates the canonical ROBDD associated with a formula *)
 
-      val satisfy : bdd -> bool array -> bool
+      val satisfy : bdd -> bool Valuation.t -> bool
       (* Tests the satisfiability of the formula. If it is satisfiable,
         also return the list of variables that are set to true (returns [] if
         not satisfiable)

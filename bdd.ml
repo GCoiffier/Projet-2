@@ -1,6 +1,7 @@
 open Formula
 open Visited
 open Bddsig
+open Valuation
 
 module BDD : BDD_Sig =
    struct
@@ -8,17 +9,19 @@ module BDD : BDD_Sig =
               | Node of int * bdd * bdd
 
     let create f =
-      let n = nb_var f in
-      let v = Array.make n false in
+      let var = Array.of_list (get_variables f) in
+      let n = Array.length var in
+      let v = ref (Valuation.empty) in
       let ltrue = Leaf(true) and lfalse = Leaf(false) in
       let visited = Lookup.create () in
       let rec create_aux = function
-        |i when (i > n) -> if (eval v f) then ltrue else lfalse
-        |i ->  let l = create_aux (i+1) in
-               let _ = (v.(i-1) <- true) in
-               let h = create_aux (i+1) in
-               let _ = (v.(i-1) <- false) in
-                 let node = if (l=h) then l else Node(i,l,h) in
+        |i when (i > n) -> if (eval !v f) then ltrue else lfalse
+        |i ->  let _ = v := (Valuation.add (var.(i-1)) false (!v)) in
+                let l = create_aux (i+1) in
+                let _ = v := (Valuation.remove (var.(i-1)) (!v)) in
+                let _ = v := (Valuation.add (var.(i-1)) true (!v)) in
+                let h = create_aux (i+1) in
+                 let node = if (l=h) then l else Node(var.(i-1),l,h) in
                     if (Lookup.mem node visited) then (Lookup.find node visited)
                       else (Lookup.add node visited; node)
       in create_aux 1;;
@@ -26,7 +29,7 @@ module BDD : BDD_Sig =
 
     let rec satisfy bdd v = match bdd with
         |Leaf(x) -> x
-        |Node(i,l,h) -> if v.(i-1) then (satisfy h v) else (satisfy l v)
+        |Node(i,l,h) -> if (Valuation.find i v) then (satisfy h v) else (satisfy l v)
 
 
     let size bdd =

@@ -1,8 +1,4 @@
-module Var = Set.Make(struct
-                       type t = int
-                       (* use Pervasives compare *)
-                       let compare = compare
-                      end)
+open Valuation
 
 (* un type pour des expressions booléennes
   /!\ Les variables d'une formule doivent être numérotées de 1 à n /!\ *)
@@ -56,12 +52,24 @@ let get_variables f =
 
 let nb_var f = List.length (get_variables f)
 
+let max_var f =
+  let rec nb_var_aux m f = match f with
+     Const(k) -> m
+    |Var(x) -> if x>m then x else m
+    |OR(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
+    |AND(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
+    |XOR(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
+    |NOT(f)-> nb_var_aux m f
+    |IMPLIES(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
+    |EQUIV(f1,f2) -> max (nb_var_aux m f1) (nb_var_aux m f2)
+  in nb_var_aux 0 f;;
+
 let rec eval v f =
-  (* given a valuation 'val', ie a vector of booleans,
+  (* given a valuation 'val', ie a map whose keys are integers,
       computes the value of the formula f *)
     let rec eval_aux = function
       | Const(k) -> k
-      | Var(x) -> v.(x-1)
+      | Var(x) -> (Valuation.find x v)
       | OR (f1,f2) -> (eval_aux f1) || (eval_aux f2)
       | AND (f1,f2) -> (eval_aux f1) && (eval_aux f2)
       | NOT(f1) -> not (eval_aux f1)
