@@ -90,6 +90,7 @@ def pomme(n): #besoin de n+1*n variable :-(
 			string += cl_oubis([t*n+p for t in range(0,n)],[t*n+q for t in range(0,n)])
 		string+=")"
 	return string + ")"
+	
 print(pomme(4))
 print(" 0")
 	
