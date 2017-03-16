@@ -4,7 +4,8 @@ open LexParInterface
 open Minisat
 open Tseitin
 
-let do_BDD entree = print_string "hello world!!\n"
+let do_BDD entree = let bdd = create entree in
+	print_int (size bdd)
 
 let do_tseitin (entree : formula) sortie =
 	let tsei = reduction_full( tseitin entree) in
@@ -16,9 +17,23 @@ let do_tseitin (entree : formula) sortie =
 let do_minisat entree sortie =
 	let tsei = do_tseitin entree sortie in
 	print_for_minisat tsei "_build/m.cnf";
-	Sys.command("minisat _build/m.cnf _build/output.txt > _build/stuff.txt");
-	()
-	(*lire la sortie de minisat et faire la comparaison BDD *)
+	let _ = Sys.command("minisat _build/m.cnf _build/output.txt > _build/stuff.txt") in
+	
+	let sat, valuation = read_minisat "_build/output.txt" in
+	let bdd = create entree in
+	
+	if sat
+	then (
+		(*if (satisfy bdd (valuation_from_list valuation))
+		then print_string "minisat et tseitin aggry with the bdd"
+		else print_string "Error : minisat and tseitin disaggry" *)
+	)
+	else (
+		if false
+		then print_string "minisat et tseitin aggry with the bdd"
+		else print_string "Error : minisat and tseitin disaggry"
+	)
+	
 
 let truc () = let t = Sys.argv in let n = (Array.length t) in let entree = t.(n-1) in
 	let a = read_formula entree in
@@ -32,9 +47,9 @@ let truc () = let t = Sys.argv in let n = (Array.length t) in let entree = t.(n-
 				then do_minisat a ""
 				else failwith "invalid argument"
 			     )
-	|"-tseitin" -> if(n=3)
-		       then let b = do_tseitin a (t.(n-2)) in ()
+	|"-tseitin" -> if(n=4)
+		       then let _ = do_tseitin a (t.(n-2)) in ()
 		       else failwith "invalid argument"
 	|_ -> if n=2
-	      then do_BDD entree
+	      then do_BDD a
 	      else failwith "invalid argument"

@@ -20,7 +20,4 @@ let read_formula entree = let fd = open_in entree in
   
 let read_minisat entree = let fd = open_in entree in
   try
-  	let a = Parser_minisat.main Lexer_minisat.token (lexbuf fd) in
-  	close_in fd;
-  	a
-  with _ -> failwith "erreur de lecture"
+  	let a = Parser_minisat
