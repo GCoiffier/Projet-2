@@ -4,9 +4,10 @@ Coiffier Guillaume - Valque Léo
 
 ## Remarques générales
 
-[x] La formule marche avec des variable quelconque
+[x] La formule d'entrée est écrite dans le fichier input.txt
+    ATTENTION : Ses variables doivent être étiquetées par les entiers de 1 à n.
 
-[x] Pour executer le programme, utilisez le script exec.sh (il lit l'entrée dans input.txt).
+[x] Pour executer le programme, utilisez le script exec.sh.
 
 ## Avancement
 
@@ -20,14 +21,14 @@ Coiffier Guillaume - Valque Léo
 
 [x] Affichage d'un BDD en format .dot
 
-[x] Transformation de Tseitin pour renvoyer des formules en forme SAT
+[] Transformation de Tseitin pour renvoyer des formules en forme SAT
 
-[x] Exportation des fichiers pour minisat et comparaison du résultat avec le BDD
+[] Exportation des fichiers pour minisat et comparaison du résultat avec le BDD
 
 # Liste et contenu des fichiers
 
 ## main.ml :
-Fichier principal. Le main se contente d'appeller argv() 
+Fichier principal. Le main lit la formule en entrée (soit de input.txt, soit donnée dans la console),
 crée l'objet formula associé, construit le ROBDD associé et l'exporte au format .dot
 
 ## formula.ml :
@@ -58,21 +59,11 @@ reduction_full : formula -> formula
   applique reduction jusqu'a que l'expression soit de taille minimale
 
 ## lexParInterface.ml
-contient read_formula et read_minisat pour les lires les entrées du terminal et de minisat. Fichier .ml faisait l'interface avec parser.mly et lexer.mll
+contient read_formula pour les lires les entrées du terminal. Fichier .ml faisait l'interface avec parser.mly et lexer.mll
 
-read_formula : string -> formula
-  transforme la chaine de caractère du fichier envoyer en argument en une formula
-  
-read_minisat : string -> bool * (int * bool) list
-  lit le resultat renvoyer par minisat et le transforme et la renvoie sous forme d'une liste pour l'envoyer à BDD
+read_formula : unit -> formula
+  transforme la chaine de caractère de l'entrée standard en une formula
+
 ## minisat.ml :
-	contient quelque fonction pour préparer l'appelle à minisat
-	
+
 ## argv.ml :
-	lit les argument envoyer
-	'./nom_executable fichier' se contente d'afficher la taille du bdd avec pour entrée l'expression contenu dans
-	fichier. Si la formule n'est pas valide, il affiche erreur de saisie
-	'./__ -tseitin sortie entree' ecrira la formule SAT de l'entree dans le fichier sortie sous le format DIMACS
-	'./__ -minisat entree' appelera minisat sur la formule d'entree et affiche la comparaison avec la bdd
-	il est possible de faire -minisat -tseitin ( dans cet ordre ) pour stocker la formule SAT dans le fichier sortie et
-	appeler minisat
