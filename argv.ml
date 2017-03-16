@@ -3,6 +3,7 @@ open Bdd.BDD
 open LexParInterface
 open Minisat
 open Tseitin
+open Valuation
 
 let do_BDD entree = let bdd = create entree in
 	print_int (size bdd)
@@ -18,23 +19,26 @@ let do_minisat entree sortie =
 	let tsei = do_tseitin entree sortie in
 	print_for_minisat tsei "_build/m.cnf";
 	let _ = Sys.command("minisat _build/m.cnf _build/output.txt > _build/stuff.txt") in
-	
+
 	let sat, valuation = read_minisat "_build/output.txt" in
 	let bdd = create entree in
-	
+
 	if sat
 	then (
-		(*if (satisfy bdd (valuation_from_list valuation))
+		if (satisfy bdd (valuation_from_list valuation))
 		then print_string "minisat et tseitin agree with the bdd"
-		else print_string "Error : minisat and tseitin disagree" *)
+		else print_string "Error : minisat and tseitin disagree";
+		print_newline ();
 	)
 	else (
 		if false
 		then print_string "minisat et tseitin agree with the bdd"
-		else print_string "Error : minisat and tseitin disagree"
+		else print_string "Error : minisat and tseitin disagree";
+		print_newline ();
 	)
 
-let truc () = let t = Sys.argv in
+let argv_call () =
+	let t = Sys.argv in
 	let n = (Array.length t) in let entree = t.(n-1) in
 	let a = read_formula entree in
 	match t.(1) with
@@ -53,5 +57,3 @@ let truc () = let t = Sys.argv in
 	|_ -> if n=2
 	      then do_BDD a
 	      else failwith "invalid argument"
-	      
-	      

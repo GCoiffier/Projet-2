@@ -4,9 +4,15 @@ Coiffier Guillaume - Valque Léo
 
 ## Remarques générales
 
-[x] La formule marche avec des variable quelconque
+[x] La formule marche avec des variables quelconques.
 
-[x] Pour éxecuter le programme, utilisez le script exec.sh (il lit l'entrée dans input.txt).
+[x] Pour exécuter le programme :
+    './nom_executable fichier' se contente d'afficher la taille du bdd avec pour entrée l'expression contenu dans
+    fichier. Si la formule n'est pas valide, il affiche erreur de saisie
+    './__ -tseitin sortie entree' ecrira la formule SAT de l'entree dans le fichier sortie sous le format DIMACS
+    './__ -minisat entree' appelera minisat sur la formule d'entree et affiche la comparaison avec la bdd
+    il est possible de faire -minisat -tseitin ( dans cet ordre ) pour stocker la formule SAT dans le fichier sortie et
+    appeler minisat
 
 ## Avancement
 
@@ -22,7 +28,11 @@ Coiffier Guillaume - Valque Léo
 
 [x] Transformation de Tseitin pour renvoyer des formules en forme SAT
 
-[x] Exportation des fichiers pour minisat et comparaison du résultat avec le BDD
+[x] Exportation des fichiers pour minisat
+
+[x] Lexer-parser pour lire les fichiers de sortie de minisat
+
+[x] comparaison du résultat de minisat avec le BDD
 
 # Liste et contenu des fichiers
 
@@ -69,10 +79,4 @@ read_minisat : string -> bool * (int * bool) list
 	contient quelque fonction pour préparer l'appelle à minisat
 
 ## argv.ml :
-	lit les argument envoyer
-	'./nom_executable fichier' se contente d'afficher la taille du bdd avec pour entrée l'expression contenu dans
-	fichier. Si la formule n'est pas valide, il affiche erreur de saisie
-	'./__ -tseitin sortie entree' ecrira la formule SAT de l'entree dans le fichier sortie sous le format DIMACS
-	'./__ -minisat entree' appelera minisat sur la formule d'entree et affiche la comparaison avec la bdd
-	il est possible de faire -minisat -tseitin ( dans cet ordre ) pour stocker la formule SAT dans le fichier sortie et
-	appeler minisat
+	lit les argument envoyés et fait les différents appels aux parties du programme
