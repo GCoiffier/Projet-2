@@ -13,8 +13,6 @@ print_formula f1;;
 
 let my_bdd = BDD.create f1;;
 
-BDD.print_as_string my_bdd;;
-
 print_string "BDD size : "; print_int (BDD.size my_bdd); print_newline ();;
 
 BDD.print my_bdd "test";;
