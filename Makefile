@@ -10,4 +10,4 @@ clean:
 	rm -f *.byte
 	rm -f *.dot
 	rm -f *.dot.pdf
-	rm -f *ml~
+	rm -f *~

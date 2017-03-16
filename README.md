@@ -6,7 +6,7 @@ Coiffier Guillaume - Valque Léo
 
 [x] La formule marche avec des variable quelconque
 
-[x] Pour executer le programme, utilisez le script exec.sh (il lit l'entrée dans input.txt).
+[x] Pour éxecuter le programme, utilisez le script exec.sh (il lit l'entrée dans input.txt).
 
 ## Avancement
 
@@ -27,7 +27,7 @@ Coiffier Guillaume - Valque Léo
 # Liste et contenu des fichiers
 
 ## main.ml :
-Fichier principal. Le main se contente d'appeller argv() 
+Fichier principal. Le main se contente d'appeller argv()
 crée l'objet formula associé, construit le ROBDD associé et l'exporte au format .dot
 
 ## formula.ml :
@@ -62,12 +62,12 @@ contient read_formula et read_minisat pour les lires les entrées du terminal et
 
 read_formula : string -> formula
   transforme la chaine de caractère du fichier envoyer en argument en une formula
-  
+
 read_minisat : string -> bool * (int * bool) list
   lit le resultat renvoyer par minisat et le transforme et la renvoie sous forme d'une liste pour l'envoyer à BDD
 ## minisat.ml :
 	contient quelque fonction pour préparer l'appelle à minisat
-	
+
 ## argv.ml :
 	lit les argument envoyer
 	'./nom_executable fichier' se contente d'afficher la taille du bdd avec pour entrée l'expression contenu dans
