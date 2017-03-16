@@ -1,51 +1,51 @@
 open Formula
-open Visited
 open Bddsig
 open Valuation
 
+module Lookup = Set.Make(struct
+                          type t = bdd
+                          let compare = compare
+                          end
+                          )
+
 module BDD : BDD_Sig =
    struct
-    type bdd =  Leaf of bool
-              | Node of int * bdd * bdd
+
+   type t = bdd;;
 
     let create f =
       let ltrue = Leaf(true) and lfalse = Leaf(false) in
-      let visited = Lookup.create () in
+      let visited = ref (Lookup.empty) in
       let rec create_aux v = function
          [] -> if (eval v f) then ltrue else lfalse
         |t::q -> let l = create_aux (Valuation.add t false v) q in
                 let h = create_aux (Valuation.add t true (Valuation.remove t v)) q in
                  let node = if (l=h) then l else Node(t,l,h) in
-                    if (Lookup.mem node visited) then (Lookup.find node visited)
-                      else (Lookup.add node visited; node)
+                    if (Lookup.mem node (!visited)) then (Lookup.find node (!visited))
+                      else (visited := Lookup.add node (!visited); node)
       in create_aux (Valuation.empty) (get_variables f);;
 
+    let is_leaf bdd b = match bdd with
+      Leaf(x) when (x=b) -> true
+      |_ -> false
 
     let rec satisfy bdd v = match bdd with
         |Leaf(x) -> x
         |Node(i,l,h) -> if (Valuation.find i v) then (satisfy h v) else (satisfy l v)
 
-
     let size bdd =
-      let visited = Lookup.create () in
-      let rec nb_node_aux = function
+      let rec nb_node_aux seen = function
          |Leaf(x) -> 0
-         |Node(k,l,h) as x when (not (Lookup.mem x visited))-> let _ = Lookup.add x visited in 1 + (nb_node_aux l) + (nb_node_aux h)
-         |x -> 0
-      in (2 + nb_node_aux bdd) (* 2 for true and false leaves *)
+         |Node(k,l,h) as x -> let s = (Lookup.add x seen) in 1 + (nb_node_aux s l) + (nb_node_aux s h)
+      in (2 + nb_node_aux (Lookup.empty) bdd) (* 2 for true and false leaves *)
 
 
       let node_list bdd =
         (* La liste des noeuds d'un BDD *)
-        let visited = Lookup.create() in
-        let rec node_list_aux = function
-          |Leaf(x) -> ()
-          |Node(k,g,d) as x when (not (Lookup.mem x visited )) -> Lookup.add x visited;
-                                                                      node_list_aux g;
-                                                                      node_list_aux d
-          |Node(k,g,d) -> node_list_aux g;
-                          node_list_aux d
-        in let _ = node_list_aux bdd in (Lookup.tolist visited)
+        let rec node_list_aux seen = function
+          |Leaf(x) -> seen
+          |Node(k,g,d) as x -> let s = Lookup.add x seen in  Lookup.union (node_list_aux s d) (node_list_aux s g)
+        in (Lookup.elements (node_list_aux (Lookup.empty) bdd))
 
 
     let get_id node l =
