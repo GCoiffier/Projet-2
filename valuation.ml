@@ -14,6 +14,7 @@ let valuation_from_list l =
       (Valuation.add a b v)
   in vfl_aux (Valuation.empty) l;;
 
+
 (* Un set pour stocker des entiers.
     Utilisé dans la fonction get_variables *)
 module Var = Set.Make(struct

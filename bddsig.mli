@@ -1,6 +1,7 @@
 open Formula
 open Valuation
 
+(* Définition du type d'un diagramme de décision binaire *)
 type bdd =  Leaf of bool
           | Node of int * bdd * bdd
 

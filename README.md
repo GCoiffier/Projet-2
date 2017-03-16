@@ -4,15 +4,18 @@ Coiffier Guillaume - Valque Léo
 
 ## Remarques générales
 
-[x] La formule marche avec des variables quelconques.
+[x] Addresse du dépôt Git : https://github.com/GCoiffier/Projet-2
 
 [x] Pour exécuter le programme :
     './nom_executable fichier' se contente d'afficher la taille du bdd avec pour entrée l'expression contenu dans
     fichier. Si la formule n'est pas valide, il affiche erreur de saisie
+
     './__ -tseitin sortie entree' ecrira la formule SAT de l'entree dans le fichier sortie sous le format DIMACS
+
     './__ -minisat entree' appelera minisat sur la formule d'entree et affiche la comparaison avec la bdd
     il est possible de faire -minisat -tseitin ( dans cet ordre ) pour stocker la formule SAT dans le fichier sortie et
     appeler minisat
+
     './__ -display entree' appelera le lexer-parser sur le fichier entree pour obtenir une formule, construit le ROBDD associé à la formule et l'exporte en fichier .dot
       Pour visualiser le fichier.dot, générez le pdf avec 'dot -Tpdf file -o file.pdf; '
       Sinon, utilisez directement le script display.sh qui fera tout à votre place
@@ -43,20 +46,20 @@ Coiffier Guillaume - Valque Léo
 # Liste et contenu des fichiers
 
 ## f2bdd.ml :
-Fichier principal. Le main se contente d'appeller argv_call()
+Fichier principal. Se contente d'appeller argv_call()
 
 ## formula.ml :
 Type formula et définition de quelques fonctions utilitaires sur les formules logiques :
   affichage dans la console, calcul de taille et test d'une valuation
 
 ## BDDsig.mli / BDD.ml :
-  La signature et la définition du module permettant de construire des ROBDD. Voir BDDsig.mli pour la documentation
+  La signature et la définition du module permettant de construire des ROBDD. (Voir BDDsig.mli pour la documentation)
+  Le fichier BDD.ml contient également un module Lookup, implémenté avec Set, qui permet de gérer le partage mémoire.
 
-## visited.ml :
-  Contient un module Lookup qui sert de dictionnaire lors de la construction d'un BDD. Permet d'implémenter le partage de mémoire des BDD.
-
-## input.txt :
-  Le fichier principal d'entrée. Ecrivez ici une formule à envoyer au programme
+## valuation.ml :
+  Contient deux structures de données :
+    - Valuation, qui est une Map d'int, représentant une valuation des variables d'une formule. On définit également une fonction permettant de convertir une liste d'associations en Valuation
+    - Var, un Set d'int, qui est utilisée pour obtenir la liste des variables d'une fonction (et gestion des doublons)                  
 
 ## Tseitin.ml :
 contient les fonctions tseitin et reduction (et les fonctions qu'ils
