@@ -67,7 +67,7 @@ def rotation(n): # 1 à n entree, n+1 à 2n sortie
 def cl_oubis(L1,L2):
 	string = "("
 	k=1
-	for i in range(len(L1)):
+	for i in range(L1):
 		if k==1:
 			k=0
 		else:

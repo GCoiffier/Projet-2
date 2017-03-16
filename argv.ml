@@ -3,6 +3,7 @@ open Bdd.BDD
 open LexParInterface
 open Minisat
 open Tseitin
+open Valuation
 
 let do_BDD entree = let bdd = create entree in
 	print_int (size bdd)
@@ -24,9 +25,9 @@ let do_minisat entree sortie =
 	
 	if sat
 	then (
-		(*if (satisfy bdd (valuation_from_list valuation))
+		if (satisfy bdd (valuation_from_list valuation))
 		then print_string "minisat et tseitin agree with the bdd"
-		else print_string "Error : minisat and tseitin disagree" *)
+		else print_string "Error : minisat and tseitin disagree"
 	)
 	else (
 		if false
