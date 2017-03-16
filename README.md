@@ -13,6 +13,9 @@ Coiffier Guillaume - Valque Léo
     './__ -minisat entree' appelera minisat sur la formule d'entree et affiche la comparaison avec la bdd
     il est possible de faire -minisat -tseitin ( dans cet ordre ) pour stocker la formule SAT dans le fichier sortie et
     appeler minisat
+    './__ -display entree' appelera le lexer-parser sur le fichier entree pour obtenir une formule, construit le ROBDD associé à la formule et l'exporte en fichier .dot
+      Pour visualiser le fichier.dot, générez le pdf avec 'dot -Tpdf file -o file.pdf; '
+      Sinon, utilisez directement le script display.sh qui fera tout à votre place
 
 ## Avancement
 
@@ -36,9 +39,8 @@ Coiffier Guillaume - Valque Léo
 
 # Liste et contenu des fichiers
 
-## main.ml :
-Fichier principal. Le main se contente d'appeller argv()
-crée l'objet formula associé, construit le ROBDD associé et l'exporte au format .dot
+## f2bdd.ml :
+Fichier principal. Le main se contente d'appeller argv_call()
 
 ## formula.ml :
 Type formula et définition de quelques fonctions utilitaires sur les formules logiques :

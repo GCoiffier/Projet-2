@@ -8,6 +8,9 @@ open Valuation
 let do_BDD entree = let bdd = create entree in
 	print_int (size bdd)
 
+let do_display_BDD entree = let bdd = create entree in
+	print bdd "display"
+
 let do_tseitin (entree : formula) sortie =
 	let tsei = reduction_full( tseitin entree) in
 	if (sortie <> "")
@@ -54,6 +57,8 @@ let argv_call () =
 	|"-tseitin" -> if(n=4)
 		       then let _ = do_tseitin a (t.(n-2)) in ()
 		       else failwith "invalid argument"
+	|"-display" -> do_display_BDD a
+
 	|_ -> if n=2
 	      then do_BDD a
 	      else failwith "invalid argument"
