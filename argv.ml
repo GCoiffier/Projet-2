@@ -25,17 +25,17 @@ let do_minisat entree sortie =
 	if sat
 	then (
 		(*if (satisfy bdd (valuation_from_list valuation))
-		then print_string "minisat et tseitin aggry with the bdd"
-		else print_string "Error : minisat and tseitin disaggry" *)
+		then print_string "minisat et tseitin agree with the bdd"
+		else print_string "Error : minisat and tseitin disagree" *)
 	)
 	else (
 		if false
-		then print_string "minisat et tseitin aggry with the bdd"
-		else print_string "Error : minisat and tseitin disaggry"
+		then print_string "minisat et tseitin agree with the bdd"
+		else print_string "Error : minisat and tseitin disagree"
 	)
-	
 
-let truc () = let t = Sys.argv in let n = (Array.length t) in let entree = t.(n-1) in
+let truc () = let t = Sys.argv in
+	let n = (Array.length t) in let entree = t.(n-1) in
 	let a = read_formula entree in
 	match t.(1) with
 	|"-minisat" ->  if(t.(2) = "-tseitin")
@@ -53,3 +53,5 @@ let truc () = let t = Sys.argv in let n = (Array.length t) in let entree = t.(n-
 	|_ -> if n=2
 	      then do_BDD a
 	      else failwith "invalid argument"
+	      
+	      
