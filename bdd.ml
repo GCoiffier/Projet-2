@@ -9,22 +9,16 @@ module BDD : BDD_Sig =
               | Node of int * bdd * bdd
 
     let create f =
-      let var = Array.of_list (get_variables f) in
-      let n = Array.length var in
-      let v = ref (Valuation.empty) in
       let ltrue = Leaf(true) and lfalse = Leaf(false) in
       let visited = Lookup.create () in
-      let rec create_aux = function
-        |i when (i > n) -> if (eval !v f) then ltrue else lfalse
-        |i ->  let _ = v := (Valuation.add (var.(i-1)) false (!v)) in
-                let l = create_aux (i+1) in
-                let _ = v := (Valuation.remove (var.(i-1)) (!v)) in
-                let _ = v := (Valuation.add (var.(i-1)) true (!v)) in
-                let h = create_aux (i+1) in
-                 let node = if (l=h) then l else Node(var.(i-1),l,h) in
+      let rec create_aux v = function
+         [] -> if (eval v f) then ltrue else lfalse
+        |t::q -> let l = create_aux (Valuation.add t false v) q in
+                let h = create_aux (Valuation.add t true (Valuation.remove t v)) q in
+                 let node = if (l=h) then l else Node(t,l,h) in
                     if (Lookup.mem node visited) then (Lookup.find node visited)
                       else (Lookup.add node visited; node)
-      in create_aux 1;;
+      in create_aux (Valuation.empty) (get_variables f);;
 
 
     let rec satisfy bdd v = match bdd with
@@ -96,8 +90,16 @@ module BDD : BDD_Sig =
                         edge_to_string x h true;
                         print_aux l;
                         print_aux h;
-      in print_aux bdd;
+      in (match bdd with
+        Leaf(x) -> output_string dot_file ((string_of_leaf x)^";"); (* cas où le BDD est réduit à une feuille -> formule non satifiable ou tautologie *)
+        |bdd -> print_aux bdd);
       output_string dot_file "}" ;
       close_out dot_file;;
+
+    let print_as_string bdd =
+      let rec to_string = function
+        |Leaf(x) -> if x then "Leaf(True)" else "Leaf(False)"
+        |Node(i,l,h) -> "Node("^(string_of_int i)^","^(to_string l)^","^(to_string h)^")"
+      in print_string (to_string bdd); print_newline ();;
 
   end

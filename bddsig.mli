@@ -17,6 +17,9 @@ module type BDD_Sig =
       val size : bdd -> int
       (* BDD size in terms of number of nodes (physical equality) *)
 
+      val print_as_string : bdd -> unit
+      (* displays the BDD as a string *)
+      
       val print : bdd -> string -> unit
       (* Exports a .dot file representing the BDD *)
   end
