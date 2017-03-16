@@ -17,6 +17,9 @@ Coiffier Guillaume - Valque Léo
       Pour visualiser le fichier.dot, générez le pdf avec 'dot -Tpdf file -o file.pdf; '
       Sinon, utilisez directement le script display.sh qui fera tout à votre place
 
+[x] Les fichiers de tests sont situés dans le dossier Input. Nous avons également écrit un fichier python qui génère des instances de test.
+    Il est conseillé d'écrire les sorties du programme dans le dossier Output (pour des raisons de lisibilité)
+
 ## Avancement
 
 [x] Lexer et parser pour les formules booléennes
@@ -35,7 +38,7 @@ Coiffier Guillaume - Valque Léo
 
 [x] Lexer-parser pour lire les fichiers de sortie de minisat
 
-[x] comparaison du résultat de minisat avec le BDD
+[x] Comparaison du résultat de minisat avec le BDD
 
 # Liste et contenu des fichiers
 
@@ -77,6 +80,7 @@ read_formula : string -> formula
 
 read_minisat : string -> bool * (int * bool) list
   lit le resultat renvoyer par minisat et le transforme et la renvoie sous forme d'une liste pour l'envoyer à BDD
+
 ## minisat.ml :
 	contient quelque fonction pour préparer l'appelle à minisat
 

@@ -6,7 +6,7 @@ open Tseitin
 open Valuation
 
 let do_BDD entree = let bdd = create entree in
-	print_int (size bdd)
+	print_string "Taille du BDD construit : "; print_int (size bdd); print_newline ()
 
 let do_display_BDD entree = let bdd = create entree in
 	print bdd "display"

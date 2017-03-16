@@ -1,7 +1,11 @@
-(* PROJET 2  2017 - L3IF ENS Lyon
-    Valque Léo - Coiffier Guillaume
+(* -----------------------------------------
+  |    PROJET 2  2017 - L3IF ENS Lyon      |
+  |    Valque Léo - Coiffier Guillaume     |
+  |                                        |
+  |                Main file               |
+  ------------------------------------------
 
-            Main file
+  NB : Tout ce qu'il faut savoir est dans le README.md
 *)
 
 open Formula
