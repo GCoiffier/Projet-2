@@ -59,7 +59,7 @@ Type formula et définition de quelques fonctions utilitaires sur les formules l
 ## valuation.ml :
   Contient deux structures de données :
     - Valuation, qui est une Map d'int, représentant une valuation des variables d'une formule. On définit également une fonction permettant de convertir une liste d'associations en Valuation
-    - Var, un Set d'int, qui est utilisée pour obtenir la liste des variables d'une fonction (et gestion des doublons)                  
+    - Var, un Set d'int, qui est utilisée pour obtenir la liste des variables d'une fonction (et gestion des doublons)
 
 ## Tseitin.ml :
 contient les fonctions tseitin et reduction (et les fonctions qu'ils

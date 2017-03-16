@@ -32,6 +32,7 @@ let do_minisat entree sortie =
 		then print_string "minisat et tseitin agree with the bdd"
 		else print_string "Error : minisat and tseitin disagree";
 		print_newline ();
+
 	)
 	else (
 		if false
