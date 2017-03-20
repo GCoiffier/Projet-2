@@ -43,7 +43,7 @@ def parite(n):
 	else:
 		str1 = parite(n-2)
 		str2 = impair(n-2)
-		return "((("+cl([n-1,n])+ope[0]+cl([1-n,-n])+")"+ope[1]+str1+")"+ope[0]+"(("+cl([n-1,-n])+ope[0]+cl([1-n,n])+")"+ope[1]+str2+")))"
+		return "((("+cl([n-1,n])+ope[0]+cl([1-n,-n])+")"+ope[1]+str1+")"+ope[0]+"(("+cl([n-1,-n])+ope[0]+cl([1-n,n])+")"+ope[1]+str2+"))"
 
 def add_1bit(e1, e2, s, re, rs) : #additioneur 1bit et c'est deja pas beau
 	string = "("+str(s)+" <=> "+cl([e1,-e2,-re])+ope[0]+cl([-e1,e2,-re])+ope[0]+cl([-e1,-e2,re])+ope[0]+cl([e1,e2,re])+")"
@@ -96,10 +96,10 @@ def pomme(n): #besoin de n+1*n variable :-(
 if __name__ == "__main__":
 	arg = sys.argv
 	with open("Inputs/pomme.form",'w') as file :
-		file.write(pomme(int(arg[1]))+ " 0")
+		file.write(pomme(int(arg[1]))+ " 0 \n")
 	with open("Inputs/rotation.form",'w') as file :
-		file.write(rotation(int(arg[1]))+ " 0")
+		file.write(rotation(int(arg[1]))+ " 0 \n")
 	with open("Inputs/additionneur.form",'w') as file :
-		file.write(additionneur(int(arg[1])) +" 0" )
+		file.write(additionneur(int(arg[1])) +" 0 \n" )
 	with open("Inputs/parite.form",'w') as file :
-		file.write(parite(int(arg[1]))+ " 0")
+		file.write(parite(int(arg[1]))+ " 0 \n")
