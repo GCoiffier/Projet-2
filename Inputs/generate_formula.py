@@ -1,4 +1,5 @@
 import random
+import sys
 
 ope = ["\/", "/\\", "X", "<=>", "=>", "~"]
 
@@ -48,7 +49,7 @@ def add_1bit(e1, e2, s, re, rs) : #additioneur 1bit et c'est deja pas beau
 	string = "("+str(s)+"<=>"+cl([e1,-e2,-re])+ope[0]+cl([-e1,e2,-re])+ope[0]+cl([-e1,-e2,re])+ope[0]+cl([e1,e2,re])+")"
 	return string+ope[1]+"("+str(rs)+"<=>"+cl([e1,e2])+ope[0]+cl([e1,re])+ope[0]+cl([e2,re]) + ")"
 
-def additioneur(n) : #nombre1 de 1 à n nombre2 de n+1 à 2n, sortie de 2n+1 à 3n et retenue de 3n+1 à 4n
+def additionneur(n) : #nombre1 de 1 à n nombre2 de n+1 à 2n, sortie de 2n+1 à 3n et retenue de 3n+1 à 4n
 	string = "("+str(n+n+1)+"<=>"+cl([1,-(n+1)])+ope[0]+cl([-1,n+1])+")"+ope[1]+"("+str(3*n+1)+"<=>"+cl([1,n+1])+")"
 	#on met le premier additioneur qui est plus simple
 	for i in range(2,n+1):
@@ -92,4 +93,13 @@ def pomme(n): #besoin de n+1*n variable :-(
 		string+=")"
 	return string + ")"
 
-print(pomme(4)+ " 0")
+if __name__ == "__main__":
+	arg = sys.argv
+	with open("Inputs/pomme.form",'w') as file :
+		file.write(pomme(int(arg[1]))+ " 0")
+	with open("Inputs/rotation.form",'w') as file :
+		file.write(rotation(int(arg[1]))+ " 0")
+	with open("Inputs/additionneur.form",'w') as file :
+		file.write(additionneur(int(arg[1]))+ " 0")
+	with open("Inputs/parite.form",'w') as file :
+		file.write(parite(int(arg[1]))+ " 0")
