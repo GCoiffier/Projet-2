@@ -21,9 +21,9 @@ let do_tseitin (entree : formula) sortie =
 let do_minisat entree sortie =
 	let tsei = do_tseitin entree sortie in
 	print_for_minisat tsei "_build/m.cnf";
-	let _ = Sys.command("minisat _build/m.cnf _build/output.txt > _build/stuff.txt") in
+	let _ = Sys.command("minisat _build/m.cnf Outputs/output.txt > _build/stuff.txt") in
 
-	let sat, valuation = read_minisat "_build/output.txt" in
+	let sat, valuation = read_minisat "Outputs/output.txt" in
 	let bdd = create entree in
 
 	if sat
