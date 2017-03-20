@@ -18,7 +18,7 @@ Coiffier Guillaume - Valque Léo
 
     './__ -display entree' appelera le lexer-parser sur le fichier entree pour obtenir une formule, construit le ROBDD associé à la formule et l'exporte en fichier .dot
       Pour visualiser le fichier.dot, générez le pdf avec 'dot -Tpdf file -o file.pdf; '
-      Sinon, utilisez directement le script display.sh qui fera tout à votre place (commande './display.sh  <nom_fichier>', où le fichier est placé dans le dossier Inputs)
+      Sinon, utilisez directement le script display.sh qui fera tout à votre place (commande './display.sh  <nom_fichier>')
 
 [x] Les fichiers de tests sont situés dans le dossier Input. Nous avons également écrit un fichier python qui génère des instances de test.
     Il est conseillé d'écrire les sorties du programme dans le dossier Output (pour des raisons de lisibilité)
@@ -85,7 +85,7 @@ read_minisat : string -> bool * (int * bool) list
   lit le resultat renvoyer par minisat et le transforme et la renvoie sous forme d'une liste pour l'envoyer à BDD
 
 ## minisat.ml :
-	contient quelque fonction pour préparer l'appelle à minisat
+contient quelque fonction pour préparer l'appelle à minisat
 
 ## argv.ml :
-	lit les argument envoyés et fait les différents appels aux parties du programme
+lit les argument envoyés et fait les différents appels aux parties du programme
