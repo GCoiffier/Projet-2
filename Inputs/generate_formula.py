@@ -33,7 +33,7 @@ def impair(n):
 		str2 = parite(n-2)
 		str1 = impair(n-2)
 		return "((("+cl([n-1,n])+ope[0]+cl([1-n,-n])+")"+ope[1]+str1+")"+ope[0]+"(("+cl([n-1,-n])+ope[0]+cl([1-n,n])+")"+ope[1]+str2+"))"
-		
+
 def parite(n):
 	if n==2:
 		return "("+cl([1,2])+ope[0]+cl([-1,-2])+")"
@@ -47,17 +47,17 @@ def parite(n):
 def add_1bit(e1, e2, s, re, rs) : #additioneur 1bit et c'est deja pas beau
 	string = "("+str(s)+"<=>"+cl([e1,-e2,-re])+ope[0]+cl([-e1,e2,-re])+ope[0]+cl([-e1,-e2,re])+ope[0]+cl([e1,e2,re])+")"
 	return string+ope[1]+"("+str(rs)+"<=>"+cl([e1,e2])+ope[0]+cl([e1,re])+ope[0]+cl([e2,re]) + ")"
-	
+
 def additioneur(n) : #nombre1 de 1 à n nombre2 de n+1 à 2n, sortie de 2n+1 à 3n et retenue de 3n+1 à 4n
 	string = "("+str(n+n+1)+"<=>"+cl([1,-(n+1)])+ope[0]+cl([-1,n+1])+")"+ope[1]+"("+str(3*n+1)+"<=>"+cl([1,n+1])+")"
 	#on met le premier additioneur qui est plus simple
 	for i in range(2,n+1):
 		string += ope[1] + add_1bit(i,n+i,n+n+i,3*n+(i-1),3*n+i)
 	return string+" 0"
-	
+
 def mult_1bit(): #je refuse de la faire pour n ^^ 1 et 2 entree 3 sortie
 	return str(1)+ope[1]+str(2)
-	
+
 def rotation(n): # 1 à n entree, n+1 à 2n sortie
 	string = ""
 	for i in range(1,n):
@@ -74,12 +74,13 @@ def cl_oubis(L1,L2):
 			string+=ope[0]
 		string += "("+str(L1[i])+ope[1]+str(L2[i])+")"
 	return string + ")"
+
 def pomme(n): #besoin de n+1*n variable :-(
 	string = "(" + cl_ou([i*n+1 for i in range(0,n)])
 	for i in range(2,n+2):
 		string += ope[1]+cl_ou(j*n+i for j in range(0,n))
 	string += ") => ("
-	 
+
 	for p in range(1,n+1):
 		string+="("
 		if(p!=1):
@@ -90,7 +91,5 @@ def pomme(n): #besoin de n+1*n variable :-(
 			string += cl_oubis([t*n+p for t in range(0,n)],[t*n+q for t in range(0,n)])
 		string+=")"
 	return string + ")"
-	
-print(pomme(4))
-print(" 0")
-	
+
+print(pomme(4)+ " 0")
