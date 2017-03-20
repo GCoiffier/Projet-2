@@ -14,6 +14,6 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
   | "SAT"           { SAT }
   | "UNSAT"	    { UNSAT }
   | '-' 	    { MINUS }
-  | ['1'-'9']+ as s { INT (int_of_string s) }
   | '0'		    { FIN }
+  | ['0'-'9']+ as s { INT (int_of_string s) }
   | eof             { raise Eof }

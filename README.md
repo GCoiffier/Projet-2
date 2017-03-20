@@ -7,6 +7,7 @@ Coiffier Guillaume - Valque Léo
 [x] Addresse du dépôt Git : https://github.com/GCoiffier/Projet-2
 
 [x] Pour exécuter le programme :
+
     './nom_executable fichier' se contente d'afficher la taille du bdd avec pour entrée l'expression contenu dans
     fichier. Si la formule n'est pas valide, il affiche erreur de saisie
 
@@ -89,3 +90,7 @@ contient quelque fonction pour préparer l'appelle à minisat
 
 ## argv.ml :
 lit les argument envoyés et fait les différents appels aux parties du programme
+
+##generate_formula.py
+  Un script python qui permet de générer des instances de test pour le programme. Pour générer de nouvelles instances de test, utilisez la commande
+  'python3 generate_formula.py n' où n est un nombre. Attention, certaines formules deviennent très vite très grandes avec n. 
