@@ -10,6 +10,10 @@ Coiffier Guillaume - Valque Léo
 
 # Comment exécuter le programme
 
+- Pour compiler le programme, utilisez simplement la commande `make`. Celle-ci crée un exécutable appelé **f2bdd**.
+
+- Pour nettoyer le répertoire de travail, utilisez la commande `make clean`. Cela supprime les exécutables, les fichiers .dot et les .pdf
+
 - `./f2bdd fichier` se contente d'afficher la taille du bdd avec pour entrée l'expression contenu dans
 fichier. Si la formule n'est pas valide, il affiche erreur de saisie
 
@@ -68,9 +72,9 @@ appeler minisat
   à la différence près que l'on effectue une recherche et une insertion dans le set à chaque étape.
 
 # BDD contre DPLL : les appels à minisat
-  Les appels à minisat sont effectués dans le fichier argv.ml qui utilise des fonctions de minisat.ml
+  Les appels à minisat sont effectués dans le fichier **argv.ml** qui utilise des fonctions de **minisat.ml**
   Pour récupérer la sortie de minisat, nous utilisons un second lexer/parser qui nous permet de récupérer la
-  valuation retournée par minisat. Cette
+  valuation retournée par minisat. Cette valuation est ensuite convertie en Map pour être utilisée dans le BDD.
 
 # Génération des exemples de test
   Les exemples de test sont générés par un script python : generate_formula.py dans le dossier Inputs.
@@ -85,15 +89,15 @@ appeler minisat
 # Liste et contenu des fichiers
 
 ### main.ml :
-Fichier principal. Se contente d'appeller argv_call()
+Fichier principal. Se contente d'appeller **argv_call ()**
 
 ### formula.ml :
 Type formula et définition de quelques fonctions utilitaires sur les formules logiques :
   affichage dans la console, calcul de taille et test d'une valuation
 
 ### BDDsig.mli / BDD.ml :
-  La signature et la définition du module permettant de construire des ROBDD. (Voir BDDsig.mli pour une documentation plus complète)
-  Le fichier BDD.ml contient également le module Lookup.
+  La signature et la définition du module permettant de construire des ROBDD. (Voir **BDDsig.mli** pour une documentation plus complète)
+  Le fichier **BDD.ml** contient également le module Lookup.
 
 ### valuation.ml :
   Contient deux structures de données :
@@ -115,7 +119,7 @@ reduction_full : formula -> formula
   applique reduction jusqu'a que l'expression soit de taille minimale
 
 ### lexParInterface.ml
-Contient read_formula et read_minisat pour les lires les entrées du terminal et de minisat. Ce fichier .ml fait l'interface avec parser.mly et lexer.mll
+Contient read_formula et read_minisat pour les lires les entrées du terminal et de minisat. Ce fichier .ml fait l'interface avec les fichiers **.mly** et **.mll**
 
 read_formula : string -> formula
   transforme la chaîne de caractère du fichier envoyer en argument en une formula
@@ -129,7 +133,13 @@ Contient quelques fonctions pour préparer l'appel à minisat
 ### argv.ml :
 Lit les argument envoyés au programme et fait les différents appels aux différentes parties du code.
 
+### parser.mly , lexer.mll
+Ces fichiers permettent de lire la formule donnée en entrée par le programme, et de construire une formule de type formula.
+
+### parser_minisat.mly , lexer_minisat.mll
+Ces fichiers permettent de lire le fichier de sortie de minisat, et d'en récupérer la valuation des variables.
+
 ### generate_formula.py
   Un script python qui permet de générer des instances de test pour le programme. Pour générer de nouvelles instances de test, utilisez la commande
-  'python3 generate_formula.py n' où n est un nombre. Attention, certaines formules deviennent très vite très grandes avec n.
+  `python3 generate_formula.py n` où n est un nombre. Attention, certaines formules deviennent très vite très grandes avec n.
   Par exemple, après la transformation de Tseitin, pomme(5) contient 683 variables et 985 clauses...
