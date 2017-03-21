@@ -27,7 +27,7 @@ appeler minisat
   Attention, l'affichage est relativement lent dès que le diagramme devient grand.
 
 
-- Exemples :
+- Exemples :  
   `./f2bdd -tseitin Outputs/tseitin1.txt  Inputs/pomme.form`  
   `./f2bdd -minisat Inputs/input1.form`  
   `./f2bdd -minisat -tseitin Outputs/tseitin1.txt Inputs/parite.form`  
@@ -84,23 +84,23 @@ Le partage dans le ROBDD est implémenté à l'aide d'un set 'Lookup'. La constr
 
 # Liste et contenu des fichiers
 
-## main.ml :
+### main.ml :
 Fichier principal. Se contente d'appeller argv_call()
 
-## formula.ml :
+### formula.ml :
 Type formula et définition de quelques fonctions utilitaires sur les formules logiques :
   affichage dans la console, calcul de taille et test d'une valuation
 
-## BDDsig.mli / BDD.ml :
+### BDDsig.mli / BDD.ml :
   La signature et la définition du module permettant de construire des ROBDD. (Voir BDDsig.mli pour une documentation plus complète)
   Le fichier BDD.ml contient également le module Lookup.
 
-## valuation.ml :
+### valuation.ml :
   Contient deux structures de données :
     - Valuation, qui est une Map d'int, représentant une valuation des variables d'une formule. On définit également une fonction permettant de convertir une liste d'associations en Valuation
     - Var, un Set d'int, qui est utilisée pour obtenir la liste des variables d'une fonction (et gestion des doublons)
 
-## Tseitin.ml :
+### tseitin.ml :
 contient les fonctions tseitin et reduction (et les fonctions qu'ils
 appellent)
 
@@ -114,7 +114,7 @@ reduction : formula -> formula
 reduction_full : formula -> formula
   applique reduction jusqu'a que l'expression soit de taille minimale
 
-## lexParInterface.ml
+### lexParInterface.ml
 contient read_formula et read_minisat pour les lires les entrées du terminal et de minisat. Ce fichier .ml fait l'interface avec parser.mly et lexer.mll
 
 read_formula : string -> formula
@@ -123,13 +123,13 @@ read_formula : string -> formula
 read_minisat : string -> bool * (int * bool) list
   lit le résultat renvoyer par minisat et le transforme et la renvoie sous forme d'une liste pour l'envoyer à BDD.
 
-## minisat.ml :
+### minisat.ml :
 contient quelques fonctions pour préparer l'appel à minisat
 
-## argv.ml :
+### argv.ml :
 lit les argument envoyés au programme et fait les différents appels aux différentes parties du code.
 
-##generate_formula.py
+###generate_formula.py
   Un script python qui permet de générer des instances de test pour le programme. Pour générer de nouvelles instances de test, utilisez la commande
   'python3 generate_formula.py n' où n est un nombre. Attention, certaines formules deviennent très vite très grandes avec n.
   Par exemple, après la transformation de Tseitin, pomme(5) contient 683 variables et 985 clauses...
