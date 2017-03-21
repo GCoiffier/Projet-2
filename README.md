@@ -4,9 +4,9 @@ Coiffier Guillaume - Valque Léo
 
 # Remarques générales
 
-[x] Addresse du dépôt Git : https://github.com/GCoiffier/Projet-2
+- Addresse du dépôt Git : https://github.com/GCoiffier/Projet-2
 
-[x] Les fichiers de tests sont situés dans le dossier Input. Il est conseillé d'écrire les sorties du programme dans le dossier Output (pour des raisons de lisibilité)
+- Les fichiers de tests sont situés dans le dossier Input. Il est conseillé d'écrire les sorties du programme dans le dossier Output (pour des raisons de lisibilité)
 
 # Comment exécuter le programme
 
@@ -59,13 +59,13 @@ appeler minisat
 [x] Fichier de génération de formules booléennes pour tester le programme (Léo)
 
 # Représentation des formules
-Le type formule est défini dans le fichier formula.ml . Les formules prennent en compte des variables quelconques
-(c'est à dire pas seulement des variables de 1 à n : 12 X 42 <=> 666 est ainsi une formule tout à fait valable).
-Ceci est accompli grâce à l'utilisation d'une Map pour représenter une valuation (fichier valuation.ml).
+  Le type formule est défini dans le fichier formula.ml . Les formules prennent en compte des variables quelconques
+  (c'est à dire pas seulement des variables de 1 à n : 12 X 42 <=> 666 est ainsi une formule tout à fait valable).
+  Ceci est accompli grâce à l'utilisation d'une Map pour représenter une valuation (fichier valuation.ml).
 
 # Le partage dans le ROBDD
-Le partage dans le ROBDD est implémenté à l'aide d'un set 'Lookup'. La construction avec ou sans le partage est la même
-à la différence près que l'on effectue une recherche et une insertion dans le set à chaque étape.
+  Le partage dans le ROBDD est implémenté à l'aide d'un set 'Lookup'. La construction avec ou sans le partage est la même
+  à la différence près que l'on effectue une recherche et une insertion dans le set à chaque étape.
 
 # BDD contre DPLL : les appels à minisat
   Les appels à minisat sont effectués dans le fichier argv.ml qui utilise des fonctions de minisat.ml
@@ -101,7 +101,7 @@ Type formula et définition de quelques fonctions utilitaires sur les formules l
     - Var, un Set d'int, qui est utilisée pour obtenir la liste des variables d'une fonction (et gestion des doublons)
 
 ### tseitin.ml :
-contient les fonctions tseitin et reduction (et les fonctions qu'ils
+Contient les fonctions tseitin et reduction (et les fonctions qu'ils
 appellent)
 
 tseitin : formula -> formula
@@ -115,7 +115,7 @@ reduction_full : formula -> formula
   applique reduction jusqu'a que l'expression soit de taille minimale
 
 ### lexParInterface.ml
-contient read_formula et read_minisat pour les lires les entrées du terminal et de minisat. Ce fichier .ml fait l'interface avec parser.mly et lexer.mll
+Contient read_formula et read_minisat pour les lires les entrées du terminal et de minisat. Ce fichier .ml fait l'interface avec parser.mly et lexer.mll
 
 read_formula : string -> formula
   transforme la chaîne de caractère du fichier envoyer en argument en une formula
@@ -124,12 +124,12 @@ read_minisat : string -> bool * (int * bool) list
   lit le résultat renvoyer par minisat et le transforme et la renvoie sous forme d'une liste pour l'envoyer à BDD.
 
 ### minisat.ml :
-contient quelques fonctions pour préparer l'appel à minisat
+Contient quelques fonctions pour préparer l'appel à minisat
 
 ### argv.ml :
-lit les argument envoyés au programme et fait les différents appels aux différentes parties du code.
+Lit les argument envoyés au programme et fait les différents appels aux différentes parties du code.
 
-###generate_formula.py
+### generate_formula.py
   Un script python qui permet de générer des instances de test pour le programme. Pour générer de nouvelles instances de test, utilisez la commande
   'python3 generate_formula.py n' où n est un nombre. Attention, certaines formules deviennent très vite très grandes avec n.
   Par exemple, après la transformation de Tseitin, pomme(5) contient 683 variables et 985 clauses...
