@@ -28,10 +28,10 @@ appeler minisat
 
 
 - Exemples :
-  `./f2bdd -tseitin Outputs/tseitin1.txt  Inputs/pomme.form`
-  `./f2bdd -minisat Inputs/input1.form`
-  `./f2bdd -minisat -tseitin Outputs/tseitin1.txt Inputs/parite.form`
-  `./display.sh Inputs/parite.form`
+  `./f2bdd -tseitin Outputs/tseitin1.txt  Inputs/pomme.form`  
+  `./f2bdd -minisat Inputs/input1.form`  
+  `./f2bdd -minisat -tseitin Outputs/tseitin1.txt Inputs/parite.form`  
+  `./display.sh Inputs/parite.form`  
 
 
 # Avancement du projet
