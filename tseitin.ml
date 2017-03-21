@@ -8,8 +8,6 @@ let rec tseitin2 e k =
   |Const(true) -> Var(q), Var(q)
   |Const(false) -> Var(q), NOT(Var(q))
   |XOR(e1,e2) -> tseitin2 ( OR( AND( NOT(e1) , e2 ) , AND( e1, NOT(e2) ) ) ) k
-  |IMPLIES(e1,e2) -> tseitin2 ( OR ( NOT(e1) , e2) ) k
-  |EQUIV(e1,e2) -> tseitin2 ( OR ( AND(e1,e2) , AND(NOT(e1), NOT(e2)) ) ) k
   |NOT(e1) -> let l,t1 = tseitin2 e1 k in NOT(l), t1
   |OR(e1,e2) -> let l1,t1 = tseitin2 e1 k in let l2,t2 = tseitin2 e2 k in
 		Var(q), AND(
@@ -46,6 +44,56 @@ let rec tseitin2 e k =
       ,
     	OR( NOT(l1), NOT(l2)))
     	))))
+    |IMPLIES(e1,e2) -> let l1,t1 = tseitin2 e1 k in let l2,t2 = tseitin2 e2 k in
+     		Var(q), AND(
+  			t1,
+  			AND(
+  			t2,
+  			AND(
+  				OR(
+  				l1,
+  				Var(q)),
+  			AND(
+  				OR(
+  				NOT(l2),
+  				Var(q))
+  			,
+  				OR(
+  				NOT(Var(q)),
+  				OR(
+  				NOT(l1),
+  				l2))
+  			))))
+    |EQUIV(e1,e2) -> let l1,t1 = tseitin2 e1 k in let l2,t2 = tseitin2 e2 k in
+     		Var(q), AND(
+  			t1,
+  			AND(
+  			t2,
+  			AND(
+  				OR(
+  				NOT(Var(q)),
+  				OR(
+  				NOT(l1),
+  				l2)),
+  			AND(
+  				OR(
+  				NOT(Var(q)),
+  				OR(
+  				l1,
+  				NOT(l2))),
+  			AND(
+  				OR(
+  				Var(q),
+  				OR(
+  				l1,
+  				l2))
+  			,
+  				OR(
+  				Var(q),
+  				OR(
+  				NOT(l1),
+  				NOT(l2)))
+  )))))
 
 let tseitin e =
 	let l,t = tseitin2 e (ref ((max_var e)+1)) in
