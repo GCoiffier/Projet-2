@@ -62,6 +62,10 @@ appeler minisat
 
 [x] Fichier de génération de formules booléennes pour tester le programme (Léo)
 
+[] Sifting pour minimiser la taille du ROBDD
+
+[] Partage maximal sur la transformation de Tseitin
+
 # Représentation des formules
   Le type formule est défini dans le fichier formula.ml . Les formules prennent en compte des variables quelconques
   (c'est à dire pas seulement des variables de 1 à n : 12 X 42 <=> 666 est ainsi une formule tout à fait valable).
