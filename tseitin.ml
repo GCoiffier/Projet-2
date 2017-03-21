@@ -1,16 +1,16 @@
 open Formula
 
 (* transforme l'expression *)
-let rec tseitin2 e k = let q = !k in incr k; (* q nouveau *)
+let rec tseitin2 e k =
+    let q = !k in incr k; (* q nouvelle variable *)
   match e with
   |Var(x) -> Var(x),Const(true)
   |Const(true) -> Var(q), Var(q)
   |Const(false) -> Var(q), NOT(Var(q))
   |XOR(e1,e2) -> tseitin2 ( OR( AND( NOT(e1) , e2 ) , AND( e1, NOT(e2) ) ) ) k
   |IMPLIES(e1,e2) -> tseitin2 ( OR ( NOT(e1) , e2) ) k
-  |EQUIV(e1,e2) -> tseitin2 ( OR ( AND(e1,e2) , AND(NOT(e1),NOT(e2)) ) ) k
-  |NOT(e1) -> let l,t1 = tseitin2 e1 k in
-	      NOT(Var(q)), t1
+  |EQUIV(e1,e2) -> tseitin2 ( OR ( AND(e1,e2) , AND(NOT(e1), NOT(e2)) ) ) k
+  |NOT(e1) -> let l,t1 = tseitin2 e1 k in NOT(l), t1
   |OR(e1,e2) -> let l1,t1 = tseitin2 e1 k in let l2,t2 = tseitin2 e2 k in
 		Var(q), AND(
 			t1,
@@ -34,32 +34,27 @@ let rec tseitin2 e k = let q = !k in incr k; (* q nouveau *)
   |AND(e1,e2) -> let l1,t1 = tseitin2 e1 k in let l2,t2 = tseitin2 e2 k in
 		Var(q), AND(
 			t1,
-			AND(
-			t2,
-			AND(
-				OR(
-				l1,
-				NOT(Var(q))),
-			AND(
-				OR(
-				l2,
-				NOT(Var(q)))
-			,
-				OR(
-				Var(q),
-				OR(
-				NOT(l1),
-				NOT(l2)))
-			))))
+  		AND(
+  		t2,
+    	AND(
+    	OR(l1 , NOT(Var(q))),
+    	AND(
+    	OR(l2,NOT(Var(q)))
+    	,
+    	OR(
+    	Var(q)
+      ,
+    	OR( NOT(l1), NOT(l2)))
+    	))))
 
 let tseitin e =
 	let l,t = tseitin2 e (ref ((max_var e)+1)) in
 	AND(l,t);;
 
 (*les 2 fonctions suivantes servent a simplifier les CNF sortie de tseitin *)
-let rec replace e k b = let vb = (b = false) in  (* met la variable k à b dans l'expression *)
+let rec replace e k b = let nonb = (b = false) in  (* met la variable k à b dans l'expression *)
   match e with
-  |NOT(Var(q)) when q=k -> Const(vb)
+  |NOT(Var(q)) when q=k -> Const(nonb)
   |Var(q) when q=k -> Const(b)
   |AND(e1,e2) -> AND( replace e1 k b, replace e2 k b)
   |OR(e1,e2) -> OR( replace e1 k b, replace e2 k b)

@@ -19,30 +19,36 @@ Coiffier Guillaume - Valque Léo
 
     './__ -display entree' appelera le lexer-parser sur le fichier entree pour obtenir une formule, construit le ROBDD associé à la formule et l'exporte en fichier .dot
       Pour visualiser le fichier.dot, générez le pdf avec 'dot -Tpdf file -o file.pdf; '
-      Sinon, utilisez directement le script display.sh qui fera tout à votre place (commande './display.sh  <nom_fichier>')
+      Sinon, utilisez directement le script display.sh qui fera tout à votre place (commande './display.sh  <nom_fichier>').
+      Attention, l'affichage est relativement lent dès que le diagramme devient grand.
+
 
 [x] Les fichiers de tests sont situés dans le dossier Input. Nous avons également écrit un fichier python qui génère des instances de test.
     Il est conseillé d'écrire les sorties du programme dans le dossier Output (pour des raisons de lisibilité)
 
 ## Avancement
 
-[x] Lexer et parser pour les formules booléennes
+[x] Lexer et parser pour les formules booléennes (Léo)
 
-[x] Type formula et fonctions utilitaires sur ce type
+[x] Type formula et fonctions utilitaires sur ce type (Guillaume)
 
-[x] Implémentation des BDD sans la compression
+[x] Implémentation des BDD sans la compression (Guillaume)
 
-[x] Implémentation des BDD avec la compression
+[x] Implémentation des BDD avec la compression (Guillaume)
 
-[x] Affichage d'un BDD en format .dot
+[x] Affichage d'un BDD en format .dot (Guillaume)
 
-[x] Transformation de Tseitin pour renvoyer des formules en forme SAT
+[x] Transformation de Tseitin pour renvoyer des formules en forme SAT (Léo)
 
-[x] Exportation des fichiers pour minisat
+[x] Exportation des fichiers pour minisat (Léo)
 
-[x] Lexer-parser pour lire les fichiers de sortie de minisat
+[x] Lexer-parser pour lire les fichiers de sortie de minisat (Léo)
 
-[x] Comparaison du résultat de minisat avec le BDD
+[x] Gestion de formules avec variables quelconques en utilisant des Map (Guillaume)
+
+[x] Comparaison du résultat de minisat avec le BDD (Léo et Guillaume)
+
+[x] Fichier de génération de formules booléennes pour tester le programme (Léo)
 
 # Liste et contenu des fichiers
 
@@ -93,4 +99,4 @@ lit les argument envoyés et fait les différents appels aux parties du programm
 
 ##generate_formula.py
   Un script python qui permet de générer des instances de test pour le programme. Pour générer de nouvelles instances de test, utilisez la commande
-  'python3 generate_formula.py n' où n est un nombre. Attention, certaines formules deviennent très vite très grandes avec n. 
+  'python3 generate_formula.py n' où n est un nombre. Attention, certaines formules deviennent très vite très grandes avec n.

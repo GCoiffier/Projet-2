@@ -29,14 +29,14 @@ let do_minisat entree sortie =
 	if sat
 	then (
 		if (satisfy bdd (valuation_from_list valuation))
-		then print_string "minisat et tseitin agree with the bdd"
+		then print_string "minisat & tseitin agree with the bdd"
 		else print_string "Error : minisat and BDD disagree";
 		print_newline ();
 
 	)
 	else (
 		if false
-		then print_string "minisat et tseitin agree with the bdd"
+		then print_string "minisat & tseitin agree with the bdd"
 		else print_string "Error : minisat and BDD disagree";
 		print_newline ();
 	)

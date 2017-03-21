@@ -76,16 +76,16 @@ def cl_oubis(L1,L2):
 		string += "("+str(L1[i])+ope[1]+str(L2[i])+")"
 	return string + ")"
 
-def pomme(n): #besoin de n+1*n variable :-(
+def pomme(n): #besoin de (n+1)*n variable :-(
 	string = "(" + cl_ou([i*n+1 for i in range(0,n)])
 	for i in range(2,n+2):
-		string += ope[1]+cl_ou(j*n+i for j in range(0,n))
+		string += ope[1] + cl_ou(j*n+i for j in range(0,n))
 	string += ") => ("
 
 	for p in range(1,n+1):
-		string+="("
 		if(p!=1):
 			string += ope[0]
+		string+="("
 		for q in range(1,n+2):
 			if(q!=1):
 				string += ope[0]
