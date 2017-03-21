@@ -10,28 +10,28 @@ Coiffier Guillaume - Valque Léo
 
 # Comment exécuter le programme
 
-- './f2bdd fichier' se contente d'afficher la taille du bdd avec pour entrée l'expression contenu dans
+- `./f2bdd fichier` se contente d'afficher la taille du bdd avec pour entrée l'expression contenu dans
 fichier. Si la formule n'est pas valide, il affiche erreur de saisie
 
-- './f2bdd -tseitin sortie entree' ecrira la formule SAT de l'entree dans le fichier sortie sous le format DIMACS
+- `./f2bdd -tseitin sortie entree` écrira la formule SAT de l'entree dans le fichier sortie sous le format DIMACS
 
-- './f2bdd -minisat entree' appelera minisat sur la formule d'entree et affiche la comparaison avec la bdd
+- `./f2bdd -minisat entree` appelera minisat sur la formule d'entree et affiche la comparaison avec la bdd
 il est possible de faire -minisat -tseitin ( dans cet ordre ) pour stocker la formule SAT dans le fichier sortie et
 appeler minisat
 
-- './f2bdd -display entree' appellera le lexer-parser sur le fichier entree pour obtenir une formule, construit
+- `./f2bdd -display entree` appellera le lexer-parser sur le fichier entree pour obtenir une formule, construit
   le ROBDD associé à la formule et l'exporte en fichier .dot
 
-  Pour visualiser le fichier.dot, générez le pdf avec 'dot -Tpdf file -o file.pdf; '
-  Sinon, utilisez directement le script display.sh qui fera tout à votre place (commande './display.sh  <nom_fichier>').
+  Pour visualiser le fichier.dot, générez le pdf avec `dot -Tpdf file -o file.pdf`
+  Sinon, utilisez directement le script display.sh qui fera tout à votre place (commande `./display.sh  <nom_fichier>`).
   Attention, l'affichage est relativement lent dès que le diagramme devient grand.
 
 
 - Exemples :
- ./f2bdd -tseitin Outputs/tseitin1.txt  Inputs/pomme.form
- ./f2bdd -minisat Inputs/input1.form
- ./f2bdd -minisat -tseitin Outputs/tseitin1.txt Inputs/parite.form
- ./display.sh Inputs/parite.form
+ * `./f2bdd -tseitin Outputs/tseitin1.txt  Inputs/pomme.form`
+ * `./f2bdd -minisat Inputs/input1.form`
+ * `./f2bdd -minisat -tseitin Outputs/tseitin1.txt Inputs/parite.form`
+ * `./display.sh Inputs/parite.form`
 
 
 # Avancement du projet
