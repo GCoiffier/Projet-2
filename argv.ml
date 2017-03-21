@@ -5,11 +5,13 @@ open Minisat
 open Tseitin
 open Valuation
 
-let do_BDD entree = let bdd = create entree in
-	print_string "Taille du BDD construit : "; print_int (size bdd); print_newline ()
+let do_size_BDD entree =
+	let bdd = create entree in
+		print_string "Taille du BDD construit : "; print_int (size bdd); print_newline ()
 
-let do_display_BDD entree = let bdd = create entree in
-	print bdd "display"
+let do_display_BDD entree =
+	let bdd = create entree in
+		print bdd "display"
 
 let do_tseitin (entree : formula) sortie =
 	let tsei = reduction_full( tseitin entree) in
@@ -41,6 +43,9 @@ let do_minisat entree sortie =
 		print_newline ();
 	)
 
+
+(* argv_call : unit -> unit
+	Fonction principale : lit les arguments donnés au programme et appelle les parties du code correspondantes *)
 let argv_call () =
 	let t = Sys.argv in
 	let n = (Array.length t) in let entree = t.(n-1) in
@@ -61,5 +66,5 @@ let argv_call () =
 	|"-display" -> do_display_BDD a
 
 	|_ -> if n=2
-	      then do_BDD a
+	      then do_size_BDD a
 	      else failwith "invalid argument"

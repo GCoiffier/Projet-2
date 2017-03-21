@@ -1,5 +1,6 @@
 all:
-	ocamlbuild -yaccflag -v -lib unix f2bdd.native; ln -fs f2bdd calc
+	ocamlbuild -yaccflag -v -lib unix main.native; ln -fs main calc
+	mv main.native f2bdd
 
 byte:
 	ocamlbuild -yaccflag -v f2bdd.byte
