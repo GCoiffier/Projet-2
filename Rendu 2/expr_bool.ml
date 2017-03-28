@@ -1,5 +1,3 @@
-open Expr
-
 type compr= Equal | Neq | Infeq | Inf | Supeq | Sup
 
 type boolexpr =
@@ -9,11 +7,8 @@ type boolexpr =
   |Or of boolexpr * boolexpr
   |Comp of int * compr * int
 
-module Boolexpr : Expr = struct
+module Boolexpr = struct
 
-    type t = boolexpr
-    type content = bool
-    
     let rec eval = function
       Const(x) -> x
       |Not(e) -> not (eval e)

@@ -1,5 +1,3 @@
-open Expr
-
 type arithexpr =
  Const of int
  |Plus of arithexpr * arithexpr
@@ -8,10 +6,7 @@ type arithexpr =
  |Mult of arithexpr * arithexpr
  |Div of arithexpr * arithexpr
 
-module ArithExpr : Expr = struct
-
-    type t = arithexpr
-    type content = int
+module ArithExpr = struct
 
     let rec eval = function
       Const(n) -> n
@@ -20,4 +15,5 @@ module ArithExpr : Expr = struct
       |Minus(a,b) -> -(eval a)-(eval b)
       |Mult(a,b) -> (eval a)*(eval b)
       |Div(a,b) -> (eval a)/(eval b)
+
     end
