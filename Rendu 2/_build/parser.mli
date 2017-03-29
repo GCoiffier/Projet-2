@@ -9,18 +9,20 @@ type token =
   | AND
   | OR
   | NOT
-  | EQ
-  | NEQ
-  | SUP
-  | INF
-  | SUPEQ
-  | INFEQ
+  | EGALE
+  | NEG
+  | SUPS
+  | INFS
+  | SUPE
+  | INFE
   | IF
   | THEN
   | ELSE
   | PRINT
   | LET
   | IN
+  | FUN
+  | IMPLIES
   | LPAREN
   | RPAREN
   | EOL

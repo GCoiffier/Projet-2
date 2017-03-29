@@ -22,16 +22,19 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
 	| '/' 				{ DIV }
 	| '%' 				{ MOD }
 
-	| '=' 				{ EQ }
-	| "<>"				{ NEQ }
-	| '>' 				{ SUP }
-	| '<' 				{ INF }
-	| ">=" 				{ SUPEQ }
-	| "<=" 				{ INFEQ }
+	| "fun"				{ FUN }
+	| "->"				{ IMPLIES }
+
+	| '=' 				{ EGALE }
+	| "<>"				{ NEG }
+	| '>' 				{ SUPS }
+	| '<' 				{ INFS }
+	| ">=" 				{ SUPE }
+	| "<=" 				{ INFE }
 
 	| "&&" 				{ AND }
 	| "||" 				{ OR }
-  | "not"       { NOT }
+	| "not" 			{ NOT }
 
 	| ['0'-'9'] + as s 		{ CONST (int_of_string s) }
 	| ['a'-'Z'] + as s 		{ VARIABLE (s) }

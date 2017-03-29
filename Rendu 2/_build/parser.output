@@ -2,36 +2,32 @@
 
    1  main : instr EOL
 
-   2  instr : IF expr THEN instr ELSE instr
-   3        | PRINT expr
-   4        | LET VARIABLE EQ expr IN instr
+   2  instr : IF bexpr THEN instr ELSE instr
+   3        | PRINT aexpr
+   4        | LET VARIABLE EGALE aexpr IN instr
    5        | LPAREN instr RPAREN
    6        | instr EINSTR instr
-   7        | LET funct EQ expr IN instr
-   8        | expr
+   7        | aexpr
 
-   9  expr : LPAREN expr RPAREN
-  10       | expr ADD expr
-  11       | expr MINUS expr
-  12       | expr MULT expr
-  13       | expr DIV expr
-  14       | expr MOD expr
-  15       | expr AND expr
-  16       | expr OR expr
-  17       | NOT expr
-  18       | expr EQ expr
-  19       | expr NEQ expr
-  20       | expr SUP expr
-  21       | expr INF expr
-  22       | expr SUPEQ expr
-  23       | expr INFEQ expr
-  24       | VARIABLE
-  25       | funct
+   8  aexpr : LPAREN aexpr RPAREN
+   9        | aexpr ADD aexpr
+  10        | aexpr MINUS aexpr
+  11        | aexpr MULT aexpr
+  12        | aexpr DIV aexpr
+  13        | aexpr MOD aexpr
+  14        | VARIABLE
+  15        | CONST
 
-  26  funct : VARIABLE funct
-  27        | VARIABLE VARIABLE
+  16  bexpr : bexpr AND bexpr
+  17        | bexpr OR bexpr
+  18        | aexpr EGALE aexpr
+  19        | aexpr NEG aexpr
+  20        | aexpr SUPS aexpr
+  21        | aexpr INFS aexpr
+  22        | aexpr SUPE aexpr
+  23        | aexpr INFE aexpr
 
-  28  %entry% : '\001' main
+  24  %entry% : '\001' main
 
 state 0
 	$accept : . %entry% $end  (0)
@@ -43,10 +39,10 @@ state 0
 
 
 state 1
-	%entry% : '\001' . main  (28)
+	%entry% : '\001' . main  (24)
 
-	VARIABLE  shift 3
-	NOT  shift 4
+	CONST  shift 3
+	VARIABLE  shift 4
 	IF  shift 5
 	PRINT  shift 6
 	LET  shift 7
@@ -55,8 +51,7 @@ state 1
 
 	main  goto 9
 	instr  goto 10
-	expr  goto 11
-	funct  goto 12
+	aexpr  goto 11
 
 
 state 2
@@ -66,697 +61,492 @@ state 2
 
 
 state 3
-	expr : VARIABLE .  (24)
-	funct : VARIABLE . funct  (26)
-	funct : VARIABLE . VARIABLE  (27)
+	aexpr : CONST .  (15)
 
-	VARIABLE  shift 13
-	ADD  reduce 24
-	MINUS  reduce 24
-	MULT  reduce 24
-	DIV  reduce 24
-	MOD  reduce 24
-	AND  reduce 24
-	OR  reduce 24
-	EQ  reduce 24
-	NEQ  reduce 24
-	SUP  reduce 24
-	INF  reduce 24
-	SUPEQ  reduce 24
-	INFEQ  reduce 24
-	THEN  reduce 24
-	ELSE  reduce 24
-	IN  reduce 24
-	RPAREN  reduce 24
-	EOL  reduce 24
-	EINSTR  reduce 24
-
-	funct  goto 14
+	.  reduce 15
 
 
 state 4
-	expr : NOT . expr  (17)
+	aexpr : VARIABLE .  (14)
 
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
-	.  error
-
-	expr  goto 16
-	funct  goto 12
+	.  reduce 14
 
 
 state 5
-	instr : IF . expr THEN instr ELSE instr  (2)
+	instr : IF . bexpr THEN instr ELSE instr  (2)
 
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
 	.  error
 
-	expr  goto 17
-	funct  goto 12
+	bexpr  goto 13
+	aexpr  goto 14
 
 
 state 6
-	instr : PRINT . expr  (3)
+	instr : PRINT . aexpr  (3)
 
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
 	.  error
 
-	expr  goto 18
-	funct  goto 12
+	aexpr  goto 15
 
 
 state 7
-	instr : LET . VARIABLE EQ expr IN instr  (4)
-	instr : LET . funct EQ expr IN instr  (7)
+	instr : LET . VARIABLE EGALE aexpr IN instr  (4)
 
-	VARIABLE  shift 19
+	VARIABLE  shift 16
 	.  error
-
-	funct  goto 20
 
 
 state 8
 	instr : LPAREN . instr RPAREN  (5)
-	expr : LPAREN . expr RPAREN  (9)
+	aexpr : LPAREN . aexpr RPAREN  (8)
 
-	VARIABLE  shift 3
-	NOT  shift 4
+	CONST  shift 3
+	VARIABLE  shift 4
 	IF  shift 5
 	PRINT  shift 6
 	LET  shift 7
 	LPAREN  shift 8
 	.  error
 
-	instr  goto 21
-	expr  goto 22
-	funct  goto 12
+	instr  goto 17
+	aexpr  goto 18
 
 
 state 9
-	%entry% : '\001' main .  (28)
+	%entry% : '\001' main .  (24)
 
-	.  reduce 28
+	.  reduce 24
 
 
 state 10
 	main : instr . EOL  (1)
 	instr : instr . EINSTR instr  (6)
 
-	EOL  shift 23
-	EINSTR  shift 24
+	EOL  shift 19
+	EINSTR  shift 20
 	.  error
 
 
 state 11
-	instr : expr .  (8)
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
+	instr : aexpr .  (7)
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr . MOD aexpr  (13)
 
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
-	ELSE  reduce 8
-	RPAREN  reduce 8
-	EOL  reduce 8
-	EINSTR  reduce 8
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
+	ELSE  reduce 7
+	RPAREN  reduce 7
+	EOL  reduce 7
+	EINSTR  reduce 7
 
 
 state 12
-	expr : funct .  (25)
+	aexpr : LPAREN . aexpr RPAREN  (8)
 
-	.  reduce 25
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
+	.  error
+
+	aexpr  goto 26
 
 
 state 13
-	funct : VARIABLE . funct  (26)
-	funct : VARIABLE . VARIABLE  (27)
-	funct : VARIABLE VARIABLE .  (27)
+	instr : IF bexpr . THEN instr ELSE instr  (2)
+	bexpr : bexpr . AND bexpr  (16)
+	bexpr : bexpr . OR bexpr  (17)
 
-	VARIABLE  shift 13
-	ADD  reduce 27
-	MINUS  reduce 27
-	MULT  reduce 27
-	DIV  reduce 27
-	MOD  reduce 27
-	AND  reduce 27
-	OR  reduce 27
-	EQ  reduce 27
-	NEQ  reduce 27
-	SUP  reduce 27
-	INF  reduce 27
-	SUPEQ  reduce 27
-	INFEQ  reduce 27
-	THEN  reduce 27
-	ELSE  reduce 27
-	IN  reduce 27
-	RPAREN  reduce 27
-	EOL  reduce 27
-	EINSTR  reduce 27
-
-	funct  goto 14
+	AND  shift 27
+	OR  shift 28
+	THEN  shift 29
+	.  error
 
 
 state 14
-	funct : VARIABLE funct .  (26)
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr . MOD aexpr  (13)
+	bexpr : aexpr . EGALE aexpr  (18)
+	bexpr : aexpr . NEG aexpr  (19)
+	bexpr : aexpr . SUPS aexpr  (20)
+	bexpr : aexpr . INFS aexpr  (21)
+	bexpr : aexpr . SUPE aexpr  (22)
+	bexpr : aexpr . INFE aexpr  (23)
 
-	.  reduce 26
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	.  error
 
 
 state 15
-	expr : LPAREN . expr RPAREN  (9)
+	instr : PRINT aexpr .  (3)
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr . MOD aexpr  (13)
 
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
-	.  error
-
-	expr  goto 38
-	funct  goto 12
-
-
-16: shift/reduce conflict (shift 25, reduce 17) on ADD
-16: shift/reduce conflict (shift 26, reduce 17) on MINUS
-16: shift/reduce conflict (shift 27, reduce 17) on MULT
-16: shift/reduce conflict (shift 28, reduce 17) on DIV
-16: shift/reduce conflict (shift 29, reduce 17) on MOD
-16: shift/reduce conflict (shift 30, reduce 17) on AND
-16: shift/reduce conflict (shift 31, reduce 17) on OR
-16: shift/reduce conflict (shift 32, reduce 17) on EQ
-16: shift/reduce conflict (shift 33, reduce 17) on NEQ
-16: shift/reduce conflict (shift 34, reduce 17) on SUP
-16: shift/reduce conflict (shift 35, reduce 17) on INF
-16: shift/reduce conflict (shift 36, reduce 17) on SUPEQ
-16: shift/reduce conflict (shift 37, reduce 17) on INFEQ
-state 16
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : NOT expr .  (17)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
-
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
-	THEN  reduce 17
-	ELSE  reduce 17
-	IN  reduce 17
-	RPAREN  reduce 17
-	EOL  reduce 17
-	EINSTR  reduce 17
-
-
-state 17
-	instr : IF expr . THEN instr ELSE instr  (2)
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
-
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
-	THEN  shift 39
-	.  error
-
-
-state 18
-	instr : PRINT expr .  (3)
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
-
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
 	ELSE  reduce 3
 	RPAREN  reduce 3
 	EOL  reduce 3
 	EINSTR  reduce 3
 
 
-state 19
-	instr : LET VARIABLE . EQ expr IN instr  (4)
-	funct : VARIABLE . funct  (26)
-	funct : VARIABLE . VARIABLE  (27)
+state 16
+	instr : LET VARIABLE . EGALE aexpr IN instr  (4)
 
-	VARIABLE  shift 13
-	EQ  shift 40
-	.  error
-
-	funct  goto 14
-
-
-state 20
-	instr : LET funct . EQ expr IN instr  (7)
-
-	EQ  shift 41
+	EGALE  shift 36
 	.  error
 
 
-state 21
+state 17
 	instr : LPAREN instr . RPAREN  (5)
 	instr : instr . EINSTR instr  (6)
 
-	RPAREN  shift 42
-	EINSTR  shift 24
+	RPAREN  shift 37
+	EINSTR  shift 20
 	.  error
 
 
-22: shift/reduce conflict (shift 43, reduce 8) on RPAREN
-state 22
-	instr : expr .  (8)
-	expr : LPAREN expr . RPAREN  (9)
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
+18: shift/reduce conflict (shift 38, reduce 7) on RPAREN
+state 18
+	instr : aexpr .  (7)
+	aexpr : LPAREN aexpr . RPAREN  (8)
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr . MOD aexpr  (13)
 
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
-	RPAREN  shift 43
-	EINSTR  reduce 8
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
+	RPAREN  shift 38
+	EINSTR  reduce 7
 
 
-state 23
+state 19
 	main : instr EOL .  (1)
 
 	.  reduce 1
 
 
-state 24
+state 20
 	instr : instr EINSTR . instr  (6)
 
-	VARIABLE  shift 3
-	NOT  shift 4
+	CONST  shift 3
+	VARIABLE  shift 4
 	IF  shift 5
 	PRINT  shift 6
 	LET  shift 7
 	LPAREN  shift 8
 	.  error
 
-	instr  goto 44
-	expr  goto 11
-	funct  goto 12
+	instr  goto 39
+	aexpr  goto 11
+
+
+state 21
+	aexpr : aexpr ADD . aexpr  (9)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
+	.  error
+
+	aexpr  goto 40
+
+
+state 22
+	aexpr : aexpr MINUS . aexpr  (10)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
+	.  error
+
+	aexpr  goto 41
+
+
+state 23
+	aexpr : aexpr MULT . aexpr  (11)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
+	.  error
+
+	aexpr  goto 42
+
+
+state 24
+	aexpr : aexpr DIV . aexpr  (12)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
+	.  error
+
+	aexpr  goto 43
 
 
 state 25
-	expr : expr ADD . expr  (10)
+	aexpr : aexpr MOD . aexpr  (13)
 
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
 	.  error
 
-	expr  goto 45
-	funct  goto 12
+	aexpr  goto 44
 
 
 state 26
-	expr : expr MINUS . expr  (11)
+	aexpr : LPAREN aexpr . RPAREN  (8)
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr . MOD aexpr  (13)
 
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
+	RPAREN  shift 38
 	.  error
-
-	expr  goto 46
-	funct  goto 12
 
 
 state 27
-	expr : expr MULT . expr  (12)
+	bexpr : bexpr AND . bexpr  (16)
 
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
 	.  error
 
-	expr  goto 47
-	funct  goto 12
+	bexpr  goto 45
+	aexpr  goto 14
 
 
 state 28
-	expr : expr DIV . expr  (13)
+	bexpr : bexpr OR . bexpr  (17)
 
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
 	.  error
 
-	expr  goto 48
-	funct  goto 12
+	bexpr  goto 46
+	aexpr  goto 14
 
 
 state 29
-	expr : expr MOD . expr  (14)
+	instr : IF bexpr THEN . instr ELSE instr  (2)
 
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
-	.  error
-
-	expr  goto 49
-	funct  goto 12
-
-
-state 30
-	expr : expr AND . expr  (15)
-
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
-	.  error
-
-	expr  goto 50
-	funct  goto 12
-
-
-state 31
-	expr : expr OR . expr  (16)
-
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
-	.  error
-
-	expr  goto 51
-	funct  goto 12
-
-
-state 32
-	expr : expr EQ . expr  (18)
-
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
-	.  error
-
-	expr  goto 52
-	funct  goto 12
-
-
-state 33
-	expr : expr NEQ . expr  (19)
-
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
-	.  error
-
-	expr  goto 53
-	funct  goto 12
-
-
-state 34
-	expr : expr SUP . expr  (20)
-
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
-	.  error
-
-	expr  goto 54
-	funct  goto 12
-
-
-state 35
-	expr : expr INF . expr  (21)
-
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
-	.  error
-
-	expr  goto 55
-	funct  goto 12
-
-
-state 36
-	expr : expr SUPEQ . expr  (22)
-
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
-	.  error
-
-	expr  goto 56
-	funct  goto 12
-
-
-state 37
-	expr : expr INFEQ . expr  (23)
-
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
-	.  error
-
-	expr  goto 57
-	funct  goto 12
-
-
-state 38
-	expr : LPAREN expr . RPAREN  (9)
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
-
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
-	RPAREN  shift 43
-	.  error
-
-
-state 39
-	instr : IF expr THEN . instr ELSE instr  (2)
-
-	VARIABLE  shift 3
-	NOT  shift 4
+	CONST  shift 3
+	VARIABLE  shift 4
 	IF  shift 5
 	PRINT  shift 6
 	LET  shift 7
 	LPAREN  shift 8
 	.  error
 
-	instr  goto 58
-	expr  goto 11
-	funct  goto 12
+	instr  goto 47
+	aexpr  goto 11
 
 
-state 40
-	instr : LET VARIABLE EQ . expr IN instr  (4)
+state 30
+	bexpr : aexpr EGALE . aexpr  (18)
 
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
 	.  error
 
-	expr  goto 59
-	funct  goto 12
+	aexpr  goto 48
 
 
-state 41
-	instr : LET funct EQ . expr IN instr  (7)
+state 31
+	bexpr : aexpr NEG . aexpr  (19)
 
-	VARIABLE  shift 3
-	NOT  shift 4
-	LPAREN  shift 15
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
 	.  error
 
-	expr  goto 60
-	funct  goto 12
+	aexpr  goto 49
 
 
-state 42
+state 32
+	bexpr : aexpr SUPS . aexpr  (20)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
+	.  error
+
+	aexpr  goto 50
+
+
+state 33
+	bexpr : aexpr INFS . aexpr  (21)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
+	.  error
+
+	aexpr  goto 51
+
+
+state 34
+	bexpr : aexpr SUPE . aexpr  (22)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
+	.  error
+
+	aexpr  goto 52
+
+
+state 35
+	bexpr : aexpr INFE . aexpr  (23)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
+	.  error
+
+	aexpr  goto 53
+
+
+state 36
+	instr : LET VARIABLE EGALE . aexpr IN instr  (4)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	LPAREN  shift 12
+	.  error
+
+	aexpr  goto 54
+
+
+state 37
 	instr : LPAREN instr RPAREN .  (5)
 
 	.  reduce 5
 
 
-state 43
-	expr : LPAREN expr RPAREN .  (9)
+state 38
+	aexpr : LPAREN aexpr RPAREN .  (8)
 
-	.  reduce 9
+	.  reduce 8
 
 
-44: shift/reduce conflict (shift 24, reduce 6) on EINSTR
-state 44
+39: shift/reduce conflict (shift 20, reduce 6) on EINSTR
+state 39
 	instr : instr . EINSTR instr  (6)
 	instr : instr EINSTR instr .  (6)
 
-	EINSTR  shift 24
+	EINSTR  shift 20
 	ELSE  reduce 6
 	RPAREN  reduce 6
 	EOL  reduce 6
 
 
-45: shift/reduce conflict (shift 25, reduce 10) on ADD
-45: shift/reduce conflict (shift 26, reduce 10) on MINUS
-45: shift/reduce conflict (shift 27, reduce 10) on MULT
-45: shift/reduce conflict (shift 28, reduce 10) on DIV
-45: shift/reduce conflict (shift 29, reduce 10) on MOD
-45: shift/reduce conflict (shift 30, reduce 10) on AND
-45: shift/reduce conflict (shift 31, reduce 10) on OR
-45: shift/reduce conflict (shift 32, reduce 10) on EQ
-45: shift/reduce conflict (shift 33, reduce 10) on NEQ
-45: shift/reduce conflict (shift 34, reduce 10) on SUP
-45: shift/reduce conflict (shift 35, reduce 10) on INF
-45: shift/reduce conflict (shift 36, reduce 10) on SUPEQ
-45: shift/reduce conflict (shift 37, reduce 10) on INFEQ
-state 45
-	expr : expr . ADD expr  (10)
-	expr : expr ADD expr .  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
+40: shift/reduce conflict (shift 21, reduce 9) on ADD
+40: shift/reduce conflict (shift 22, reduce 9) on MINUS
+40: shift/reduce conflict (shift 23, reduce 9) on MULT
+40: shift/reduce conflict (shift 24, reduce 9) on DIV
+40: shift/reduce conflict (shift 25, reduce 9) on MOD
+state 40
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr ADD aexpr .  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr . MOD aexpr  (13)
 
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
+	AND  reduce 9
+	OR  reduce 9
+	EGALE  reduce 9
+	NEG  reduce 9
+	SUPS  reduce 9
+	INFS  reduce 9
+	SUPE  reduce 9
+	INFE  reduce 9
+	THEN  reduce 9
+	ELSE  reduce 9
+	IN  reduce 9
+	RPAREN  reduce 9
+	EOL  reduce 9
+	EINSTR  reduce 9
+
+
+41: shift/reduce conflict (shift 21, reduce 10) on ADD
+41: shift/reduce conflict (shift 22, reduce 10) on MINUS
+41: shift/reduce conflict (shift 23, reduce 10) on MULT
+41: shift/reduce conflict (shift 24, reduce 10) on DIV
+41: shift/reduce conflict (shift 25, reduce 10) on MOD
+state 41
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr MINUS aexpr .  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr . MOD aexpr  (13)
+
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
+	AND  reduce 10
+	OR  reduce 10
+	EGALE  reduce 10
+	NEG  reduce 10
+	SUPS  reduce 10
+	INFS  reduce 10
+	SUPE  reduce 10
+	INFE  reduce 10
 	THEN  reduce 10
 	ELSE  reduce 10
 	IN  reduce 10
@@ -765,48 +555,32 @@ state 45
 	EINSTR  reduce 10
 
 
-46: shift/reduce conflict (shift 25, reduce 11) on ADD
-46: shift/reduce conflict (shift 26, reduce 11) on MINUS
-46: shift/reduce conflict (shift 27, reduce 11) on MULT
-46: shift/reduce conflict (shift 28, reduce 11) on DIV
-46: shift/reduce conflict (shift 29, reduce 11) on MOD
-46: shift/reduce conflict (shift 30, reduce 11) on AND
-46: shift/reduce conflict (shift 31, reduce 11) on OR
-46: shift/reduce conflict (shift 32, reduce 11) on EQ
-46: shift/reduce conflict (shift 33, reduce 11) on NEQ
-46: shift/reduce conflict (shift 34, reduce 11) on SUP
-46: shift/reduce conflict (shift 35, reduce 11) on INF
-46: shift/reduce conflict (shift 36, reduce 11) on SUPEQ
-46: shift/reduce conflict (shift 37, reduce 11) on INFEQ
-state 46
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr MINUS expr .  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
+42: shift/reduce conflict (shift 21, reduce 11) on ADD
+42: shift/reduce conflict (shift 22, reduce 11) on MINUS
+42: shift/reduce conflict (shift 23, reduce 11) on MULT
+42: shift/reduce conflict (shift 24, reduce 11) on DIV
+42: shift/reduce conflict (shift 25, reduce 11) on MOD
+state 42
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr MULT aexpr .  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr . MOD aexpr  (13)
 
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
+	AND  reduce 11
+	OR  reduce 11
+	EGALE  reduce 11
+	NEG  reduce 11
+	SUPS  reduce 11
+	INFS  reduce 11
+	SUPE  reduce 11
+	INFE  reduce 11
 	THEN  reduce 11
 	ELSE  reduce 11
 	IN  reduce 11
@@ -815,48 +589,32 @@ state 46
 	EINSTR  reduce 11
 
 
-47: shift/reduce conflict (shift 25, reduce 12) on ADD
-47: shift/reduce conflict (shift 26, reduce 12) on MINUS
-47: shift/reduce conflict (shift 27, reduce 12) on MULT
-47: shift/reduce conflict (shift 28, reduce 12) on DIV
-47: shift/reduce conflict (shift 29, reduce 12) on MOD
-47: shift/reduce conflict (shift 30, reduce 12) on AND
-47: shift/reduce conflict (shift 31, reduce 12) on OR
-47: shift/reduce conflict (shift 32, reduce 12) on EQ
-47: shift/reduce conflict (shift 33, reduce 12) on NEQ
-47: shift/reduce conflict (shift 34, reduce 12) on SUP
-47: shift/reduce conflict (shift 35, reduce 12) on INF
-47: shift/reduce conflict (shift 36, reduce 12) on SUPEQ
-47: shift/reduce conflict (shift 37, reduce 12) on INFEQ
-state 47
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr MULT expr .  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
+43: shift/reduce conflict (shift 21, reduce 12) on ADD
+43: shift/reduce conflict (shift 22, reduce 12) on MINUS
+43: shift/reduce conflict (shift 23, reduce 12) on MULT
+43: shift/reduce conflict (shift 24, reduce 12) on DIV
+43: shift/reduce conflict (shift 25, reduce 12) on MOD
+state 43
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr DIV aexpr .  (12)
+	aexpr : aexpr . MOD aexpr  (13)
 
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
+	AND  reduce 12
+	OR  reduce 12
+	EGALE  reduce 12
+	NEG  reduce 12
+	SUPS  reduce 12
+	INFS  reduce 12
+	SUPE  reduce 12
+	INFE  reduce 12
 	THEN  reduce 12
 	ELSE  reduce 12
 	IN  reduce 12
@@ -865,48 +623,32 @@ state 47
 	EINSTR  reduce 12
 
 
-48: shift/reduce conflict (shift 25, reduce 13) on ADD
-48: shift/reduce conflict (shift 26, reduce 13) on MINUS
-48: shift/reduce conflict (shift 27, reduce 13) on MULT
-48: shift/reduce conflict (shift 28, reduce 13) on DIV
-48: shift/reduce conflict (shift 29, reduce 13) on MOD
-48: shift/reduce conflict (shift 30, reduce 13) on AND
-48: shift/reduce conflict (shift 31, reduce 13) on OR
-48: shift/reduce conflict (shift 32, reduce 13) on EQ
-48: shift/reduce conflict (shift 33, reduce 13) on NEQ
-48: shift/reduce conflict (shift 34, reduce 13) on SUP
-48: shift/reduce conflict (shift 35, reduce 13) on INF
-48: shift/reduce conflict (shift 36, reduce 13) on SUPEQ
-48: shift/reduce conflict (shift 37, reduce 13) on INFEQ
-state 48
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr DIV expr .  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
+44: shift/reduce conflict (shift 21, reduce 13) on ADD
+44: shift/reduce conflict (shift 22, reduce 13) on MINUS
+44: shift/reduce conflict (shift 23, reduce 13) on MULT
+44: shift/reduce conflict (shift 24, reduce 13) on DIV
+44: shift/reduce conflict (shift 25, reduce 13) on MOD
+state 44
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr . MOD aexpr  (13)
+	aexpr : aexpr MOD aexpr .  (13)
 
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
+	AND  reduce 13
+	OR  reduce 13
+	EGALE  reduce 13
+	NEG  reduce 13
+	SUPS  reduce 13
+	INFS  reduce 13
+	SUPE  reduce 13
+	INFE  reduce 13
 	THEN  reduce 13
 	ELSE  reduce 13
 	IN  reduce 13
@@ -915,632 +657,228 @@ state 48
 	EINSTR  reduce 13
 
 
-49: shift/reduce conflict (shift 25, reduce 14) on ADD
-49: shift/reduce conflict (shift 26, reduce 14) on MINUS
-49: shift/reduce conflict (shift 27, reduce 14) on MULT
-49: shift/reduce conflict (shift 28, reduce 14) on DIV
-49: shift/reduce conflict (shift 29, reduce 14) on MOD
-49: shift/reduce conflict (shift 30, reduce 14) on AND
-49: shift/reduce conflict (shift 31, reduce 14) on OR
-49: shift/reduce conflict (shift 32, reduce 14) on EQ
-49: shift/reduce conflict (shift 33, reduce 14) on NEQ
-49: shift/reduce conflict (shift 34, reduce 14) on SUP
-49: shift/reduce conflict (shift 35, reduce 14) on INF
-49: shift/reduce conflict (shift 36, reduce 14) on SUPEQ
-49: shift/reduce conflict (shift 37, reduce 14) on INFEQ
-state 49
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr MOD expr .  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
+45: shift/reduce conflict (shift 27, reduce 16) on AND
+45: shift/reduce conflict (shift 28, reduce 16) on OR
+state 45
+	bexpr : bexpr . AND bexpr  (16)
+	bexpr : bexpr AND bexpr .  (16)
+	bexpr : bexpr . OR bexpr  (17)
 
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
-	THEN  reduce 14
-	ELSE  reduce 14
-	IN  reduce 14
-	RPAREN  reduce 14
-	EOL  reduce 14
-	EINSTR  reduce 14
-
-
-50: shift/reduce conflict (shift 25, reduce 15) on ADD
-50: shift/reduce conflict (shift 26, reduce 15) on MINUS
-50: shift/reduce conflict (shift 27, reduce 15) on MULT
-50: shift/reduce conflict (shift 28, reduce 15) on DIV
-50: shift/reduce conflict (shift 29, reduce 15) on MOD
-50: shift/reduce conflict (shift 30, reduce 15) on AND
-50: shift/reduce conflict (shift 31, reduce 15) on OR
-50: shift/reduce conflict (shift 32, reduce 15) on EQ
-50: shift/reduce conflict (shift 33, reduce 15) on NEQ
-50: shift/reduce conflict (shift 34, reduce 15) on SUP
-50: shift/reduce conflict (shift 35, reduce 15) on INF
-50: shift/reduce conflict (shift 36, reduce 15) on SUPEQ
-50: shift/reduce conflict (shift 37, reduce 15) on INFEQ
-state 50
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr AND expr .  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
-
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
-	THEN  reduce 15
-	ELSE  reduce 15
-	IN  reduce 15
-	RPAREN  reduce 15
-	EOL  reduce 15
-	EINSTR  reduce 15
-
-
-51: shift/reduce conflict (shift 25, reduce 16) on ADD
-51: shift/reduce conflict (shift 26, reduce 16) on MINUS
-51: shift/reduce conflict (shift 27, reduce 16) on MULT
-51: shift/reduce conflict (shift 28, reduce 16) on DIV
-51: shift/reduce conflict (shift 29, reduce 16) on MOD
-51: shift/reduce conflict (shift 30, reduce 16) on AND
-51: shift/reduce conflict (shift 31, reduce 16) on OR
-51: shift/reduce conflict (shift 32, reduce 16) on EQ
-51: shift/reduce conflict (shift 33, reduce 16) on NEQ
-51: shift/reduce conflict (shift 34, reduce 16) on SUP
-51: shift/reduce conflict (shift 35, reduce 16) on INF
-51: shift/reduce conflict (shift 36, reduce 16) on SUPEQ
-51: shift/reduce conflict (shift 37, reduce 16) on INFEQ
-state 51
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr OR expr .  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
-
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
+	AND  shift 27
+	OR  shift 28
 	THEN  reduce 16
-	ELSE  reduce 16
-	IN  reduce 16
-	RPAREN  reduce 16
-	EOL  reduce 16
-	EINSTR  reduce 16
 
 
-52: shift/reduce conflict (shift 25, reduce 18) on ADD
-52: shift/reduce conflict (shift 26, reduce 18) on MINUS
-52: shift/reduce conflict (shift 27, reduce 18) on MULT
-52: shift/reduce conflict (shift 28, reduce 18) on DIV
-52: shift/reduce conflict (shift 29, reduce 18) on MOD
-52: shift/reduce conflict (shift 30, reduce 18) on AND
-52: shift/reduce conflict (shift 31, reduce 18) on OR
-52: shift/reduce conflict (shift 32, reduce 18) on EQ
-52: shift/reduce conflict (shift 33, reduce 18) on NEQ
-52: shift/reduce conflict (shift 34, reduce 18) on SUP
-52: shift/reduce conflict (shift 35, reduce 18) on INF
-52: shift/reduce conflict (shift 36, reduce 18) on SUPEQ
-52: shift/reduce conflict (shift 37, reduce 18) on INFEQ
-state 52
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr EQ expr .  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
+46: shift/reduce conflict (shift 27, reduce 17) on AND
+46: shift/reduce conflict (shift 28, reduce 17) on OR
+state 46
+	bexpr : bexpr . AND bexpr  (16)
+	bexpr : bexpr . OR bexpr  (17)
+	bexpr : bexpr OR bexpr .  (17)
 
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
+	AND  shift 27
+	OR  shift 28
+	THEN  reduce 17
+
+
+state 47
+	instr : IF bexpr THEN instr . ELSE instr  (2)
+	instr : instr . EINSTR instr  (6)
+
+	ELSE  shift 55
+	EINSTR  shift 20
+	.  error
+
+
+state 48
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr . MOD aexpr  (13)
+	bexpr : aexpr EGALE aexpr .  (18)
+
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
+	AND  reduce 18
+	OR  reduce 18
 	THEN  reduce 18
-	ELSE  reduce 18
-	IN  reduce 18
-	RPAREN  reduce 18
-	EOL  reduce 18
-	EINSTR  reduce 18
 
 
-53: shift/reduce conflict (shift 25, reduce 19) on ADD
-53: shift/reduce conflict (shift 26, reduce 19) on MINUS
-53: shift/reduce conflict (shift 27, reduce 19) on MULT
-53: shift/reduce conflict (shift 28, reduce 19) on DIV
-53: shift/reduce conflict (shift 29, reduce 19) on MOD
-53: shift/reduce conflict (shift 30, reduce 19) on AND
-53: shift/reduce conflict (shift 31, reduce 19) on OR
-53: shift/reduce conflict (shift 32, reduce 19) on EQ
-53: shift/reduce conflict (shift 33, reduce 19) on NEQ
-53: shift/reduce conflict (shift 34, reduce 19) on SUP
-53: shift/reduce conflict (shift 35, reduce 19) on INF
-53: shift/reduce conflict (shift 36, reduce 19) on SUPEQ
-53: shift/reduce conflict (shift 37, reduce 19) on INFEQ
-state 53
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr NEQ expr .  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
+state 49
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr . MOD aexpr  (13)
+	bexpr : aexpr NEG aexpr .  (19)
 
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
+	AND  reduce 19
+	OR  reduce 19
 	THEN  reduce 19
-	ELSE  reduce 19
-	IN  reduce 19
-	RPAREN  reduce 19
-	EOL  reduce 19
-	EINSTR  reduce 19
 
 
-54: shift/reduce conflict (shift 25, reduce 20) on ADD
-54: shift/reduce conflict (shift 26, reduce 20) on MINUS
-54: shift/reduce conflict (shift 27, reduce 20) on MULT
-54: shift/reduce conflict (shift 28, reduce 20) on DIV
-54: shift/reduce conflict (shift 29, reduce 20) on MOD
-54: shift/reduce conflict (shift 30, reduce 20) on AND
-54: shift/reduce conflict (shift 31, reduce 20) on OR
-54: shift/reduce conflict (shift 32, reduce 20) on EQ
-54: shift/reduce conflict (shift 33, reduce 20) on NEQ
-54: shift/reduce conflict (shift 34, reduce 20) on SUP
-54: shift/reduce conflict (shift 35, reduce 20) on INF
-54: shift/reduce conflict (shift 36, reduce 20) on SUPEQ
-54: shift/reduce conflict (shift 37, reduce 20) on INFEQ
-state 54
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr SUP expr .  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
+state 50
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr . MOD aexpr  (13)
+	bexpr : aexpr SUPS aexpr .  (20)
 
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
+	AND  reduce 20
+	OR  reduce 20
 	THEN  reduce 20
-	ELSE  reduce 20
-	IN  reduce 20
-	RPAREN  reduce 20
-	EOL  reduce 20
-	EINSTR  reduce 20
 
 
-55: shift/reduce conflict (shift 25, reduce 21) on ADD
-55: shift/reduce conflict (shift 26, reduce 21) on MINUS
-55: shift/reduce conflict (shift 27, reduce 21) on MULT
-55: shift/reduce conflict (shift 28, reduce 21) on DIV
-55: shift/reduce conflict (shift 29, reduce 21) on MOD
-55: shift/reduce conflict (shift 30, reduce 21) on AND
-55: shift/reduce conflict (shift 31, reduce 21) on OR
-55: shift/reduce conflict (shift 32, reduce 21) on EQ
-55: shift/reduce conflict (shift 33, reduce 21) on NEQ
-55: shift/reduce conflict (shift 34, reduce 21) on SUP
-55: shift/reduce conflict (shift 35, reduce 21) on INF
-55: shift/reduce conflict (shift 36, reduce 21) on SUPEQ
-55: shift/reduce conflict (shift 37, reduce 21) on INFEQ
-state 55
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr INF expr .  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
+state 51
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr . MOD aexpr  (13)
+	bexpr : aexpr INFS aexpr .  (21)
 
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
+	AND  reduce 21
+	OR  reduce 21
 	THEN  reduce 21
-	ELSE  reduce 21
-	IN  reduce 21
-	RPAREN  reduce 21
-	EOL  reduce 21
-	EINSTR  reduce 21
 
 
-56: shift/reduce conflict (shift 25, reduce 22) on ADD
-56: shift/reduce conflict (shift 26, reduce 22) on MINUS
-56: shift/reduce conflict (shift 27, reduce 22) on MULT
-56: shift/reduce conflict (shift 28, reduce 22) on DIV
-56: shift/reduce conflict (shift 29, reduce 22) on MOD
-56: shift/reduce conflict (shift 30, reduce 22) on AND
-56: shift/reduce conflict (shift 31, reduce 22) on OR
-56: shift/reduce conflict (shift 32, reduce 22) on EQ
-56: shift/reduce conflict (shift 33, reduce 22) on NEQ
-56: shift/reduce conflict (shift 34, reduce 22) on SUP
-56: shift/reduce conflict (shift 35, reduce 22) on INF
-56: shift/reduce conflict (shift 36, reduce 22) on SUPEQ
-56: shift/reduce conflict (shift 37, reduce 22) on INFEQ
-state 56
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr SUPEQ expr .  (22)
-	expr : expr . INFEQ expr  (23)
+state 52
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr . MOD aexpr  (13)
+	bexpr : aexpr SUPE aexpr .  (22)
 
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
+	AND  reduce 22
+	OR  reduce 22
 	THEN  reduce 22
-	ELSE  reduce 22
-	IN  reduce 22
-	RPAREN  reduce 22
-	EOL  reduce 22
-	EINSTR  reduce 22
 
 
-57: shift/reduce conflict (shift 25, reduce 23) on ADD
-57: shift/reduce conflict (shift 26, reduce 23) on MINUS
-57: shift/reduce conflict (shift 27, reduce 23) on MULT
-57: shift/reduce conflict (shift 28, reduce 23) on DIV
-57: shift/reduce conflict (shift 29, reduce 23) on MOD
-57: shift/reduce conflict (shift 30, reduce 23) on AND
-57: shift/reduce conflict (shift 31, reduce 23) on OR
-57: shift/reduce conflict (shift 32, reduce 23) on EQ
-57: shift/reduce conflict (shift 33, reduce 23) on NEQ
-57: shift/reduce conflict (shift 34, reduce 23) on SUP
-57: shift/reduce conflict (shift 35, reduce 23) on INF
-57: shift/reduce conflict (shift 36, reduce 23) on SUPEQ
-57: shift/reduce conflict (shift 37, reduce 23) on INFEQ
-state 57
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
-	expr : expr INFEQ expr .  (23)
+state 53
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr . MOD aexpr  (13)
+	bexpr : aexpr INFE aexpr .  (23)
 
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
+	AND  reduce 23
+	OR  reduce 23
 	THEN  reduce 23
-	ELSE  reduce 23
-	IN  reduce 23
-	RPAREN  reduce 23
-	EOL  reduce 23
-	EINSTR  reduce 23
 
 
-state 58
-	instr : IF expr THEN instr . ELSE instr  (2)
+state 54
+	instr : LET VARIABLE EGALE aexpr . IN instr  (4)
+	aexpr : aexpr . ADD aexpr  (9)
+	aexpr : aexpr . MINUS aexpr  (10)
+	aexpr : aexpr . MULT aexpr  (11)
+	aexpr : aexpr . DIV aexpr  (12)
+	aexpr : aexpr . MOD aexpr  (13)
+
+	ADD  shift 21
+	MINUS  shift 22
+	MULT  shift 23
+	DIV  shift 24
+	MOD  shift 25
+	IN  shift 56
+	.  error
+
+
+state 55
+	instr : IF bexpr THEN instr ELSE . instr  (2)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	IF  shift 5
+	PRINT  shift 6
+	LET  shift 7
+	LPAREN  shift 8
+	.  error
+
+	instr  goto 57
+	aexpr  goto 11
+
+
+state 56
+	instr : LET VARIABLE EGALE aexpr IN . instr  (4)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	IF  shift 5
+	PRINT  shift 6
+	LET  shift 7
+	LPAREN  shift 8
+	.  error
+
+	instr  goto 58
+	aexpr  goto 11
+
+
+57: shift/reduce conflict (shift 20, reduce 2) on EINSTR
+state 57
+	instr : IF bexpr THEN instr ELSE instr .  (2)
 	instr : instr . EINSTR instr  (6)
 
-	ELSE  shift 61
-	EINSTR  shift 24
-	.  error
-
-
-state 59
-	instr : LET VARIABLE EQ expr . IN instr  (4)
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
-
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
-	IN  shift 62
-	.  error
-
-
-state 60
-	instr : LET funct EQ expr . IN instr  (7)
-	expr : expr . ADD expr  (10)
-	expr : expr . MINUS expr  (11)
-	expr : expr . MULT expr  (12)
-	expr : expr . DIV expr  (13)
-	expr : expr . MOD expr  (14)
-	expr : expr . AND expr  (15)
-	expr : expr . OR expr  (16)
-	expr : expr . EQ expr  (18)
-	expr : expr . NEQ expr  (19)
-	expr : expr . SUP expr  (20)
-	expr : expr . INF expr  (21)
-	expr : expr . SUPEQ expr  (22)
-	expr : expr . INFEQ expr  (23)
-
-	ADD  shift 25
-	MINUS  shift 26
-	MULT  shift 27
-	DIV  shift 28
-	MOD  shift 29
-	AND  shift 30
-	OR  shift 31
-	EQ  shift 32
-	NEQ  shift 33
-	SUP  shift 34
-	INF  shift 35
-	SUPEQ  shift 36
-	INFEQ  shift 37
-	IN  shift 63
-	.  error
-
-
-state 61
-	instr : IF expr THEN instr ELSE . instr  (2)
-
-	VARIABLE  shift 3
-	NOT  shift 4
-	IF  shift 5
-	PRINT  shift 6
-	LET  shift 7
-	LPAREN  shift 8
-	.  error
-
-	instr  goto 64
-	expr  goto 11
-	funct  goto 12
-
-
-state 62
-	instr : LET VARIABLE EQ expr IN . instr  (4)
-
-	VARIABLE  shift 3
-	NOT  shift 4
-	IF  shift 5
-	PRINT  shift 6
-	LET  shift 7
-	LPAREN  shift 8
-	.  error
-
-	instr  goto 65
-	expr  goto 11
-	funct  goto 12
-
-
-state 63
-	instr : LET funct EQ expr IN . instr  (7)
-
-	VARIABLE  shift 3
-	NOT  shift 4
-	IF  shift 5
-	PRINT  shift 6
-	LET  shift 7
-	LPAREN  shift 8
-	.  error
-
-	instr  goto 66
-	expr  goto 11
-	funct  goto 12
-
-
-64: shift/reduce conflict (shift 24, reduce 2) on EINSTR
-state 64
-	instr : IF expr THEN instr ELSE instr .  (2)
-	instr : instr . EINSTR instr  (6)
-
-	EINSTR  shift 24
+	EINSTR  shift 20
 	ELSE  reduce 2
 	RPAREN  reduce 2
 	EOL  reduce 2
 
 
-65: shift/reduce conflict (shift 24, reduce 4) on EINSTR
-state 65
-	instr : LET VARIABLE EQ expr IN instr .  (4)
+58: shift/reduce conflict (shift 20, reduce 4) on EINSTR
+state 58
+	instr : LET VARIABLE EGALE aexpr IN instr .  (4)
 	instr : instr . EINSTR instr  (6)
 
-	EINSTR  shift 24
+	EINSTR  shift 20
 	ELSE  reduce 4
 	RPAREN  reduce 4
 	EOL  reduce 4
 
 
-66: shift/reduce conflict (shift 24, reduce 7) on EINSTR
-state 66
-	instr : instr . EINSTR instr  (6)
-	instr : LET funct EQ expr IN instr .  (7)
-
-	EINSTR  shift 24
-	ELSE  reduce 7
-	RPAREN  reduce 7
-	EOL  reduce 7
-
-
-State 16 contains 13 shift/reduce conflicts.
-State 22 contains 1 shift/reduce conflict.
-State 44 contains 1 shift/reduce conflict.
-State 45 contains 13 shift/reduce conflicts.
-State 46 contains 13 shift/reduce conflicts.
-State 47 contains 13 shift/reduce conflicts.
-State 48 contains 13 shift/reduce conflicts.
-State 49 contains 13 shift/reduce conflicts.
-State 50 contains 13 shift/reduce conflicts.
-State 51 contains 13 shift/reduce conflicts.
-State 52 contains 13 shift/reduce conflicts.
-State 53 contains 13 shift/reduce conflicts.
-State 54 contains 13 shift/reduce conflicts.
-State 55 contains 13 shift/reduce conflicts.
-State 56 contains 13 shift/reduce conflicts.
-State 57 contains 13 shift/reduce conflicts.
-State 64 contains 1 shift/reduce conflict.
-State 65 contains 1 shift/reduce conflict.
-State 66 contains 1 shift/reduce conflict.
+State 18 contains 1 shift/reduce conflict.
+State 39 contains 1 shift/reduce conflict.
+State 40 contains 5 shift/reduce conflicts.
+State 41 contains 5 shift/reduce conflicts.
+State 42 contains 5 shift/reduce conflicts.
+State 43 contains 5 shift/reduce conflicts.
+State 44 contains 5 shift/reduce conflicts.
+State 45 contains 2 shift/reduce conflicts.
+State 46 contains 2 shift/reduce conflicts.
+State 57 contains 1 shift/reduce conflict.
+State 58 contains 1 shift/reduce conflict.
 
 
-29 terminals, 6 nonterminals
-29 grammar rules, 67 states
+31 terminals, 6 nonterminals
+25 grammar rules, 59 states
