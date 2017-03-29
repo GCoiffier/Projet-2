@@ -6,49 +6,38 @@ Coiffier Guillaume - Valque Léo
 
 - Addresse du dépôt Git : https://github.com/GCoiffier/Projet-2
 
-- Les fichiers de tests sont situés dans le dossier Input. Il est conseillé d'écrire les sorties du programme dans le dossier Output (pour des raisons de lisibilité)
+- Les fichiers de tests sont situés dans le dossier Input.
 
 # Comment exécuter le programme
 
-- Pour compiler le programme, utilisez simplement la commande `make`. Celle-ci crée un exécutable appelé **f2bdd**.
+- Pour compiler le programme, utilisez simplement la commande `make`. Celle-ci crée un exécutable appelé **fouine**.
 
-- Pour nettoyer le répertoire de travail, utilisez la commande `make clean`. Cela supprime les exécutables, les fichiers .dot et les .pdf
+- Pour nettoyer le répertoire de travail, utilisez la commande `make clean`.
 
-- `./f2bdd fichier` se contente d'afficher la taille du bdd avec pour entrée l'expression contenu dans
-fichier. Si la formule n'est pas valide, il affiche erreur de saisie
+- `./fouine fichier`
 
-- `./f2bdd -tseitin sortie entree` écrira la formule SAT de l'entree dans le fichier sortie sous le format DIMACS
+- `./fouine -debug fichier`
 
-- `./f2bdd -minisat entree` appelera minisat sur la formule d'entree et affiche la comparaison avec la bdd
-il est possible de faire -minisat -tseitin ( dans cet ordre ) pour stocker la formule SAT dans le fichier sortie et
-appeler minisat
+- `./fouine -machine fichier`
 
-- `./f2bdd -display entree` appellera le lexer-parser sur le fichier entree pour obtenir une formule, construit
-  le ROBDD associé à la formule et l'exporte en fichier .dot
-
-  Pour visualiser le fichier.dot, générez le pdf avec `dot -Tpdf file -o file.pdf`
-  Sinon, utilisez directement le script display.sh qui fera tout à votre place (commande `./display.sh  <nom_fichier>`).
-  Attention, l'affichage est relativement lent dès que le diagramme devient grand.
-
+- `./fouine -interm fichier`
 
 - Exemples :  
-  `./f2bdd -tseitin Outputs/tseitin1.txt  Inputs/pomme.form`  
-  `./f2bdd -minisat Inputs/input1.form`  
-  `./f2bdd -minisat -tseitin Outputs/tseitin1.txt Inputs/parite.form`  
-  `./display.sh Inputs/parite.form`  
-
 
 # Avancement du projet
 
-[ ] Lexer et parserz
+[ ] Lexer et parser
 
-[ ]
+[ ] Type pour les expressions booléennes et arithmétiques.
+    Fonction d'évalutation
 
-[ ]
+[ ] Définition d'un type programme pour les programmes fouines
 
-[ ]
+[ ] Interprétation des fichiers .fouine
 
-[ ]
+[ ] Compilation vers une machine à pile
+
+[ ] Fonctionnement de la machine à pile
 
 # Liste et contenu des fichiers
 
@@ -57,7 +46,13 @@ Fichier principal. Se contente d'appeller **argv_call ()**
 
 ### fouine.ml :
 
-### expr.ml :
+### expr_arith.ml :
+
+### expr_bool.ml :
+
+### LexParInterface.ml :
+
+###
 
 ### argv.ml :
 Lit les argument envoyés au programme et fait les différents appels aux différentes parties du code.

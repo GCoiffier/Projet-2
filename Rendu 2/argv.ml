@@ -5,7 +5,7 @@ open Fouine
 let argv_call () =
 	let t = Sys.argv in
 	match t.(1) with
-	|"-debug" ->  ()
-	|"-machine" -> ()
-	|"-interm" -> ()
-	|_ -> ()
+	|"-debug" ->  () (* affiche le code *)
+	|"-machine" -> () (* compile et execute sur machine à pile *)
+	|"-interm" -> ()  (* compile vers machine à pile mais n'execute pas : affiche le code *)
+	|_ -> () (* interpréteur *)

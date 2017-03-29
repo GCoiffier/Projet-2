@@ -1,8 +1,5 @@
-open Data_structures
-
 type arithexpr =
  Const of int
- |Var of variable
  |Plus of arithexpr * arithexpr
  |Neg of arithexpr
  |Minus of arithexpr * arithexpr
@@ -12,9 +9,8 @@ type arithexpr =
 
 module ArithExpr = struct
 
-    let rec eval env = function
+    let rec eval = function
       Const(n) -> n
-      |Var(x) -> (Environnement.find x e)
       |Plus(a,b) -> (eval a)+(eval b)
       |Neg(a) -> -(eval a)
       |Minus(a,b) -> -(eval a)-(eval b)
