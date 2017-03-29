@@ -19,14 +19,27 @@ type programme =
 let print_prg prg = print_newline ();;
 
 let execute prg =
-  let rec exec_aux e = function
-
-    
-    |PrInt(a) -> let x = (ArithExpr.eval e a) in
+  let env = Env.create () in
+  let rec exec_aux = function
+    |PrInt(a) ->  let x = exec_aux a in
                     print_int x; print_newline (); (x,e)
-    |Let(x,a,p) -> let v = (ArithExpr.eval e a) in
-                        exec_aux (Environnement.add x v e) p
-    |IfThenElse(b,p1,p2) -> if (Boolexpr.eval e b) then (exec_aux e p1) else (exec_aux e p2)
-    |Imp(p1,p2) -> let ep = snd (exec_aux e p1) in  (exec_aux ep p2)
+    |Let(x,a,p) -> let v = (exec_aux a) in
+                    Env.add env x v;
+                    exec_aux p
+    |IfThenElse(b,p1,p2) -> let x = exec_aux b in
+                              if (x==1) then (exec_aux p1) else (exec_aux p2)
+
+    |Imp(p1,p2) -> exec_aux p1; exec_aux p2
+
+    |Unop(op,a) -> let x = exec_aux a in
+                  match op with
+                    |Neg -> -x
+                    |Not -> (1-x)
+    |BinOp(a,op,b) -> let xa = exec_aux a and xb = exec_aux b in
+                        match op with
+                          |Add
+                          |Minus
+                          |
+                          |
     |_ -> failwith "Execution error"
-  in fst (exec_aux (Environnement.empty) prg)
+  in exec_aux prg
