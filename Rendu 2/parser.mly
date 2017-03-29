@@ -2,6 +2,8 @@
 (* --- préambule: ici du code Caml --- *)
 
 open Fouine
+open Expr_arith
+open Expr_bool
 
 %}
 /* description des lex�mes, ceux-ci sont décrits dans lexer.mll */
@@ -16,52 +18,50 @@ open Fouine
 %token LPAREN RPAREN
 %token EOL EINSTR
 
+%left ADD, MINUS
+%left AND, OR
+%left NOT
+%left DIV, MULT, MOD
 
-%start main             /* "start" signale le point d'entr�e: */
-                        /* c'est ici main, qui est d�fini plus bas */
-%type <Fouine.programme> main     /* on _doit_ donner le type associ� au point d'entr�e */
+%start main
+%type <Fouine.programme> main
 
 %%
-    /* --- d�but des r�gles de grammaire --- */
-                            /* � droite, les valeurs associ�es */
-
+    /* --- début des règles de grammaire --- */
 
 main:
     instr EOL               { $1 }
 
-instr:
-  | IF bexpr THEN instr ELSE instr		  { IfThenElse($2,$4,$6) }
-  | PRINT aexpr					                { PrInt($2) }
-  | LET VARIABLE EGALE aexpr IN instr		{ Imp( Let($2,$4) ,$6) }
-  | LPAREN instr RPAREN 			          { $2 }
-  | instr EINSTR instr				          { Imp($1,$3) }
+expr:
+  | IF expr THEN expr ELSE expr		    { IfThenElse($2,$4,$6) }
+  | PRINT expr					              { PrInt($2) }
+  | LET VARIABLE EGALE expr IN expr		{ Let($2,$4,$6) }
+  | LPAREN expr RPAREN 			          { $2 }
+  | expr EINSTR expr				          { Imp($1,$3) } /* séquencement */
 
   /* | LET funct EGALE aexpr IN instr		{ Imp( Function($2,$4) ,$6) } */
   /* | LET VARIABLE EGALE FUN VARIABLE IMPLIES aexpr IN inst */
-  | aexpr					{ $1 }
 
-aexpr: /* expression arithmétique */
-  | LPAREN aexpr RPAREN 				{ $2 }
-  | aexpr ADD aexpr				{ Plus($1,$3) }
-  | aexpr MINUS aexpr				{ Minus($1,$3) }
-  | aexpr MULT aexpr				{ Mult($1,$3) }
-  | aexpr DIV aexpr				{ Div($1,$3) }
-  | aexpr MOD aexpr				{ MOD($1,$3) }
-  | VARIABLE					{ Var($1) }
-  | CONST					{ Const($1) }
+ /* expression arithmétique */
+  | expr ADD expr				{ BinOp ($1, Plus, $3) }
+  | expr MINUS expr			{ BinOp ($1, Minus, $3) }
+  | expr MULT expr			{ BinOp ($1, Mult, $3) }
+  | expr DIV expr				{ BinOp ($1, Div, $3) }
+  | expr MOD expr				{ BinOp ($1, Mod, $3) }
+  | VARIABLE					  { Var($1) }
+  | CONST					      { Const($1) }
   /* | funct					{ EVFUN($1) } */
 
-
-bexpr: /* Expression booléenne */
-  | bexpr AND bexpr				{ And($1,$3) }
-  | bexpr OR bexpr				{ Or($1,$3) }
-
-  | aexpr EGALE aexpr				{ Comp($1, Equal ,$3) }
-  | aexpr NEG aexpr				  { Comp($1, Neq ,$3) }
-  | aexpr SUPS aexpr				{ Comp($1, Sup ,$3) }
-  | aexpr INFS aexpr				{ Comp($1, Inf ,$3) }
-  | aexpr SUPE aexpr				{ Comp($1, Supeq ,$3) }
-  | aexpr INFE aexpr				{ Comp($1, Infeq ,$3) }
+ /* Expression booléenne */
+  | expr AND expr				  { BinOp($1,And,$3) }
+  | expr OR expr				  { BinOp($1,Or,$3) }
+  | NOT expr              { UnOp(Not,$2) }
+  | expr EGALE expr				{ BinOp($1, Equal ,$3) }
+  | expr NEG expr				  { BinOp($1, Neq ,$3) }
+  | expr SUPS expr				{ BinOp($1, Sup ,$3) }
+  | expr INFS expr				{ BinOp($1, Inf ,$3) }
+  | expr SUPE expr				{ BinOp($1, Supeq ,$3) }
+  | expr INFE expr				{ BinOp($1, Infeq ,$3) }
 
 /* funct:
    | VARIABLE funct				{ FUN($1,$2) }
