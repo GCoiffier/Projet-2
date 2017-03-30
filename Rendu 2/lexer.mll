@@ -14,7 +14,6 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
 	| "if" 				{ IF }
 	| "then" 			{ THEN }
 	| "else" 			{ ELSE }
-	| ";" 				{ EINSTR }
 
 	| '+' 				{ ADD }
 	| '-' 				{ MINUS }
@@ -35,8 +34,12 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
 	| "&&" 				{ AND }
 	| "||" 				{ OR }
 	| "not" 			{ NOT }
+  
+  | '('         { LPAREN }
+  | ')'         { RPAREN }
 
 	| ['0'-'9']+ as s 		{ CONST (int_of_string s) }
-	| ['a'-'Z']+ as s 		{ VARIABLE (s) }
+	| ['a'-'z' 'A'-'Z']+ as s 		{ VARIABLE (s) }
 
 	| ";;"				{ EOL }
+  | ';' 				{ EINSTR }

@@ -39,6 +39,10 @@ Coiffier Guillaume - Valque Léo
 
 [ ] Fonctionnement de la machine à pile
 
+# L'environnement
+
+On utilisera des tables de hachage (Hastbl).
+
 # Liste et contenu des fichiers
 
 ### main.ml :

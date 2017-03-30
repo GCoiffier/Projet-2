@@ -10,10 +10,7 @@
 *)
 
 open Argv
-open LexParInterface
-open Fouine
 
-let p = read_prgm "prog.fouine";;
-print_int (execute p); print_newline ();;
+let _ = argv_call ();;
 
 (* let _ = argv_call ();; *)

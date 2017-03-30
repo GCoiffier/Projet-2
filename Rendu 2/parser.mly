@@ -2,8 +2,6 @@
 (* --- préambule: ici du code Caml --- *)
 
 open Fouine
-open Expr_arith
-open Expr_bool
 
 %}
 /* description des lex�mes, ceux-ci sont décrits dans lexer.mll */
@@ -30,7 +28,7 @@ open Expr_bool
     /* --- début des règles de grammaire --- */
 
 main:
-    instr EOL               { $1 }
+    expr EOL               { $1 }
 
 expr:
   | IF expr THEN expr ELSE expr		    { IfThenElse($2,$4,$6) }
@@ -39,11 +37,11 @@ expr:
   | LPAREN expr RPAREN 			          { $2 }
   | expr EINSTR expr				          { Imp($1,$3) } /* séquencement */
 
-  /* | LET funct EGALE aexpr IN instr		{ Imp( Function($2,$4) ,$6) } */
+  /* | LET funct EGALE aexpr IN expr		{ Imp( Function($2,$4) ,$6) } */
   /* | LET VARIABLE EGALE FUN VARIABLE IMPLIES aexpr IN inst */
 
  /* expression arithmétique */
-  | expr ADD expr				{ BinOp ($1, Plus, $3) }
+  | expr ADD expr				{ BinOp ($1, Add, $3) }
   | expr MINUS expr			{ BinOp ($1, Minus, $3) }
   | expr MULT expr			{ BinOp ($1, Mult, $3) }
   | expr DIV expr				{ BinOp ($1, Div, $3) }

@@ -1,5 +1,4 @@
-open Data_structures
-
+type variable = string
 type unary_op = Not | Neg
 type binary_op = Equal | Neq | Infeq | Inf | Supeq | Sup
                  | And | Or | Add | Mult | Minus | Div | Mod
@@ -13,33 +12,44 @@ type programme =
     |IfThenElse of programme * programme * programme (* if x then A else B -> (x,A,B) *)
     |PrInt of programme
     |Imp of programme * programme
-    |Function of variable * programme
+    (*|Function of variable * programme *)
 
 
 let print_prg prg = print_newline ();;
 
 let execute prg =
-  let env = Env.create () in
+  let env = Hashtbl.create 10 in
   let rec exec_aux = function
+    Const(n) -> n
+    |Var(x) -> Hashtbl.find env x
     |PrInt(a) ->  let x = exec_aux a in
-                    print_int x; print_newline (); (x,e)
+                    print_int x; print_newline (); x
     |Let(x,a,p) -> let v = (exec_aux a) in
-                    Env.add env x v;
-                    exec_aux p
+                    Hashtbl.add env x v;
+                    let u = exec_aux p in
+                    Hashtbl.remove env x; u
     |IfThenElse(b,p1,p2) -> let x = exec_aux b in
                               if (x==1) then (exec_aux p1) else (exec_aux p2)
 
-    |Imp(p1,p2) -> exec_aux p1; exec_aux p2
+    |Imp(p1,p2) -> let _ = exec_aux p1 in exec_aux p2
 
-    |Unop(op,a) -> let x = exec_aux a in
-                  match op with
+    |UnOp(op,a) -> let x = exec_aux a in
+                  (match op with
                     |Neg -> -x
-                    |Not -> (1-x)
+                    |Not -> (1-x) )
     |BinOp(a,op,b) -> let xa = exec_aux a and xb = exec_aux b in
                         match op with
-                          |Add
-                          |Minus
-                          |
-                          |
-    |_ -> failwith "Execution error"
+                          | Add -> xa+xb
+                          | Minus -> xa - xb
+                          | And -> xa*xb
+                          | Or -> if ((xa+xb)>0) then 1 else 0
+                          | Mult -> xa*xb
+                          | Div -> xa/xb
+                          | Mod -> xa mod xb
+                          | Equal -> if (xa==xb) then 1 else 0
+                          | Neq -> if (xa<>xb) then 1 else 0
+                          | Infeq -> if (xa<=xb) then 1 else 0
+                          | Inf -> if (xa<xb) then 1 else 0
+                          | Supeq -> if (xa>=xb) then 1 else 0
+                          | Sup -> if (xa>xb) then 1 else 0
   in exec_aux prg

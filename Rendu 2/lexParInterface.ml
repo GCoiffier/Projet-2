@@ -12,8 +12,5 @@ let parse entree = Parser.main Lexer.token (lexbuf entree)
 (* la fonction que l'on lance ci-dessous *)
 let read_prgm entree =
 	let fd = open_in entree in
-  try
-      let a = parse fd in
-      close_in fd;
-      a
-  with _ -> failwith "Syntax error"
+    let a = parse fd in
+      close_in fd; a
