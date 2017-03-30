@@ -26,14 +26,16 @@ Coiffier Guillaume - Valque Léo
 
 # Avancement du projet
 
-[ ] Lexer et parser
+[X] Lexer et parser
 
-[ ] Type pour les expressions booléennes et arithmétiques.
-    Fonction d'évalutation
+[X] Définition d'un type programme pour les programmes fouines
 
-[ ] Définition d'un type programme pour les programmes fouines
+[X] Interprétation des fichiers .fouine sans les fonctions
+  (ie expressions arithmétiques, booléennes, if ... then ... else et let ... in)
 
-[ ] Interprétation des fichiers .fouine
+[ ] Interprétation des fichiers .fouine avec des fonctions
+
+[ ] Interprétation des fichiers .fouine avec des fonctions récursives
 
 [ ] Compilation vers une machine à pile
 
@@ -49,10 +51,6 @@ On utilisera des tables de hachage (Hastbl).
 Fichier principal. Se contente d'appeller **argv_call ()**
 
 ### fouine.ml :
-
-### expr_arith.ml :
-
-### expr_bool.ml :
 
 ### LexParInterface.ml :
 
