@@ -1,0 +1,46 @@
+### Starting build.
+# Target: main.ml.depends, tags: { extension:ml, file:main.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules main.ml > main.ml.depends # cached
+# Target: argv.ml.depends, tags: { extension:ml, file:argv.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules argv.ml > argv.ml.depends
+# Target: fouine.ml.depends, tags: { extension:ml, file:fouine.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules fouine.ml > fouine.ml.depends # cached
+# Target: fouine.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:fouine.cmo, file:fouine.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o fouine.cmo fouine.ml # cached
+# Target: lexParInterface.ml.depends, tags: { extension:ml, file:lexParInterface.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules lexParInterface.ml > lexParInterface.ml.depends # cached
+# Target: lexer.mll, tags: { extension:mll, file:lexer.mll, lexer, ocaml, ocamllex, quiet }
+/usr/bin/ocamllex -q lexer.mll # cached
+# Target: lexer.ml.depends, tags: { extension:ml, file:lexer.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules lexer.ml > lexer.ml.depends # cached
+# Target: parser.mly, tags: { extension:mly, file:parser.mly, infer, ocaml, ocamlyacc, parser, quiet }
+/usr/bin/ocamlyacc -v parser.mly # cached
+# Target: parser.mli.depends, tags: { extension:mli, file:parser.mli, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules parser.mli > parser.mli.depends # cached
+# Target: parser.cmi, tags: { byte, compile, extension:mli, file:parser.mli, interf, ocaml, quiet }
+/usr/bin/ocamlc -c -o parser.cmi parser.mli # cached
+# Target: lexer.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:lexer.cmo, file:lexer.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o lexer.cmo lexer.ml # cached
+# Target: lexParInterface.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:lexParInterface.cmo, file:lexParInterface.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o lexParInterface.cmo lexParInterface.ml # cached
+# Target: argv.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:argv.cmo, file:argv.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o argv.cmo argv.ml
+# Target: main.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:main.cmo, file:main.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o main.cmo main.ml # cached
+# Target: fouine.cmx, tags: { compile, extension:cmx, extension:ml, file:fouine.cmx, file:fouine.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o fouine.cmx fouine.ml # cached
+# Target: parser.ml.depends, tags: { extension:ml, file:parser.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules parser.ml > parser.ml.depends # cached
+# Target: parser.cmx, tags: { compile, extension:cmx, extension:ml, file:parser.cmx, file:parser.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o parser.cmx parser.ml # cached
+# Target: lexer.cmx, tags: { compile, extension:cmx, extension:ml, file:lexer.cmx, file:lexer.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o lexer.cmx lexer.ml # cached
+# Target: lexParInterface.cmx, tags: { compile, extension:cmx, extension:ml, file:lexParInterface.cmx, file:lexParInterface.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o lexParInterface.cmx lexParInterface.ml # cached
+# Target: argv.cmx, tags: { compile, extension:cmx, extension:ml, file:argv.cmx, file:argv.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o argv.cmx argv.ml
+# Target: main.cmx, tags: { compile, extension:cmx, extension:ml, file:main.cmx, file:main.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt -c -o main.cmx main.ml # cached
+# Target: main.native, tags: { dont_link_with, extension:native, file:main.native, link, native, ocaml, program, quiet }
+/usr/bin/ocamlopt unix.cmxa fouine.cmx parser.cmx lexer.cmx lexParInterface.cmx argv.cmx main.cmx -o main.native
+# Compilation successful.
