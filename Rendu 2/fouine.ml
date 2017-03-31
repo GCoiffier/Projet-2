@@ -15,7 +15,7 @@ type programme =
     |Function of variable * programme * programme
 
 
-let print_prg prg = print_newline ();;
+let debug prg = print_string "Debug mode";;
 
 let execute prg =
   let env = Hashtbl.create 10 in

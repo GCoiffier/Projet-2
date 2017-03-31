@@ -8,7 +8,8 @@ let argv_call () =
 	let n = Array.length t in
 	try
 		match t.(1) with
-		|"-debug" ->  () (* affiche le code *)
+		|"-debug" ->  let p = read_prgm t.(n-1) in
+										debug p; print_int (execute p); print_newline () (* affiche le code *)
 		|"-machine" -> () (* compile et execute sur machine à pile *)
 		|"-interm" -> ()  (* compile vers machine à pile mais n'execute pas : affiche le code *)
 		|_ ->  (* interpréteur *)
