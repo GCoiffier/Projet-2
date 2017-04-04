@@ -1,3 +1,4 @@
+open Prog_type
 
 module type EnvSig = sig
 
@@ -17,12 +18,12 @@ module Env : EnvSig = struct
 
   let create n = Hashtbl.create n
 
-  let add t x y = Hashtbl.add t x y
+  let add = Hashtbl.add
 
-  let remove t x = Hashtbl.remove t x
+  let remove = Hashtbl.remove
 
-  let find t x = Hashtbl.find t x
+  let find = Hashtbl.find
 
-  let copy t = Hashtbl.copy t
+  let copy = Hashtbl.copy
 
 end

@@ -1,7 +1,7 @@
 %{
 (* --- préambule: ici du code Caml --- *)
 
-open Fouine
+open Prog_type
 
 %}
 /* description des lex�mes, ceux-ci sont décrits dans lexer.mll */
@@ -22,7 +22,7 @@ open Fouine
 %left DIV, MULT, MOD
 
 %start main
-%type <Fouine.programme> main
+%type <Prog_type.programme> main
 
 %%
     /* --- début des règles de grammaire --- */
