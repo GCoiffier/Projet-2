@@ -8,16 +8,24 @@ type binary_op = Equal | Neq | Infeq | Inf | Supeq | Sup
 type programme =
     Const of int
     |Var of variable
+    |PrInt of programme
     |UnOp of unary_op * programme
     |BinOp of programme * binary_op * programme
     |Let of variable * programme * programme (* let x = A in B -> (x,A,B) *)
     |IfThenElse of programme * programme * programme (* if x then A else B -> (x,A,B) *)
-    |PrInt of programme
     |Imp of programme * programme (* A;B *)
-    |Function of variable * programme * programme
+    |Function_def of variable * programme
+    |Function_call of variable * programme
+
+let rec debug = function
+    Const(n) -> print_int n
+    |Var(x) -> print_string x
+    |IfThenElse(b,p1,p2) print_string "If ("^(debug b)^") Then ("^(debug p1)^") Else ("^(debug p2)^")"
 
 
-let debug prg = print_string "Debug mode";;
+let return = function
+    |Const(n) -> n
+    | _ -> failwith "Execution Error"
 
 let execute prg =
   let env = Env.create 10 in
@@ -35,24 +43,20 @@ let execute prg =
     |Let(x,a,p) -> let v = (exec_aux a) in
                     Env.add env (Var(x)) v;
                     let u = exec_aux p in
-                    Env.remove env (Var(x)); u
+                    Env.remove env (Var(x)); return u
 
-    |IfThenElse(b,p1,p2) -> ( match (exec_aux b) with
-                              Const(x) -> if (x==1) then (exec_aux p1) else (exec_aux p2)
-                              | _ -> failwith "Execution Error in IfThenElse"
-                            )
+    |IfThenElse(b,p1,p2) -> let x = return (exec_aux b) in
+                              if (x==1) then (exec_aux p1) else (exec_aux p2)
 
     |Imp(p1,p2) -> let _ = exec_aux p1 in exec_aux p2
 
-    |UnOp(op,a) ->  ( match (exec_aux a) with
-                        |Const(x) -> (match op with
-                                         Neg -> Const(-x)
-                                        |Not -> Const(1-x) )
-                        | _ -> failwith "Execution Error in UnOp")
+    |UnOp(op,a) ->  let x = return (exec_aux a) in
+                        (   match op with
+                                Neg -> Const(-x)
+                               |Not -> Const(1-x)
+                        )
 
-    |BinOp(a,op,b) -> let ra = exec_aux a and rb = exec_aux b in
-                        ( match (ra,rb) with
-                        Const(xa),Const(xb) ->
+    |BinOp(a,op,b) -> let xa = return (exec_aux a) and xb = return (exec_aux b) in
                           let c1 = Const(1) and c0 = Const(0) in
                           ( match op with
                                   | Add -> Const(xa+xb)
@@ -69,10 +73,12 @@ let execute prg =
                                   | Supeq -> if (xa>=xb) then c1 else c0
                                   | Sup -> if (xa>xb) then c1 else c0
                           )
-                        | _ -> failwith "Execution Error in BinOp"
-                        )
-    |_ -> failwith "Not implemented yet"
 
-  in match (exec_aux prg) with
-    Const(result) -> result
-    |_ -> failwith "Execution Error"
+    |Function_def(x,a) as f -> failwith "not implemented yet"
+
+
+    |Function_call(f,x) -> failwith "not implemented yet"
+
+    | _ -> failwith "Error"
+
+  in return (exec_aux prg)
