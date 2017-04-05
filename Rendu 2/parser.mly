@@ -13,9 +13,11 @@ open Prog_type
 %token AND OR NOT
 %token EGALE NEG SUPS INFS SUPE INFE
 %token IF THEN ELSE PRINT LET IN
-%token FUN IMPLIES
+%token FUN IMPLIES REC
 %token LPAREN RPAREN
 %token EOL EINSTR
+%token TRY WITH EXCEPT RAISE
+%token REF AFFECT ACCESS
 
 %left LET, IN
 %left EINSTR
@@ -45,8 +47,26 @@ expr:
   | LPAREN expr RPAREN 			              { $2 }
   | expr EINSTR expr				          { Imp($1,$3) } /* séquencement */
 
+ /* definition de function */
+  | LET VARIABLE LPAREN RPAREN EGALE expr IN expr
+  											  { Let($2, Function_def("nothing",$6), $8 ) }
+  | LET VARIABLE fun_def IN expr 			  { Let($2, $3, $5) }
   | FUN VARIABLE IMPLIES expr                 { Function_def($2, $4) }
+  | LET REC VARIABLE fun_def IN expr 		  { Let($3, $4, $6) }
 
+ /* exceptions */
+  | TRY expr WITH EXCEPT VARIABLE IMPLIES expr { $2 }
+  | RAISE VARIABLE                             { Var($2) }
+  | RAISE CONST                                { Const($2) }
+  | RAISE LPAREN expr RPAREN                   { $3 }
+  
+ /* reference */ 
+  | LET VARIABLE EGALE REF expr IN expr		  { Let($2,$5,$7) }
+  | ACCESS VARIABLE                           { Var($2) }
+  | VARIABLE AFFECT VARIABLE                  { Var($3) }             
+  | VARIABLE AFFECT CONST                     { Const($3) }
+  | VARIABLE AFFECT LPAREN expr RPAREN        { $4 }
+   
  /* expression arithmétique */
   | expr ADD expr				              { BinOp ($1, Add, $3) }
   | expr MINUS expr			                  { BinOp ($1, Minus, $3) }
@@ -71,6 +91,10 @@ expr:
   | VARIABLE LPAREN RPAREN                    { Function_call( Var($1), Const(1) ) }                             
 ;
 
+fun_def:
+  | VARIABLE fun_def						  { Function_def($1, $2) }
+  | VARIABLE EGALE expr                       { Function_def($1, $3) }
+;
 funct_call:
   | funct_call LPAREN expr RPAREN             { Function_call($1, $3) }
   | funct_call VARIABLE						  { Function_call($1, Var($2) ) }

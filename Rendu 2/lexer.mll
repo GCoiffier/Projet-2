@@ -10,10 +10,20 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
 	| "prInt"			{ PRINT }
 
 	| "let"		 		{ LET }
+	| "rec"             { REC }
 	| "in"		 		{ IN }
 	| "if" 				{ IF }
 	| "then" 			{ THEN }
 	| "else" 			{ ELSE }
+	
+	| "raise"           { RAISE }
+	| "try"             { TRY }
+	| "with"            { WITH }
+	| "E"               { EXCEPT }
+	
+	| "ref"             { REF }
+	| ":="              { AFFECT }
+	| "!"               { ACCESS }
 
 	| '+' 				{ ADD }
 	| '-' 				{ MINUS }
@@ -35,11 +45,11 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
 	| "||" 				{ OR }
 	| "not" 			{ NOT }
   
-  | '('         { LPAREN }
-  | ')'         { RPAREN }
+    | '('               { LPAREN }
+    | ')'               { RPAREN }
 
-	| ['0'-'9']+ as s 		{ CONST (int_of_string s) }
+	| ['0'-'9']+ as s 		        { CONST (int_of_string s) }
 	| ['a'-'z' 'A'-'Z']+ as s 		{ VARIABLE (s) }
 
 	| ";;"				{ EOL }
-  | ';' 				{ EINSTR }
+    | ';' 				{ EINSTR }
