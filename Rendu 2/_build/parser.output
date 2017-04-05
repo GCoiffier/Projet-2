@@ -1,0 +1,1514 @@
+   0  $accept : %entry% $end
+
+   1  main : expr EOL
+
+   2  expr : IF expr THEN expr ELSE expr
+   3       | PRINT expr
+   4       | LET VARIABLE EGALE expr IN expr
+   5       | LPAREN expr RPAREN
+   6       | expr EINSTR expr
+   7       | FUN VARIABLE IMPLIES expr
+   8       | expr ADD expr
+   9       | expr MINUS expr
+  10       | expr MULT expr
+  11       | expr DIV expr
+  12       | expr MOD expr
+  13       | VARIABLE
+  14       | CONST
+  15       | expr AND expr
+  16       | expr OR expr
+  17       | NOT expr
+  18       | expr EGALE expr
+  19       | expr NEG expr
+  20       | expr SUPS expr
+  21       | expr INFS expr
+  22       | expr SUPE expr
+  23       | expr INFE expr
+  24       | funct_call
+  25       | VARIABLE LPAREN RPAREN
+
+  26  funct_call : funct_call LPAREN expr RPAREN
+  27             | funct_call VARIABLE
+  28             | funct_call CONST
+  29             | VARIABLE LPAREN expr RPAREN
+  30             | VARIABLE VARIABLE
+  31             | VARIABLE CONST
+
+  32  %entry% : '\001' main
+
+state 0
+	$accept : . %entry% $end  (0)
+
+	'\001'  shift 1
+	.  error
+
+	%entry%  goto 2
+
+
+state 1
+	%entry% : '\001' . main  (32)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	main  goto 11
+	expr  goto 12
+	funct_call  goto 13
+
+
+state 2
+	$accept : %entry% . $end  (0)
+
+	$end  accept
+
+
+state 3
+	expr : CONST .  (14)
+
+	.  reduce 14
+
+
+state 4
+	expr : VARIABLE .  (13)
+	expr : VARIABLE . LPAREN RPAREN  (25)
+	funct_call : VARIABLE . LPAREN expr RPAREN  (29)
+	funct_call : VARIABLE . VARIABLE  (30)
+	funct_call : VARIABLE . CONST  (31)
+
+	CONST  shift 14
+	VARIABLE  shift 15
+	LPAREN  shift 16
+	ADD  reduce 13
+	MINUS  reduce 13
+	MULT  reduce 13
+	DIV  reduce 13
+	MOD  reduce 13
+	AND  reduce 13
+	OR  reduce 13
+	EGALE  reduce 13
+	NEG  reduce 13
+	SUPS  reduce 13
+	INFS  reduce 13
+	SUPE  reduce 13
+	INFE  reduce 13
+	THEN  reduce 13
+	ELSE  reduce 13
+	IN  reduce 13
+	RPAREN  reduce 13
+	EOL  reduce 13
+	EINSTR  reduce 13
+
+
+state 5
+	expr : NOT . expr  (17)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 17
+	funct_call  goto 13
+
+
+state 6
+	expr : IF . expr THEN expr ELSE expr  (2)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 18
+	funct_call  goto 13
+
+
+state 7
+	expr : PRINT . expr  (3)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 19
+	funct_call  goto 13
+
+
+state 8
+	expr : LET . VARIABLE EGALE expr IN expr  (4)
+
+	VARIABLE  shift 20
+	.  error
+
+
+state 9
+	expr : FUN . VARIABLE IMPLIES expr  (7)
+
+	VARIABLE  shift 21
+	.  error
+
+
+state 10
+	expr : LPAREN . expr RPAREN  (5)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 22
+	funct_call  goto 13
+
+
+state 11
+	%entry% : '\001' main .  (32)
+
+	.  reduce 32
+
+
+state 12
+	main : expr . EOL  (1)
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	ADD  shift 23
+	MINUS  shift 24
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	AND  shift 28
+	OR  shift 29
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	EOL  shift 36
+	EINSTR  shift 37
+	.  error
+
+
+state 13
+	expr : funct_call .  (24)
+	funct_call : funct_call . LPAREN expr RPAREN  (26)
+	funct_call : funct_call . VARIABLE  (27)
+	funct_call : funct_call . CONST  (28)
+
+	CONST  shift 38
+	VARIABLE  shift 39
+	LPAREN  shift 40
+	ADD  reduce 24
+	MINUS  reduce 24
+	MULT  reduce 24
+	DIV  reduce 24
+	MOD  reduce 24
+	AND  reduce 24
+	OR  reduce 24
+	EGALE  reduce 24
+	NEG  reduce 24
+	SUPS  reduce 24
+	INFS  reduce 24
+	SUPE  reduce 24
+	INFE  reduce 24
+	THEN  reduce 24
+	ELSE  reduce 24
+	IN  reduce 24
+	RPAREN  reduce 24
+	EOL  reduce 24
+	EINSTR  reduce 24
+
+
+state 14
+	funct_call : VARIABLE CONST .  (31)
+
+	.  reduce 31
+
+
+state 15
+	funct_call : VARIABLE VARIABLE .  (30)
+
+	.  reduce 30
+
+
+state 16
+	expr : VARIABLE LPAREN . RPAREN  (25)
+	funct_call : VARIABLE LPAREN . expr RPAREN  (29)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	RPAREN  shift 41
+	.  error
+
+	expr  goto 42
+	funct_call  goto 13
+
+
+state 17
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : NOT expr .  (17)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	ADD  reduce 17
+	MINUS  reduce 17
+	AND  reduce 17
+	OR  reduce 17
+	THEN  reduce 17
+	ELSE  reduce 17
+	IN  reduce 17
+	RPAREN  reduce 17
+	EOL  reduce 17
+	EINSTR  reduce 17
+
+
+state 18
+	expr : IF expr . THEN expr ELSE expr  (2)
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	ADD  shift 23
+	MINUS  shift 24
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	AND  shift 28
+	OR  shift 29
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	THEN  shift 43
+	EINSTR  shift 37
+	.  error
+
+
+state 19
+	expr : PRINT expr .  (3)
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	ADD  shift 23
+	MINUS  shift 24
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	AND  shift 28
+	OR  shift 29
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	THEN  reduce 3
+	ELSE  reduce 3
+	IN  reduce 3
+	RPAREN  reduce 3
+	EOL  reduce 3
+	EINSTR  reduce 3
+
+
+state 20
+	expr : LET VARIABLE . EGALE expr IN expr  (4)
+
+	EGALE  shift 44
+	.  error
+
+
+state 21
+	expr : FUN VARIABLE . IMPLIES expr  (7)
+
+	IMPLIES  shift 45
+	.  error
+
+
+state 22
+	expr : LPAREN expr . RPAREN  (5)
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	ADD  shift 23
+	MINUS  shift 24
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	AND  shift 28
+	OR  shift 29
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	RPAREN  shift 46
+	EINSTR  shift 37
+	.  error
+
+
+state 23
+	expr : expr ADD . expr  (8)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 47
+	funct_call  goto 13
+
+
+state 24
+	expr : expr MINUS . expr  (9)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 48
+	funct_call  goto 13
+
+
+state 25
+	expr : expr MULT . expr  (10)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 49
+	funct_call  goto 13
+
+
+state 26
+	expr : expr DIV . expr  (11)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 50
+	funct_call  goto 13
+
+
+state 27
+	expr : expr MOD . expr  (12)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 51
+	funct_call  goto 13
+
+
+state 28
+	expr : expr AND . expr  (15)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 52
+	funct_call  goto 13
+
+
+state 29
+	expr : expr OR . expr  (16)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 53
+	funct_call  goto 13
+
+
+state 30
+	expr : expr EGALE . expr  (18)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 54
+	funct_call  goto 13
+
+
+state 31
+	expr : expr NEG . expr  (19)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 55
+	funct_call  goto 13
+
+
+state 32
+	expr : expr SUPS . expr  (20)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 56
+	funct_call  goto 13
+
+
+state 33
+	expr : expr INFS . expr  (21)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 57
+	funct_call  goto 13
+
+
+state 34
+	expr : expr SUPE . expr  (22)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 58
+	funct_call  goto 13
+
+
+state 35
+	expr : expr INFE . expr  (23)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 59
+	funct_call  goto 13
+
+
+state 36
+	main : expr EOL .  (1)
+
+	.  reduce 1
+
+
+state 37
+	expr : expr EINSTR . expr  (6)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 60
+	funct_call  goto 13
+
+
+state 38
+	funct_call : funct_call CONST .  (28)
+
+	.  reduce 28
+
+
+state 39
+	funct_call : funct_call VARIABLE .  (27)
+
+	.  reduce 27
+
+
+state 40
+	funct_call : funct_call LPAREN . expr RPAREN  (26)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 61
+	funct_call  goto 13
+
+
+state 41
+	expr : VARIABLE LPAREN RPAREN .  (25)
+
+	.  reduce 25
+
+
+state 42
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+	funct_call : VARIABLE LPAREN expr . RPAREN  (29)
+
+	ADD  shift 23
+	MINUS  shift 24
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	AND  shift 28
+	OR  shift 29
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	RPAREN  shift 62
+	EINSTR  shift 37
+	.  error
+
+
+state 43
+	expr : IF expr THEN . expr ELSE expr  (2)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 63
+	funct_call  goto 13
+
+
+state 44
+	expr : LET VARIABLE EGALE . expr IN expr  (4)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 64
+	funct_call  goto 13
+
+
+state 45
+	expr : FUN VARIABLE IMPLIES . expr  (7)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 65
+	funct_call  goto 13
+
+
+state 46
+	expr : LPAREN expr RPAREN .  (5)
+
+	.  reduce 5
+
+
+state 47
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr ADD expr .  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	AND  shift 28
+	OR  shift 29
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	ADD  reduce 8
+	MINUS  reduce 8
+	THEN  reduce 8
+	ELSE  reduce 8
+	IN  reduce 8
+	RPAREN  reduce 8
+	EOL  reduce 8
+	EINSTR  reduce 8
+
+
+state 48
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr MINUS expr .  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	AND  shift 28
+	OR  shift 29
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	ADD  reduce 9
+	MINUS  reduce 9
+	THEN  reduce 9
+	ELSE  reduce 9
+	IN  reduce 9
+	RPAREN  reduce 9
+	EOL  reduce 9
+	EINSTR  reduce 9
+
+
+state 49
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr MULT expr .  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	ADD  reduce 10
+	MINUS  reduce 10
+	MULT  reduce 10
+	DIV  reduce 10
+	MOD  reduce 10
+	AND  reduce 10
+	OR  reduce 10
+	THEN  reduce 10
+	ELSE  reduce 10
+	IN  reduce 10
+	RPAREN  reduce 10
+	EOL  reduce 10
+	EINSTR  reduce 10
+
+
+state 50
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr DIV expr .  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	ADD  reduce 11
+	MINUS  reduce 11
+	MULT  reduce 11
+	DIV  reduce 11
+	MOD  reduce 11
+	AND  reduce 11
+	OR  reduce 11
+	THEN  reduce 11
+	ELSE  reduce 11
+	IN  reduce 11
+	RPAREN  reduce 11
+	EOL  reduce 11
+	EINSTR  reduce 11
+
+
+state 51
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr MOD expr .  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	ADD  reduce 12
+	MINUS  reduce 12
+	MULT  reduce 12
+	DIV  reduce 12
+	MOD  reduce 12
+	AND  reduce 12
+	OR  reduce 12
+	THEN  reduce 12
+	ELSE  reduce 12
+	IN  reduce 12
+	RPAREN  reduce 12
+	EOL  reduce 12
+	EINSTR  reduce 12
+
+
+state 52
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr AND expr .  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	ADD  reduce 15
+	MINUS  reduce 15
+	AND  reduce 15
+	OR  reduce 15
+	THEN  reduce 15
+	ELSE  reduce 15
+	IN  reduce 15
+	RPAREN  reduce 15
+	EOL  reduce 15
+	EINSTR  reduce 15
+
+
+state 53
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr OR expr .  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	ADD  reduce 16
+	MINUS  reduce 16
+	AND  reduce 16
+	OR  reduce 16
+	THEN  reduce 16
+	ELSE  reduce 16
+	IN  reduce 16
+	RPAREN  reduce 16
+	EOL  reduce 16
+	EINSTR  reduce 16
+
+
+state 54
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr EGALE expr .  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	.  reduce 18
+
+
+state 55
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr NEG expr .  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	.  reduce 19
+
+
+state 56
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr SUPS expr .  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	.  reduce 20
+
+
+state 57
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr INFS expr .  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	.  reduce 21
+
+
+state 58
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr SUPE expr .  (22)
+	expr : expr . INFE expr  (23)
+
+	.  reduce 22
+
+
+state 59
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+	expr : expr INFE expr .  (23)
+
+	.  reduce 23
+
+
+state 60
+	expr : expr . EINSTR expr  (6)
+	expr : expr EINSTR expr .  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	ADD  shift 23
+	MINUS  shift 24
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	AND  shift 28
+	OR  shift 29
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	THEN  reduce 6
+	ELSE  reduce 6
+	IN  reduce 6
+	RPAREN  reduce 6
+	EOL  reduce 6
+	EINSTR  reduce 6
+
+
+state 61
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+	funct_call : funct_call LPAREN expr . RPAREN  (26)
+
+	ADD  shift 23
+	MINUS  shift 24
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	AND  shift 28
+	OR  shift 29
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	RPAREN  shift 66
+	EINSTR  shift 37
+	.  error
+
+
+state 62
+	funct_call : VARIABLE LPAREN expr RPAREN .  (29)
+
+	.  reduce 29
+
+
+state 63
+	expr : IF expr THEN expr . ELSE expr  (2)
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	ADD  shift 23
+	MINUS  shift 24
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	AND  shift 28
+	OR  shift 29
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	ELSE  shift 67
+	EINSTR  shift 37
+	.  error
+
+
+state 64
+	expr : LET VARIABLE EGALE expr . IN expr  (4)
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	ADD  shift 23
+	MINUS  shift 24
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	AND  shift 28
+	OR  shift 29
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	IN  shift 68
+	EINSTR  shift 37
+	.  error
+
+
+state 65
+	expr : expr . EINSTR expr  (6)
+	expr : FUN VARIABLE IMPLIES expr .  (7)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	ADD  shift 23
+	MINUS  shift 24
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	AND  shift 28
+	OR  shift 29
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	THEN  reduce 7
+	ELSE  reduce 7
+	IN  reduce 7
+	RPAREN  reduce 7
+	EOL  reduce 7
+	EINSTR  reduce 7
+
+
+state 66
+	funct_call : funct_call LPAREN expr RPAREN .  (26)
+
+	.  reduce 26
+
+
+state 67
+	expr : IF expr THEN expr ELSE . expr  (2)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 69
+	funct_call  goto 13
+
+
+state 68
+	expr : LET VARIABLE EGALE expr IN . expr  (4)
+
+	CONST  shift 3
+	VARIABLE  shift 4
+	NOT  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	LET  shift 8
+	FUN  shift 9
+	LPAREN  shift 10
+	.  error
+
+	expr  goto 70
+	funct_call  goto 13
+
+
+state 69
+	expr : IF expr THEN expr ELSE expr .  (2)
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	ADD  shift 23
+	MINUS  shift 24
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	AND  shift 28
+	OR  shift 29
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	THEN  reduce 2
+	ELSE  reduce 2
+	IN  reduce 2
+	RPAREN  reduce 2
+	EOL  reduce 2
+	EINSTR  reduce 2
+
+
+state 70
+	expr : LET VARIABLE EGALE expr IN expr .  (4)
+	expr : expr . EINSTR expr  (6)
+	expr : expr . ADD expr  (8)
+	expr : expr . MINUS expr  (9)
+	expr : expr . MULT expr  (10)
+	expr : expr . DIV expr  (11)
+	expr : expr . MOD expr  (12)
+	expr : expr . AND expr  (15)
+	expr : expr . OR expr  (16)
+	expr : expr . EGALE expr  (18)
+	expr : expr . NEG expr  (19)
+	expr : expr . SUPS expr  (20)
+	expr : expr . INFS expr  (21)
+	expr : expr . SUPE expr  (22)
+	expr : expr . INFE expr  (23)
+
+	ADD  shift 23
+	MINUS  shift 24
+	MULT  shift 25
+	DIV  shift 26
+	MOD  shift 27
+	AND  shift 28
+	OR  shift 29
+	EGALE  shift 30
+	NEG  shift 31
+	SUPS  shift 32
+	INFS  shift 33
+	SUPE  shift 34
+	INFE  shift 35
+	EINSTR  shift 37
+	THEN  reduce 4
+	ELSE  reduce 4
+	IN  reduce 4
+	RPAREN  reduce 4
+	EOL  reduce 4
+
+
+31 terminals, 5 nonterminals
+33 grammar rules, 71 states
