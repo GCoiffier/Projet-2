@@ -26,7 +26,8 @@ let rec debug : programme -> unit = fun prg ->
                             | Mod -> " mod " | Equal -> "="  | Neq -> "<>"
                             | Infeq -> "<="  | Inf -> "<"    | Supeq -> ">="
                             | Sup -> ">");
-                        debug b
+                        debug b;
+                        print_string ")"
 
     |Let(x,a,b) ->  print_string ("let "^x^" = (");
                     debug a;
@@ -43,4 +44,8 @@ let rec debug : programme -> unit = fun prg ->
                           print_string " -> ";
                           debug a
 
-    | _ -> failwith "Work in progress"
+    |Function_call(x,a) ->  debug x;
+                            print_string " ";
+                            debug a
+
+    (* | _ -> failwith "Work in progress" *)

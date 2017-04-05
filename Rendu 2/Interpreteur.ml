@@ -15,7 +15,7 @@ let execute : programme -> int = fun prg ->
 
     |PrInt(a) -> let r = (exec_aux env a) in
                   ( match r with
-                     Int(x) -> print_int x; print_newline ()
+                     Env.Int(x) -> print_int x; print_newline ()
                      |_ -> failwith "Execution Error in prInt"
                   ) ; r
 
@@ -53,7 +53,7 @@ let execute : programme -> int = fun prg ->
                           | Supeq -> if (xa>=xb) then c1 else c0
                           | Sup -> if (xa>xb) then c1 else c0 )
 
-    | Function_def(a,e) as f -> Env.Cloture(f, Env.copy env)
+    | Function_def(_,_) as f -> Env.Cloture(f, Env.copy env)
 
     | Function_call(arg,expr) -> let v = (exec_aux env arg) in
                                 (match v with
