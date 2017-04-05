@@ -1,0 +1,25 @@
+### Starting build.
+# Target: main.ml.depends, tags: { extension:ml, file:main.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules main.ml > main.ml.depends
+# Target: debug.ml.depends, tags: { extension:ml, file:debug.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules debug.ml > debug.ml.depends
+# Target: environnement.ml.depends, tags: { extension:ml, file:environnement.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules environnement.ml > environnement.ml.depends
+# Target: prog_type.ml.depends, tags: { extension:ml, file:prog_type.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules prog_type.ml > prog_type.ml.depends
+# Target: prog_type.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:prog_type.cmo, file:prog_type.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o prog_type.cmo prog_type.ml
+# Target: environnement.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:environnement.cmo, file:environnement.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o environnement.cmo environnement.ml
+# Target: Interpreteur.ml.depends, tags: { extension:ml, file:Interpreteur.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules Interpreteur.ml > Interpreteur.ml.depends
+# Target: lexParInterface.ml.depends, tags: { extension:ml, file:lexParInterface.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep -modules lexParInterface.ml > lexParInterface.ml.depends
+# Target: Interpreteur.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:Interpreteur.cmo, file:Interpreteur.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc -c -o Interpreteur.cmo Interpreteur.ml
++ /usr/bin/ocamlc -c -o Interpreteur.cmo Interpreteur.ml
+File "Interpreteur.ml", line 60, characters 48-49:
+Error: This expression has type int but an expression was expected of type
+         Prog_type.programme
+Command exited with code 2.
+# Compilation unsuccessful.
