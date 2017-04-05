@@ -37,7 +37,7 @@ expr:
   | LPAREN expr RPAREN 			              { $2 }
   | expr EINSTR expr				          { Imp($1,$3) } /* séquencement */
 
-  | FUN VARIABLE IMPLIES expr                 { Function_def($2, $4) }
+  | FUN VARIABLE IMPLIES expr                 { Function_def(Var($2), $4) }
 
  /* expression arithmétique */
   | expr ADD expr				              { BinOp ($1, Add, $3) }
