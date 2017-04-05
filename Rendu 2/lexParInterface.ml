@@ -1,6 +1,6 @@
 (* stdin désigne l'entrée standard (le clavier) *)
 (* lexbuf est un canal ouvert sur stdin *)
-open Fouine
+open Interpreteur
 
 let lexbuf fd = Lexing.from_channel fd
 

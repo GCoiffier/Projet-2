@@ -1,0 +1,1 @@
+let a = prInt 5 in a + prInt 7 ;;

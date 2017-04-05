@@ -1,0 +1,2 @@
+let f x y = x*y
+in f (prInt 3) (2+prInt 2) ;;
