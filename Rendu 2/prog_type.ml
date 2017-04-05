@@ -14,5 +14,5 @@ type programme =
     |Let of variable * programme * programme (* let x = A in B -> (x,A,B) *)
     |IfThenElse of programme * programme * programme (* if x then A else B -> (x,A,B) *)
     |Imp of programme * programme (* A;B *)
-    |Function_def of variable * programme
+    |Function_def of programme * programme
     |Function_call of programme * programme

@@ -23,13 +23,13 @@ open Prog_type
 %left EINSTR
 %left IF, THEN, ELSE
 %left PRINT
-%left FUN, IMPLIES
+%right FUN, IMPLIES
 %left ADD, MINUS
 %left AND, OR
 %left NOT
 %left DIV, MULT, MOD
 %left VARIABLE, CONST
-%left EGALE, NEG, SUPS, INFS, INFE, SUPE 
+%left EGALE, NEG, SUPS, INFS, INFE, SUPE
 
 %start main
 %type <Prog_type.programme> main
@@ -49,24 +49,25 @@ expr:
 
  /* definition de function */
   | LET VARIABLE LPAREN RPAREN EGALE expr IN expr
-  											  { Let($2, Function_def("nothing",$6), $8 ) }
+  											  { Let($2, Function_def(Var("nothing"),$6), $8 ) }
   | LET VARIABLE fun_def IN expr 			  { Let($2, $3, $5) }
-  | FUN VARIABLE IMPLIES expr                 { Function_def($2, $4) }
+  | FUN VARIABLE IMPLIES expr                 { Function_def(Var($2), $4) }
   | LET REC VARIABLE fun_def IN expr 		  { Let($3, $4, $6) }
+
 
  /* exceptions */
   | TRY expr WITH EXCEPT VARIABLE IMPLIES expr { $2 }
   | RAISE VARIABLE                             { Var($2) }
   | RAISE CONST                                { Const($2) }
   | RAISE LPAREN expr RPAREN                   { $3 }
-  
- /* reference */ 
+
+ /* reference */
   | LET VARIABLE EGALE REF expr IN expr		  { Let($2,$5,$7) }
   | ACCESS VARIABLE                           { Var($2) }
-  | VARIABLE AFFECT VARIABLE                  { Var($3) }             
+  | VARIABLE AFFECT VARIABLE                  { Var($3) }
   | VARIABLE AFFECT CONST                     { Const($3) }
   | VARIABLE AFFECT LPAREN expr RPAREN        { $4 }
-   
+
  /* expression arithmétique */
   | expr ADD expr				              { BinOp ($1, Add, $3) }
   | expr MINUS expr			                  { BinOp ($1, Minus, $3) }
@@ -88,12 +89,12 @@ expr:
   | expr INFE expr				              { BinOp($1, Infeq ,$3) }
 
   | funct_call								  { $1 }
-  | VARIABLE LPAREN RPAREN                    { Function_call( Var($1), Const(1) ) }                             
+  | VARIABLE LPAREN RPAREN                    { Function_call( Var($1), Const(1) ) }
 ;
 
 fun_def:
-  | VARIABLE fun_def						  { Function_def($1, $2) }
-  | VARIABLE EGALE expr                       { Function_def($1, $3) }
+  | VARIABLE fun_def						  { Function_def(Var($1), $2) }
+  | VARIABLE EGALE expr                       { Function_def(Var($1), $3) }
 ;
 funct_call:
   | funct_call LPAREN expr RPAREN             { Function_call($1, $3) }

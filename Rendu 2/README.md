@@ -41,9 +41,15 @@ Coiffier Guillaume - Valque Léo
 
 [ ] Fonctionnement de la machine à pile
 
+# L'interprétation
+L'interprétation est réalisée dans la fonction execute du fichier interpreteur.ml . Cette fonction prend en argument un programme fouine parsé (de type programme) et renvoie un entier. On utilise une fonction récursive auxilliaire qui associe une valeur de type 'ret' au programme. Ensuite la petite fonction return qui renvoie un int à partir de ce ret.
+
+Ce type intermédiaire ret est nécessaire pour pouvoir utiliser des fonctions. C'est le type des éléments qui sont associés à nos programmes dans la table de hachage (Env.elt).
+Lorsque l'on doit interpréter la définition d'une fonction, la seule possibilité et de renvoyer la clôture associée (qui sera rattrapée dans la deuxième moitié de l'exécution d'un let... in ...). Env.elt est alors soit un int, soit une clôture.
+
 # L'environnement
 
-On utilisera des tables de hachage (Hastbl).
+On utilisera des tables de hachage (Hastbl). Cette structure de donnée a le gros avantage de gérer parfaitement la portée des variables. En effet, d'après la documentation de Ocaml, lorsqu'une valeur y est assignée à la variable x dans une Hashtbl, l'ancienne valeur de x est remplacée par y. Lorsque l'on supprime l'association (x,y) dans la table, l'ancienne valeur associée à x est restaurée !
 
 # Liste et contenu des fichiers
 

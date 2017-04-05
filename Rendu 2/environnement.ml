@@ -1,6 +1,6 @@
 open Prog_type
 
-module type EnvSig = sig
+module type Dictsig = sig
 
     type ('a,'b) t
     val create : int -> ('a, 'b) t
@@ -12,18 +12,36 @@ module type EnvSig = sig
 end
 
 
-module Env : EnvSig = struct
+module Dictionnaire : Dictsig = struct
 
   type ('a, 'b) t = ('a, 'b) Hashtbl.t
 
   let create n = Hashtbl.create n
-
   let add = Hashtbl.add
-
   let remove = Hashtbl.remove
-
   let find = Hashtbl.find
-
   let copy = Hashtbl.copy
 
 end
+
+module Environnement =
+    functor (D : Dictsig) ->
+    struct
+
+        (* Ce que l'on stocke dans l'environnement.
+        C'est soit la valeur d'une variable, soit
+        l'expression et la cloture associée à une fonction *)
+      type elt =
+        | Int of int
+        | Cloture of programme * (programme , elt) D.t
+
+      let create n = D.create n
+
+      let add = D.add
+      let find = D.find
+      let remove = D.remove
+      let copy = D.copy
+
+    end
+
+module Env = Environnement(Dictionnaire)
