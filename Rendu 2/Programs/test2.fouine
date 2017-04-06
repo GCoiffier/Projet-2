@@ -1,2 +1,1 @@
-let f x y = x*y
-in f (prInt 3) (2+prInt 2) ;;
+let f x = x in f (4) ;;

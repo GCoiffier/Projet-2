@@ -45,6 +45,7 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
 	| "||" 				{ OR }
 	| "not" 			{ NOT }
   
+    | "()"              { UNIT }
     | '('               { LPAREN }
     | ')'               { RPAREN }
 
