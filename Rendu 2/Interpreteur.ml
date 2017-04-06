@@ -1,6 +1,8 @@
 open Environnement
 open Prog_type
 
+exception Error of int
+
 type ret = Env.elt (* Le type de retour de l'interprétation *)
 
 let return : ret -> int = function
@@ -26,8 +28,6 @@ let execute : programme -> int = fun prg ->
     |IfThenElse(b,p1,p2) -> let x = return (exec_aux env b) in
                               if (x==1) then (exec_aux env p1)
                                         else (exec_aux env p2)
-
-    |Imp(p1,p2) -> let _ = exec_aux env p1 in exec_aux env p2
 
     |UnOp(op,a) ->  let x = return (exec_aux env a) in
                     ( match op with
@@ -61,5 +61,23 @@ let execute : programme -> int = fun prg ->
                                     let _ = Env.add clt x (exec_aux env arg) in
                                     exec_aux clt expr
                                 | _ -> failwith "Error in function call")
+
+    | Function_rec_def(_,_) -> failwith "Not implemented yet"
+
+    | TryWith(e1,e2) -> let env2 = Env.copy env in
+                       try
+                        (exec_aux env e1)
+                       with | Error(u) -> (exec_aux env2 e2)
+
+    | Raise(x) -> let u = return (exec_aux env x) in
+                    raise (Error(u))
+
+    | Imp(p1,p2) -> let _ = exec_aux env p1 in exec_aux env p2
+
+    | Ref(x,p) -> failwith "Not implemented yet"
+
+    | Bang(x) -> failwith "Not implemented yet"
+
+    | Assign(x,p) -> failwith "Not implemented yet"
 
   in return (exec_aux (Env.create 10) prg)
