@@ -34,9 +34,6 @@ let rec debug : programme -> unit = fun prg ->
                     print_string " in ";
                     debug b
 
-    |Imp(a,b) -> debug a;
-                 print_string " ; ";
-                 debug b
 
     |Function_def(x,a) -> print_string "(";
                           print_string "fun ";
@@ -49,4 +46,16 @@ let rec debug : programme -> unit = fun prg ->
                             print_string " ";
                             debug a
 
-    (* | _ -> failwith "Work in progress" *)
+    | Function_rec_def(_,_) -> failwith "Not implemented yet"
+
+    | TryWith(e1,e2) -> failwith "Not implemented yet"
+
+    | Raise(x) -> failwith "Not implemented yet"
+
+    | Imp(p1,p2) -> failwith "Not implemented yet"
+
+    | Ref(x,p) -> failwith "Not implemented yet"
+
+    | Bang(x) -> failwith "Not implemented yet"
+
+    | Assign(x,p) -> failwith "Not implemented yet"

@@ -64,13 +64,15 @@ let execute : programme -> int = fun prg ->
 
     | Function_rec_def(_,_) -> failwith "Not implemented yet"
 
-    | TryWith(e1,e2) -> let env2 = Env.copy env in
+    | TryWith(e1,e2) -> failwith "Not implemented yet"
+                    (*let env2 = Env.copy env in
                        try
                         (exec_aux env e1)
-                       with | Error(u) -> (exec_aux env2 e2)
+                       with | Error(u) -> (exec_aux env2 e2) *)
 
-    | Raise(x) -> let u = return (exec_aux env x) in
-                    raise (Error(u))
+    | Raise(x) -> failwith "Not implemented yet"
+                (*let u = return (exec_aux env x) in
+                    raise (Error u) *)
 
     | Imp(p1,p2) -> let _ = exec_aux env p1 in exec_aux env p2
 
