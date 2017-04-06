@@ -54,7 +54,7 @@ expr:
   | expr EINSTR expr				              { Imp($1,$3) } /* séquencement */
 
  /* definition de fonction */
-  | LET VARIABLE LPAREN RPAREN EGALE expr IN expr { Let($2, Function_def(Var("nothing"),$6), $8 ) }
+  | LET VARIABLE UNIT EGALE expr IN expr { Let($2, Function_def(Var("nothing"),$6), $8 ) }
   | LET VARIABLE fun_arg IN expr 			      { Let($2, $3, $5) }
   | LET REC VARIABLE fun_arg IN expr 		      { Let($3, $4, $6) }
   | fun_def                                       { $1 }
