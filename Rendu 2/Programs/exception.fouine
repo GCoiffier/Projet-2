@@ -1,4 +1,5 @@
-let x = 3 in try
-        if x>2 then raise E 1
+let x = 3 in
+      try
+        if (x>2) then (raise E 1)
                 else x
-        with E 1 -> 42 ;;
+      with E 1 -> 42 ;;
