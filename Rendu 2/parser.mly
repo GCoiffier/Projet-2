@@ -98,10 +98,12 @@ expr:
 fun_arg:
   | VARIABLE fun_arg						     { Function_def(Var($1), $2) }
   | VARIABLE EGALE expr                          { Function_def(Var($1), $3) }
+  /* destine a la definition a fun x -> x */
+  | VARIABLE IMPLIES expr                        { Function_def(Var($1), $3) }
 ;
 
 fun_def:
-  | FUN VARIABLE IMPLIES expr                    { Function_def(Var($2), $4) }
+  | FUN fun_arg                                   { $2 }
 ;
 
 /* Appels de fonctions */
