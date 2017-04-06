@@ -39,9 +39,12 @@ open Prog_type
 main:
   | expr EOL                                  { $1 }
 
+variable :
+    | VARIABLE                                    { Var($1) }
+;
 
 sexpr: /* il faut mettre en parenthese une expression qui n'est pas "simple" (evite les shifts reduces */
-  | VARIABLE					                 { Var($1) }
+  | variable					                 { $1 }
   | CONST					                     { Const($1) }
   | LPAREN expr RPAREN                           { $2 }
 ;
@@ -49,25 +52,25 @@ expr:
   /* règles générales  */
   | IF expr THEN expr ELSE expr		              { IfThenElse($2,$4,$6) }
   | PRINT expr					                  { PrInt($2) }
-  | LET VARIABLE EGALE expr IN expr		          { Let($2,$4,$6) }
+  | LET variable EGALE expr IN expr		          { Let($2,$4,$6) }
   | LPAREN expr RPAREN 			                  { $2 }
   | expr EINSTR expr				              { Imp($1,$3) } /* séquencement */
 
  /* definition de fonction */
-  | LET VARIABLE UNIT EGALE expr IN expr          { Let($2, Function_def(Const(0),$5), $7 ) }
-  | LET VARIABLE fun_arg IN expr 			      { Let($2, $3, $5) }
-  | LET REC VARIABLE fun_arg IN expr 		      { Let($3, $4, $6) }
+  | LET variable UNIT EGALE expr IN expr          { Let($2, Function_def(Const(0),$5), $7 ) }
+  | LET variable fun_arg IN expr 			      { Let($2, $3, $5) }
+  | LET REC variable fun_arg IN expr 		      { LetRec($3, $4, $6) }
   | fun_def                                       { $1 }
 
 
  /* exceptions */
-  | TRY expr WITH EXCEPT VARIABLE IMPLIES expr    { TryWith($2,Var($5),$7) }
+  | TRY expr WITH EXCEPT variable IMPLIES expr    { TryWith($2,$5,$7) }
   | RAISE sexpr                                   { Raise($2) }
 
  /* reference */
-  | LET VARIABLE EGALE REF expr IN expr          { Let($2, Ref($5), $7) }
-  | ACCESS VARIABLE                              { Bang(Var($2)) }
-  | VARIABLE AFFECT sexpr                        { Assign(Var($1),$3) }
+  | LET variable EGALE REF expr IN expr          { Let($2, Ref($5), $7) }
+  | ACCESS variable                              { Bang($2) }
+  | variable AFFECT sexpr                        { Assign($1,$3) }
 
  /* Expression arithmétique */
   | expr ADD expr				                 { BinOp ($1, Add, $3) }
@@ -91,15 +94,15 @@ expr:
   | expr INFE expr				                 { BinOp($1, Infeq ,$3) }
 
   | funct_call								     { $1 }
-  | VARIABLE UNIT                                { Function_call( Var($1), Const(0) ) }
+  | variable UNIT                                { Function_call($1, Const(0) ) }
 ;
 
 /* Arguments de fonctions */
 fun_arg:
-  | VARIABLE fun_arg						     { Function_def(Var($1), $2) }
-  | VARIABLE EGALE expr                          { Function_def(Var($1), $3) }
+  | variable fun_arg						     { Function_def($1, $2) }
+  | variable EGALE expr                          { Function_def($1, $3) }
   /* destine a la definition a fun x -> x */
-  | VARIABLE IMPLIES expr                        { Function_def(Var($1), $3) }
+  | variable IMPLIES expr                        { Function_def($1, $3) }
 ;
 
 fun_def:

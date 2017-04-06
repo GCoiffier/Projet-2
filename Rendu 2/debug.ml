@@ -34,11 +34,19 @@ let rec debug : programme -> unit = fun prg ->
                         debug b;
                         pstr ")"
 
-    | Let(x,p1,p2) ->  pstr ("let "^x^" = ");
-                    debug p1;
-                    pstr " in ";
-                    debug p2
+    | Let(x,p1,p2) ->  pstr "let ";
+                        debug x;
+                        pstr " = ";
+                        debug p1;
+                        pstr " in ";
+                        debug p2
 
+    | LetRec(x,p1,p2) -> pstr "let rec ";
+                        debug x;
+                        pstr " = ";
+                        debug p1;
+                        pstr " in ";
+                        debug p2
 
     | Function_def(x,a) -> pstr "(";
                           pstr "fun ";
@@ -50,8 +58,6 @@ let rec debug : programme -> unit = fun prg ->
     | Function_call(x,a) ->  debug x;
                             pstr " ";
                             debug a
-
-    | Function_rec_def(_,_) -> failwith "Not implemented yet"
 
     | TryWith(p1,x,p2) -> pstr "try ";
                             debug p1;

@@ -11,12 +11,12 @@ type programme =
     | PrInt of programme
     | UnOp of unary_op * programme
     | BinOp of programme * binary_op * programme
-    | Let of variable * programme * programme (* let x = A in B -> (x,A,B) *)
-    | IfThenElse of programme * programme * programme (* if x then A else B -> (x,A,B) *)
-    | Function_def of programme * programme
+    | Let of programme  * programme * programme (* let x = A in B -> (x,A,B) *)
+    | LetRec of programme * programme * programme
+    | Function_def of programme * programme  (* fun x -> A  :  (x,expr) *)
     | Function_call of programme * programme
-    | Function_rec_def of programme * programme
-    | TryWith of programme * programme * programme
+    | IfThenElse of programme * programme * programme (* if x then A else B -> (x,A,B) *)
+    | TryWith of programme * programme * programme (* try A with E x -> B : (x,A,B) *)
     | Raise of programme
     | Imp of programme * programme (* A;B *)
     | Ref of programme (* ref A *)

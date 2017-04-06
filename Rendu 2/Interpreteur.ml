@@ -16,15 +16,22 @@ let execute : programme -> int = fun prg ->
 
         |Var(x) as v -> Env.find env v
 
-        |PrInt(a) -> let r = (exec_aux env a) in
+        |PrInt(p) -> let r = (exec_aux env p) in
                       ( match r with
                          Env.Int(x) -> print_int x; print_newline ()
                          |_ -> failwith "Execution Error in prInt"
                       ) ; r
 
-        |Let(x,val_x,p) ->  Env.add env (Var(x)) (exec_aux env val_x);
+        |Let(x,val_x,p) ->  Env.add env x (exec_aux env val_x);
                             let ret = (exec_aux env p) in
-                            Env.remove env (Var(x)); ret
+                            Env.remove env x; ret
+
+        |LetRec(f,expr_f,p) -> let env_rec = Env.copy env in
+                                let clt = Env.Cloture(expr_f,env_rec) in
+                                Env.add env_rec f clt;
+                                Env.add env f clt;
+                                let ret = (exec_aux env p) in
+                                Env.remove env f; ret
 
         |IfThenElse(b,p1,p2) -> let x = return (exec_aux env b) in
                                   if (x==1) then (exec_aux env p1)
@@ -62,8 +69,6 @@ let execute : programme -> int = fun prg ->
                                         let _ = Env.add clt x (exec_aux env arg) in
                                         exec_aux clt expr
                                     | _ -> failwith "Error in function call")
-
-        | Function_rec_def(_,_) -> failwith "Not implemented yet"
 
         | TryWith(p1,x,p2) -> let prev_env = Env.copy env in
                            (try
