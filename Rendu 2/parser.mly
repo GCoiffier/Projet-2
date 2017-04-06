@@ -54,20 +54,20 @@ expr:
   | expr EINSTR expr				              { Imp($1,$3) } /* séquencement */
 
  /* definition de fonction */
-  | LET VARIABLE UNIT EGALE expr IN expr { Let($2, Function_def(Var("nothing"),$6), $8 ) }
+  | LET VARIABLE UNIT EGALE expr IN expr          { Let($2, Function_def(Const(0),$5), $7 ) }
   | LET VARIABLE fun_arg IN expr 			      { Let($2, $3, $5) }
   | LET REC VARIABLE fun_arg IN expr 		      { Let($3, $4, $6) }
   | fun_def                                       { $1 }
 
 
  /* exceptions */
-  | TRY expr WITH EXCEPT VARIABLE IMPLIES expr    { $2 }
-  | RAISE sexpr                                   { $2 }
+  | TRY expr WITH EXCEPT VARIABLE IMPLIES expr    { TryWith($2,Var($5),$7) }
+  | RAISE sexpr                                   { Raise($2) }
 
  /* reference */
-  | LET VARIABLE EGALE REF expr IN expr		     { Let($2,$5,$7) }
-  | ACCESS VARIABLE                              { Var($2) }
-  | VARIABLE AFFECT sexpr                        { $3 }
+  | LET VARIABLE EGALE REF expr IN expr          { Let($2, Ref($5), $7) }
+  | ACCESS VARIABLE                              { Bang(Var($2)) }
+  | VARIABLE AFFECT sexpr                        { Assign(Var($1),$3) }
 
  /* Expression arithmétique */
   | expr ADD expr				                 { BinOp ($1, Add, $3) }
@@ -91,7 +91,7 @@ expr:
   | expr INFE expr				                 { BinOp($1, Infeq ,$3) }
 
   | funct_call								     { $1 }
-  | VARIABLE UNIT                                { Function_call( Var($1), Const(1) ) }
+  | VARIABLE UNIT                                { Function_call( Var($1), Const(0) ) }
 ;
 
 /* Arguments de fonctions */

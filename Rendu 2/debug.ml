@@ -7,11 +7,11 @@ let rec debug : programme -> unit = fun prg ->
     match prg with
     Const(n) -> print_int n
 
-    |Var(x) -> pstr x
+    | Var(x) -> pstr x
 
-    |PrInt(a) -> pstr "prInt("; debug a ; pstr ")"
+    | PrInt(a) -> pstr "prInt("; debug a ; pstr ")"
 
-    |IfThenElse(b,p1,p2) -> pstr "If (" ;
+    | IfThenElse(b,p1,p2) -> pstr "If (" ;
                             debug b ;
                             pstr ") Then (" ;
                             debug p1 ;
@@ -19,11 +19,11 @@ let rec debug : programme -> unit = fun prg ->
                             debug p2;
                             pstr ")"
 
-    |UnOp(op,a) -> pstr (match op with Neg -> "-(" | Not -> "!(");
+    | UnOp(op,a) -> pstr (match op with Neg -> "-(" | Not -> "!(");
                    debug a;
                    pstr ")"
 
-    |BinOp(a,op,b) -> pstr "(";
+    | BinOp(a,op,b) -> pstr "(";
                         debug a;
                         pstr ( match op with
                             | Add -> "+"     | Minus -> "-"  | And -> "&&"
@@ -34,20 +34,20 @@ let rec debug : programme -> unit = fun prg ->
                         debug b;
                         pstr ")"
 
-    |Let(x,p1,p2) ->  pstr ("let "^x^" = ");
+    | Let(x,p1,p2) ->  pstr ("let "^x^" = ");
                     debug p1;
                     pstr " in ";
                     debug p2
 
 
-    |Function_def(x,a) -> pstr "(";
+    | Function_def(x,a) -> pstr "(";
                           pstr "fun ";
                           debug x;
                           pstr " -> ";
                           debug a;
                           pstr ")"
 
-    |Function_call(x,a) ->  debug x;
+    | Function_call(x,a) ->  debug x;
                             pstr " ";
                             debug a
 
