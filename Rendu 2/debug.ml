@@ -1,61 +1,71 @@
 open Environnement
 open Prog_type
 
+let pstr = print_string (* abréviation *)
+
 let rec debug : programme -> unit = fun prg ->
     match prg with
     Const(n) -> print_int n
-    |Var(x) -> print_string x
-    |PrInt(a) -> print_string "prInt("; debug a ; print_string ")"
-    |IfThenElse(b,p1,p2) -> print_string "If (" ;
+
+    |Var(x) -> pstr x
+
+    |PrInt(a) -> pstr "prInt("; debug a ; pstr ")"
+
+    |IfThenElse(b,p1,p2) -> pstr "If (" ;
                             debug b ;
-                            print_string ") Then (" ;
+                            pstr ") Then (" ;
                             debug p1 ;
-                            print_string ") Else (";
+                            pstr ") Else (";
                             debug p2;
-                            print_string ")"
+                            pstr ")"
 
-    |UnOp(op,a) -> print_string (match op with Neg -> "-(" | Not -> "!(");
+    |UnOp(op,a) -> pstr (match op with Neg -> "-(" | Not -> "!(");
                    debug a;
-                   print_string ")"
+                   pstr ")"
 
-    |BinOp(a,op,b) -> print_string "(";
+    |BinOp(a,op,b) -> pstr "(";
                         debug a;
-                        print_string ( match op with
+                        pstr ( match op with
                             | Add -> "+"     | Minus -> "-"  | And -> "&&"
                             | Or -> "||"     | Mult -> "*"   | Div -> "/"
                             | Mod -> " mod " | Equal -> "="  | Neq -> "<>"
                             | Infeq -> "<="  | Inf -> "<"    | Supeq -> ">="
                             | Sup -> ">");
                         debug b;
-                        print_string ")"
+                        pstr ")"
 
-    |Let(x,a,b) ->  print_string ("let "^x^" = ");
-                    debug a;
-                    print_string " in ";
-                    debug b
+    |Let(x,p1,p2) ->  pstr ("let "^x^" = ");
+                    debug p1;
+                    pstr " in ";
+                    debug p2
 
 
-    |Function_def(x,a) -> print_string "(";
-                          print_string "fun ";
+    |Function_def(x,a) -> pstr "(";
+                          pstr "fun ";
                           debug x;
-                          print_string " -> ";
+                          pstr " -> ";
                           debug a;
-                          print_string ")"
+                          pstr ")"
 
     |Function_call(x,a) ->  debug x;
-                            print_string " ";
+                            pstr " ";
                             debug a
 
     | Function_rec_def(_,_) -> failwith "Not implemented yet"
 
-    | TryWith(e1,e2) -> failwith "Not implemented yet"
+    | TryWith(p1,x,p2) -> pstr "try ";
+                            debug p1;
+                            pstr " with | ";
+                            debug x;
+                            pstr " -> ";
+                            debug p2
 
-    | Raise(x) -> failwith "Not implemented yet"
+    | Raise(x) -> pstr "raise E "; debug x
 
-    | Imp(p1,p2) -> failwith "Not implemented yet"
+    | Imp(p1,p2) -> debug p1; pstr " ; "; debug p2;
 
-    | Ref(x,p) -> failwith "Not implemented yet"
+    | Ref(p) -> pstr "ref "; debug p
 
-    | Bang(x) -> failwith "Not implemented yet"
+    | Bang(x) -> pstr "!("; debug x; pstr ")"
 
-    | Assign(x,p) -> failwith "Not implemented yet"
+    | Assign(x,p) -> debug x ; pstr " := "; debug p
