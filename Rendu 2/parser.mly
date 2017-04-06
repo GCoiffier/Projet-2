@@ -13,7 +13,7 @@ open Prog_type
 %token EGALE NEG SUPS INFS SUPE INFE
 %token IF THEN ELSE PRINT LET IN
 %token FUN IMPLIES REC
-%token LPAREN RPAREN
+%token LPAREN RPAREN UNIT
 %token EOL EINSTR
 %token TRY WITH EXCEPT RAISE
 %token REF AFFECT ACCESS
@@ -39,6 +39,12 @@ open Prog_type
 main:
   | expr EOL                                  { $1 }
 
+
+sexpr: /* il faut mettre en parenthese une expression qui n'est pas "simple" (evite les shifts reduces */
+  | VARIABLE					                 { Var($1) }
+  | CONST					                     { Const($1) }
+  | LPAREN expr RPAREN                           { $2 }
+;
 expr:
   /* règles générales  */
   | IF expr THEN expr ELSE expr		              { IfThenElse($2,$4,$6) }
@@ -49,27 +55,24 @@ expr:
 
  /* definition de fonction */
   | LET VARIABLE LPAREN RPAREN EGALE expr IN expr { Let($2, Function_def(Var("nothing"),$6), $8 ) }
-  | LET VARIABLE fun_def IN expr 			      { Let($2, $3, $5) }
-  | FUN VARIABLE IMPLIES expr                     { Function_def(Var($2), $4) }
-  | LET REC VARIABLE fun_def IN expr 		      { Let($3, $4, $6) }
+  | LET VARIABLE fun_arg IN expr 			      { Let($2, $3, $5) }
+  | LET REC VARIABLE fun_arg IN expr 		      { Let($3, $4, $6) }
+  | fun_def                                       { $1 }
 
 
  /* exceptions */
   | TRY expr WITH EXCEPT VARIABLE IMPLIES expr    { $2 }
-  | RAISE VARIABLE                                { Var($2) }
-  | RAISE CONST                                   { Const($2) }
-  | RAISE LPAREN expr RPAREN                      { $3 }
+  | RAISE sexpr                                   { $2 }
 
  /* reference */
   | LET VARIABLE EGALE REF expr IN expr		     { Let($2,$5,$7) }
   | ACCESS VARIABLE                              { Var($2) }
-  | VARIABLE AFFECT VARIABLE                     { Var($3) }
-  | VARIABLE AFFECT CONST                        { Const($3) }
-  | VARIABLE AFFECT LPAREN expr RPAREN           { $4 }
+  | VARIABLE AFFECT sexpr                        { $3 }
 
  /* Expression arithmétique */
   | expr ADD expr				                 { BinOp ($1, Add, $3) }
   | expr MINUS expr			                     { BinOp ($1, Minus, $3) }
+  | MINUS expr								     { UnOp(Neg, $2) }
   | expr MULT expr			                     { BinOp ($1, Mult, $3) }
   | expr DIV expr				                 { BinOp ($1, Div, $3) }
   | expr MOD expr				                 { BinOp ($1, Mod, $3) }
@@ -88,21 +91,21 @@ expr:
   | expr INFE expr				                 { BinOp($1, Infeq ,$3) }
 
   | funct_call								     { $1 }
-  | VARIABLE LPAREN RPAREN                       { Function_call( Var($1), Const(1) ) }
+  | VARIABLE UNIT                                { Function_call( Var($1), Const(1) ) }
 ;
 
 /* Arguments de fonctions */
-fun_def:
-  | VARIABLE fun_def						     { Function_def(Var($1), $2) }
+fun_arg:
+  | VARIABLE fun_arg						     { Function_def(Var($1), $2) }
   | VARIABLE EGALE expr                          { Function_def(Var($1), $3) }
+;
+
+fun_def:
+  | FUN VARIABLE IMPLIES expr                    { Function_def(Var($2), $4) }
 ;
 
 /* Appels de fonctions */
 funct_call:
-  | funct_call LPAREN expr RPAREN                { Function_call($1, $3) }
-  | funct_call VARIABLE						     { Function_call($1, Var($2) ) }
-  | funct_call CONST 						     { Function_call($1, Const($2) ) }
-  | expr LPAREN expr RPAREN                      { Function_call( $1, $3) }
-  | expr VARIABLE						         { Function_call( $1, Var($2) ) }
-  | expr CONST 						             { Function_call( $1, Const($2) ) }
+  | funct_call sexpr                              { Function_call($1, $2) }
+  | sexpr sexpr                                   { Function_call($1, $2) }
 ;
