@@ -33,6 +33,7 @@ module Environnement =
         l'expression et la cloture associée à une fonction *)
       type elt =
         | Int of int
+        | Ref of int
         | Cloture of programme * (programme , elt) D.t
 
       let create n = D.create n

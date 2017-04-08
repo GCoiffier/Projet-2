@@ -6,7 +6,8 @@ type ret = Env.elt (* Le type de retour de l'interprétation *)
 exception E of Env.elt (* Ce type retour peut être une exception *)
 
 let return : ret -> int = function
-    Env.Int(n) -> n
+      Env.Int(n) -> n
+    | Env.Ref(n) -> n
     | _ -> failwith "Execution Error"
 
 let execute : programme -> int = fun prg ->
@@ -26,9 +27,9 @@ let execute : programme -> int = fun prg ->
                             let ret = (exec_aux env p) in
                             Env.remove env x; ret
 
-        |LetRec(f,expr_f,p) -> let env_rec = Env.copy env in
-                                let clt = Env.Cloture(expr_f,env_rec) in
-                                Env.add env_rec f clt;
+        |LetRec(f,expr_f,p) ->  let copy = Env.copy env in
+                                let clt = Env.Cloture(expr_f, copy) in
+                                Env.add copy f clt;
                                 Env.add env f clt;
                                 let ret = (exec_aux env p) in
                                 Env.remove env f; ret
@@ -66,8 +67,9 @@ let execute : programme -> int = fun prg ->
         | Function_call(f,arg) -> let v = (exec_aux env f) in
                                     (match v with
                                     | Env.Cloture(Function_def(x,expr), clt ) ->
-                                        let _ = Env.add clt x (exec_aux env arg) in
-                                        exec_aux clt expr
+                                        Env.add clt x (exec_aux env arg);
+                                        let ret = exec_aux clt expr in
+                                        Env.remove clt x; ret
                                     | _ -> failwith "Error in function call")
 
         | TryWith(p1,x,p2) -> let prev_env = Env.copy env in
@@ -80,11 +82,14 @@ let execute : programme -> int = fun prg ->
 
         | Imp(p1,p2) -> let _ = exec_aux env p1 in exec_aux env p2
 
-        | Ref(x) -> failwith "Not implemented yet"
+        | Ref(x) -> let v = return (exec_aux env x) in Env.Ref(v)
 
-        | Bang(x) -> failwith "Not implemented yet"
+        | Bang(x) -> Env.find env x
 
-        | Assign(x,p) -> failwith "Not implemented yet"
+        | Assign(x,p) -> let u = return (exec_aux env p) in
+                            Env.remove env x;
+                            Env.add env x (Env.Ref(u));
+                            Env.Int(u)
 
         in return (exec_aux (Env.create 10) prg)
     with | _ -> failwith "Execution error"

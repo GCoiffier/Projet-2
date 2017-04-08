@@ -4,9 +4,11 @@ Coiffier Guillaume - Valque Léo
 
 # Remarques générales
 
-- Addresse du dépôt Git : https://github.com/GCoiffier/Projet-2
+- Niveau du binôme : Intermédiaire
 
-- Les fichiers de tests sont situés dans le dossier Input.
+- Adresse du dépôt Git : https://github.com/GCoiffier/Projet-2
+
+- Les fichiers de tests sont situés dans le dossier Programs. Les fichiers contenant du code fouine ont une extension .fouine
 
 # Comment exécuter le programme
 
@@ -14,15 +16,13 @@ Coiffier Guillaume - Valque Léo
 
 - Pour nettoyer le répertoire de travail, utilisez la commande `make clean`.
 
-- `./fouine fichier`
+- `./fouine fichier` exécute le code contenu dans **fichier** et renvoie le résultat de ce code (qui doit être un entier)
 
-- `./fouine -debug fichier`
+- `./fouine -debug fichier` commence par afficher le code parsé dans la console,   puis exécute le code et affiche le résultat.
 
-- `./fouine -machine fichier`
-
-- `./fouine -interm fichier`
-
-- Exemples :  
+- Exemples :
+    - `./fouine Programs/factorielle.fouine`
+    - `./fouine -debug Programs/function.fouine`
 
 # Avancement du projet
 
@@ -33,13 +33,13 @@ Coiffier Guillaume - Valque Léo
 [X] Interprétation des fichiers .fouine sans les fonctions
   (ie expressions arithmétiques, booléennes, if ... then ... else et let ... in)
 
-[ ] Interprétation des fichiers .fouine avec des fonctions
+[X] Interprétation des fichiers .fouine avec des fonctions
 
-[ ] Interprétation des fichiers .fouine avec des fonctions récursives
+[X] Interprétation des fichiers .fouine avec des fonctions récursives
 
-[ ] Compilation vers une machine à pile
+[X] Gestion des exceptions
 
-[ ] Fonctionnement de la machine à pile
+[ ] Gestion des références
 
 # L'interprétation
 L'interprétation est réalisée dans la fonction execute du fichier interpreteur.ml . Cette fonction prend en argument un programme fouine parsé (de type programme) et renvoie un entier. On utilise une fonction récursive auxilliaire qui associe une valeur de type 'ret' au programme. Ensuite la petite fonction return qui renvoie un int à partir de ce ret.
@@ -51,19 +51,51 @@ Lorsque l'on doit interpréter la définition d'une fonction, la seule possibili
 
 On utilisera des tables de hachage (Hastbl). Cette structure de donnée a le gros avantage de gérer parfaitement la portée des variables. En effet, d'après la documentation de Ocaml, lorsqu'une valeur y est assignée à la variable x dans une Hashtbl, l'ancienne valeur de x est remplacée par y. Lorsque l'on supprime l'association (x,y) dans la table, l'ancienne valeur associée à x est restaurée !
 
+# Les fonctions et les fonctions récursives
+
+- implémentation de la cloture.
+- Cloture qui se contient elle même pour les fonctions récursives.
+- Suggestion de Bertrand pour le parsing de plusieurs arguments (utiliser un type d'expression simple_expr (sexpr) qui est tout sauf une fonction)
+- copie "brutale" de l'environnement en entier. On ne cherche pas à savoir quelles sont les valeurs dont on a besoin
+
+# Les exceptions
+
+- utilisation du mécanisme de try ... with de OCaml directement. Impression de truander.
+
+# Les références
+
+
+
+# Bugs connus et non corrigés
+
+- `let f x y = (x+2)*(y+1) in f 3 4;;` plante au parsing, alors que
+  `let f x y = ((x+2)*(y+1)) in f 3 4;;` fonctionne parfaitement
+
+- `x := 40 + 2; !x ;;` renvoie 40
+  `x := (40 +2) ; !x ;;` renvoie 42
+
 # Liste et contenu des fichiers
 
 ### main.ml :
-Fichier principal. Se contente d'appeller **argv_call ()**
+Fichier principal. Lit les argument envoyés au programme et fait les différents appels aux différentes parties du code.
 
-### fouine.ml :
+### prog_type.ml
+    Fichier contenant les définitions des types représentant un programme fouine dans Caml. Type unary_op, binary_op, variable, programme.
+
+
+### interpreteur.ml :
+
+### debug.ml
+
+### environnement.ml
 
 ### LexParInterface.ml :
 
-###
-
-### argv.ml :
-Lit les argument envoyés au programme et fait les différents appels aux différentes parties du code.
-
 ### parser.mly , lexer.mll
-Ces fichiers permettent de lire la formule donnée en entrée par le programme, et de construire une formule de type formula.
+Ces fichiers permettent de lire la formule donnée en entrée par le programme, et de construire un objet de type programme représentant le code à exécuter.
+
+### Dossier de programmes
+- programme d'exemple sur les exceptions
+- programme codant la suite de fibonacci récursive
+- programme codant la factorielle
+- programme d'exemple sur les fonctions à plusieurs arguments
