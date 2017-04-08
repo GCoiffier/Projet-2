@@ -7,7 +7,8 @@ exception E of Env.elt (* Ce type retour peut être une exception *)
 
 let return : ret -> int = function
       Env.Int(n) -> n
-    | _ -> failwith "Execution Error"
+    | Env.Ref(_) -> failwith "Execution Error: expected integer, got reference"
+    | Env.Cloture(_,_) -> failwith "Execution Error: expected integer, got function"
 
 let execute : programme -> int = fun prg ->
     let rec exec_aux env = function

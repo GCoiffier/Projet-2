@@ -11,12 +11,13 @@ open Prog_type
 %token ADD MINUS MULT DIV MOD
 %token AND OR NOT
 %token EGALE NEG SUPS INFS SUPE INFE
-%token IF THEN ELSE PRINT LET IN
+%token PRINT LET IN
+%token IF THEN ELSE BEGIN END
 %token FUN IMPLIES REC
 %token LPAREN RPAREN UNIT
 %token EOL EINSTR
 %token TRY WITH EXCEPT RAISE
-%token REF AFFECT ACCESS
+%token REF AFFECT ACCESS UNDERSCORE
 
 %left LET, IN
 %left EINSTR
@@ -39,24 +40,32 @@ open Prog_type
     /* --- début des règles de grammaire --- */
 
 main:
-  | expr EOL                                  { $1 }
+  | expr EOL                                      { $1 }
 
 variable :
     | VARIABLE                                    { Var($1) }
 ;
 
 sexpr: /* il faut mettre en parenthese une expression qui n'est pas "simple" (evite les shifts reduces */
-  | variable					                 { $1 }
-  | CONST					                     { Const($1) }
-  | LPAREN expr RPAREN                           { $2 }
+  | variable					                  { $1 }
+  | CONST					                      { Const($1) }
+  | LPAREN expr RPAREN                            { $2 }
 ;
+
+bexpr : /* begin ... end */
+    | bexpr EINSTR expr                           { Imp($1 , $3) }
+    | expr                                        { $1 }
+;
+
 expr:
   /* règles générales  */
   | IF expr THEN expr ELSE expr		              { IfThenElse($2,$4,$6) }
+  | BEGIN bexpr END                               { $2 }
   | PRINT expr					                  { PrInt($2) }
   | LET variable EGALE expr IN expr		          { Let($2,$4,$6) }
   | LPAREN expr RPAREN 			                  { $2 }
-  | expr EINSTR expr				              { Imp($1,$3) } /* séquencement */
+  | LET UNDERSCORE EGALE expr IN expr             { Imp($4, $6) }
+  | expr EINSTR expr				              { Imp($1,$3) }
 
  /* definition de fonction */
   | LET variable UNIT EGALE expr IN expr          { Let($2, Function_def(Const(0),$5), $7 ) }

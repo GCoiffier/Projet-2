@@ -15,6 +15,8 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
 	| "if" 				{ IF }
 	| "then" 			{ THEN }
 	| "else" 			{ ELSE }
+    | "begin"           { BEGIN }
+    | "end"             { END }
 
 	| "raise"           { RAISE }
 	| "try"             { TRY }
@@ -24,10 +26,11 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
 	| "ref"             { REF }
 	| ":="              { AFFECT }
 	| "!"               { ACCESS }
+    | '_'               { UNDERSCORE }
 
 	| '+' 				{ ADD }
 	| '-' 				{ MINUS }
-	| '*'				  { MULT }
+	| '*'				{ MULT }
 	| '/' 				{ DIV }
 	| "mod" 			{ MOD }
 

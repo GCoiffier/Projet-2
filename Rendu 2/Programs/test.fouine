@@ -1,2 +1,3 @@
-let x = 3 in 0;
-let f x = (x+2) in f x;;
+let x = ref 3 in
+    let _ = x := 8 in
+        !x;;
