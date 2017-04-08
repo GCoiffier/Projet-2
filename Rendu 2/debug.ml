@@ -36,10 +36,11 @@ let rec debug : programme -> unit = fun prg ->
 
     | Let(x,p1,p2) ->  pstr "let ";
                         debug x;
-                        pstr " = ";
+                        pstr " = (";
                         debug p1;
-                        pstr " in ";
-                        debug p2
+                        pstr ") in (";
+                        debug p2;
+                        pstr ")"
 
     | LetRec(x,p1,p2) -> pstr "let rec ";
                         debug x;
@@ -72,6 +73,6 @@ let rec debug : programme -> unit = fun prg ->
 
     | Ref(p) -> pstr "ref "; debug p
 
-    | Bang(x) -> pstr "!("; debug x; pstr ")"
+    | Bang(x) -> pstr "!"; debug x
 
-    | Assign(x,p) -> debug x ; pstr " := "; debug p
+    | Assign(x,p) -> pstr "(" ; debug x ; pstr " := "; debug p ; pstr ")"

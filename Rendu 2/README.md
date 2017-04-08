@@ -39,7 +39,7 @@ Coiffier Guillaume - Valque Léo
 
 [X] Gestion des exceptions
 
-[ ] Gestion des références
+[X] Gestion des références
 
 # L'interprétation
 L'interprétation est réalisée dans la fonction execute du fichier interpreteur.ml . Cette fonction prend en argument un programme fouine parsé (de type programme) et renvoie un entier. On utilise une fonction récursive auxilliaire qui associe une valeur de type 'ret' au programme. Ensuite la petite fonction return qui renvoie un int à partir de ce ret.
@@ -64,7 +64,8 @@ On utilisera des tables de hachage (Hastbl). Cette structure de donnée a le gro
 
 # Les références
 
-
+- ajout de la règle `let x = expr ; expr` dans le parser.
+- ajout du constructeur Ref au type elt de l'environnement.
 
 # Bugs connus et non corrigés
 

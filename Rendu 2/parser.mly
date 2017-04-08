@@ -23,12 +23,14 @@ open Prog_type
 %left IF, THEN, ELSE
 %left PRINT
 %right FUN, IMPLIES
+%left AFFECT
 %left ADD, MINUS
 %left AND, OR
 %left NOT
 %left DIV, MULT, MOD
 %left VARIABLE, CONST
 %left EGALE, NEG, SUPS, INFS, INFE, SUPE
+
 
 %start main
 %type <Prog_type.programme> main

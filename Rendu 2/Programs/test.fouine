@@ -1,1 +1,2 @@
-let f x y = ((x+2)*(y+1)) in f 3 4;;
+let x = 3 in 0;
+let f x = (x+2) in f x;;

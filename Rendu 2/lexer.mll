@@ -15,12 +15,12 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
 	| "if" 				{ IF }
 	| "then" 			{ THEN }
 	| "else" 			{ ELSE }
-	
+
 	| "raise"           { RAISE }
 	| "try"             { TRY }
 	| "with"            { WITH }
 	| "E"               { EXCEPT }
-	
+
 	| "ref"             { REF }
 	| ":="              { AFFECT }
 	| "!"               { ACCESS }
@@ -44,7 +44,7 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
 	| "&&" 				{ AND }
 	| "||" 				{ OR }
 	| "not" 			{ NOT }
-  
+
     | "()"              { UNIT }
     | '('               { LPAREN }
     | ')'               { RPAREN }
