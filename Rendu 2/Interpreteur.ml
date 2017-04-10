@@ -21,9 +21,9 @@ let execute : programme -> int = fun prg ->
                      Env.Int(x) -> print_int x; print_string " "
                      |_ -> failwith "Execution Error in prInt"
                   ) ; ret
-	
+
 	| PrStr(s) -> print_string s ; Env.Int(0)
-	
+
 	| PrNL -> print_newline(); Env.Int(0)
 
     | Let(x,val_x,p) ->  Env.add env x (exec_aux env val_x);
@@ -75,11 +75,9 @@ let execute : programme -> int = fun prg ->
                                     Env.remove clt x; ret
                                 | _ -> failwith "Error in function call")
 
-    | TryWith(p1,x,p2) -> let prev_env = Env.copy env in
-                       (try
-                        (exec_aux env p1)
-                       with | (E u) -> let _ = Env.add prev_env x u in
-                                                (exec_aux prev_env p2))
+    | TryWith(p1,x,p2) -> (try (exec_aux env p1)
+                            with | (E u) -> let _ = Env.add env x u
+                                in (exec_aux env p2))
 
     | Raise(x) -> raise (E (exec_aux env x))
 
