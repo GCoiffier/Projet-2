@@ -1,4 +1,4 @@
-#### Projet-2
+# Projet-2
 Projet 2 2017, L3IF ENS Lyon
 Coiffier Guillaume - Valque Léo
 
@@ -110,6 +110,6 @@ Ces fichiers permettent de lire la formule donnée en entrée par le programme, 
 ### Dossier de programmes
 - exemples simples sur les différentes fonctionnalités de fouine (les noms des programmes sont a priori explicites)
 - fibonacci récursif stupide
-- fibonacci temps linéaire
+- fibonacci intelligent
 - factorielle
 - tours de Hanoi
