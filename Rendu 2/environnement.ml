@@ -1,37 +1,17 @@
 open Prog_type
-
-module type Dictsig = sig
-
-    type ('a,'b) t
-    val create : int -> ('a, 'b) t
-    val add : ('a, 'b) t -> 'a -> 'b -> unit
-    val remove : ('a, 'b) t -> 'a -> unit
-    val find : ('a, 'b) t -> 'a -> 'b
-    val copy : ('a, 'b) t -> ('a, 'b) t
-
-end
-
-
-module Dictionnaire : Dictsig = struct
-
-  type ('a, 'b) t = ('a, 'b) Hashtbl.t
-
-  let create n = Hashtbl.create n
-  let add = Hashtbl.add
-  let remove = Hashtbl.remove
-  let find = Hashtbl.find
-  let copy = Hashtbl.copy
-
-end
+open Dictionnaire
 
 module Environnement =
     functor (D : Dictsig) ->
+        (* Un environnement est défini pour toute structure de dictionnaire
+            comprenant les primitives définies dans Dictsig *)
     struct
 
-        (* Ce que l'on stocke dans l'environnement.
-        C'est soit la valeur d'une variable, soit
-        l'expression et la cloture associée à une fonction *)
       type elt =
+      (* Ce que l'on stocke dans l'environnement.
+          C'est soit la valeur d'une variable,
+          soit l'expression et la cloture associée à une fonction,
+          soit une référence *)
         | Int of int
         | Ref of int
         | Cloture of programme * (programme , elt) D.t

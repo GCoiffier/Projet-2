@@ -4,6 +4,7 @@ open Prog_type
 let pstr = print_string (* abréviation *)
 
 let rec debug : programme -> unit = fun prg ->
+    (* affiche le programme parsé dans la console *)
     match prg with
     Const(n) -> print_int n
 
@@ -19,7 +20,7 @@ let rec debug : programme -> unit = fun prg ->
                             debug p2;
                             pstr ")"
 
-    | UnOp(op,a) -> pstr (match op with Neg -> "-(" | Not -> "!(");
+    | UnOp(op,a) -> pstr (match op with Neg -> "-(" | Not -> "~(");
                    debug a;
                    pstr ")"
 

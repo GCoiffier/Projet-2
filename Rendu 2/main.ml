@@ -13,9 +13,9 @@ open Interpreteur
 open Debug
 open LexParInterface
 
-(* argv_call : unit -> unit
+(* main : unit -> unit
 	Fonction principale : lit les arguments donnés au programme et appelle les parties du code correspondantes *)
-let argv_call () =
+let main () =
 	let t = Sys.argv in
 	let n = Array.length t in
 	match t.(1) with
@@ -38,4 +38,4 @@ let argv_call () =
 							print_int (execute p); print_newline ()
 
 
-let _ = argv_call ();;
+let _ = main ();;

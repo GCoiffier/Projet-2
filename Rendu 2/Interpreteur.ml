@@ -14,36 +14,36 @@ let execute : programme -> int = fun prg ->
     let rec exec_aux env = function
     Const(n) -> Env.Int(n)
 
-    |Var(x) as v -> Env.find env v
+    | Var(x) as v -> Env.find env v
 
-    |PrInt(p) -> let r = (exec_aux env p) in
-                  ( match r with
+    | PrInt(p) -> let ret = (exec_aux env p) in
+                  ( match ret with
                      Env.Int(x) -> print_int x; print_newline ()
                      |_ -> failwith "Execution Error in prInt"
-                  ) ; r
+                  ) ; ret
 
-    |Let(x,val_x,p) ->  Env.add env x (exec_aux env val_x);
+    | Let(x,val_x,p) ->  Env.add env x (exec_aux env val_x);
                         let ret = (exec_aux env p) in
                         Env.remove env x; ret
 
-    |LetRec(f,expr_f,p) ->  let copy = Env.copy env in
+    | LetRec(f,expr_f,p) ->  let copy = Env.copy env in
                             let clt = Env.Cloture(expr_f, copy) in
-                            Env.add copy f clt;
+                            Env.add copy f clt; (* Comme la fonction s'appelle elle-même, la cloture se contient elle même*)
                             Env.add env f clt;
                             let ret = (exec_aux env p) in
                             Env.remove env f; ret
 
-    |IfThenElse(b,p1,p2) -> let x = return (exec_aux env b) in
+    | IfThenElse(b,p1,p2) -> let x = return (exec_aux env b) in
                               if (x==1) then (exec_aux env p1)
                                         else (exec_aux env p2)
 
-    |UnOp(op,a) ->  let x = return (exec_aux env a) in
+    | UnOp(op,a) ->  let x = return (exec_aux env a) in
                     ( match op with
                          Neg -> Env.Int(-x)
                        | Not -> Env.Int(1-x)
                     )
 
-    |BinOp(a,op,b) -> let xa = return (exec_aux env a) and
+    | BinOp(a,op,b) -> let xa = return (exec_aux env a) and
                           xb = return (exec_aux env b) in
                       let c1 = Env.Int(1) and c0 = Env.Int(0) in
                        ( match op with

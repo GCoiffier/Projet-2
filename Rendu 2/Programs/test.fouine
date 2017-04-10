@@ -1,3 +1,0 @@
-let x = ref 3 in
-    let _ = x := 8 in
-        !x;;

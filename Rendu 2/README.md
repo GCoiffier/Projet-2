@@ -8,7 +8,7 @@ Coiffier Guillaume - Valque Léo
 
 - Adresse du dépôt Git : https://github.com/GCoiffier/Projet-2
 
-- Les fichiers de tests sont situés dans le dossier Programs. Les fichiers contenant du code fouine ont une extension .fouine
+- Les fichiers de tests sont situés dans le dossier Programs. Les fichiers contenant du code fouine ont une extension .ml
 
 # Comment exécuter le programme
 
@@ -62,13 +62,12 @@ Cette structure de donnée supporte l'ajout d'un couple d'élément, la suppress
 - Suggestion de Bertrand pour le parsing de plusieurs arguments (utiliser un type d'expression simple_expr (sexpr) qui est tout sauf une fonction)
 - copie "brutale" de l'environnement en entier. On ne cherche pas à savoir quelles sont les valeurs dont on a besoin
 
-# Les exceptions
+# Exceptions
 
 - utilisation du mécanisme de try ... with de OCaml directement. Impression de truander.
 
-# Les références
+# Références et aspects impératifs
 
-- ajout de la règle `let x = expr ; expr` dans le parser.
 - ajout du constructeur Ref au type elt de l'environnement.
 
 # Bugs connus et non corrigés
@@ -77,7 +76,9 @@ Cette structure de donnée supporte l'ajout d'un couple d'élément, la suppress
   `let f x y = ((x+2)*(y+1)) in f 3 4;;` fonctionne parfaitement
 
 - `x := 40 + 2; !x ;;` renvoie 40
-  `x := (40 +2) ; !x ;;` renvoie 42
+  `x := (40 +2) ; !x ;;` renvoie bien 42
+
+- il reste un shift/reduce conflict en rapport avec la gestion du begin ... end (bexpr)
 
 # Liste et contenu des fichiers
 
