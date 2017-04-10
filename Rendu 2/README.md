@@ -26,23 +26,38 @@ Coiffier Guillaume - Valque Léo
 
 # Avancement du projet
 
-[X] Lexer et parser
+### Semaine 1
 
-[X] Définition d'un type programme pour les programmes fouines
+[X] Lexer et parser de base
+
+[X] Définition d'un type programme pour les programmes fouine
 
 [X] Interprétation des fichiers .fouine sans les fonctions
   (ie expressions arithmétiques, booléennes, if ... then ... else et let ... in)
+
+### Semaine 2
 
 [X] Interprétation des fichiers .fouine avec des fonctions
 
 [X] Interprétation des fichiers .fouine avec des fonctions récursives
 
+### Semaine 3
+
 [X] Gestion des exceptions
 
 [X] Gestion des références
 
-[] Gestion du begin...end et du let _ = ...
+[X] Gestion du begin...end et du let _ = ...
 
+[X] Ajout d'une primitive "bonus" PrStr qui renvoie 0 et affiche une string
+
+### Le futur
+
+[ ] Réalisation de clôtures plus intelligentes en ne considérant que les variables comprises dans l'environnement
+
+[ ] Référence sur les fonctions
+
+[ ] Possibilité de faire des tableaux
 
 # L'interprétation
 L'interprétation est réalisée dans la fonction execute du fichier interpreteur.ml . Cette fonction prend en argument un programme fouine parsé (de type programme) et renvoie un entier. On utilise une fonction récursive auxiliaire qui associe une valeur de type 'ret' au programme. Ensuite, on appelle la petite fonction return qui renvoie un int à partir de ce ret.
@@ -57,28 +72,17 @@ Cette structure de donnée supporte l'ajout d'un couple d'élément, la suppress
 
 # Les fonctions et les fonctions récursives
 
-- Implémentation de la clôture.
-- Clôture qui se contient elle même pour les fonctions récursives.
-- Suggestion de Bertrand pour le parsing de plusieurs arguments (utiliser un type d'expression simple_expr (sexpr) qui est tout sauf une fonction)
-- copie "brutale" de l'environnement en entier. On ne cherche pas à savoir quelles sont les valeurs dont on a besoin
+Pour l'implémentation des fonctions, on a ajouté un constructeur Cloture au type Env.elt.  Un cloture comprend l'expression de la fonction (le A de `let f x = A in`) et une copie de l'environnement au moment de la définition de la fonction. Cette copie est "brutale" : on copie l'intégralité de l'environnement sans chercher à savoir quelles valeurs sont inutiles.
+Dans le cas des fonctions récursives, on ajoute à la clôture crée... elle-même. Ainsi, on évite de faire autant de clôtures que d'appel récursif. Cela ne pose pas de problème tant qu'il existe un cas de sortie à la fonction récursive
 
 # Exceptions
 
-- utilisation du mécanisme de try ... with de OCaml directement. Impression de truander.
+Pour gérer les exceptions, nous utilisons directement le mécanisme de try ... with de OCaml. Lors de la levée d'une exception, on reprend avec "with..." l'environnement que l'on avait lors du raise (il est toujours possible de faire des effets de bord, comme en Ocaml. Voir exception2.ml pour un example).
+Comme dans le sujet, on omet le | après le with
 
 # Références et aspects impératifs
 
-- ajout du constructeur Ref au type elt de l'environnement.
-
-# Bugs connus et non corrigés
-
-- `let f x y = (x+2)*(y+1) in f 3 4;;` plante au parsing, alors que
-  `let f x y = ((x+2)*(y+1)) in f 3 4;;` fonctionne parfaitement (corrigé)
-
-- `x := 40 + 2; !x ;;` renvoie 40
-  `x := (40 +2) ; !x ;;` renvoie bien 42 (corrigé)
-
-- il reste un shift/reduce conflict en rapport avec la gestion du begin ... end (bexpr) (corrigé)
+Les références se font sur des entiers uniquement. Elles sont implémentées en ajoutant un constructeur Ref au type Env.elt. Ainsi, elles sont stockées dans l'environnement au même titre que les variables classiques. Lors de la création d'une référence à l'aide du mot clé ref, on ajouter Env.Ref(x) dans l'environnement. Lors de l'assignation de la référence à une autre valeur, on supprime l'assignation courante avant de réinsérer la nouvelle valeur. Accéder à la valeur d'une référence revient simplement à accéder à l'environnement (on teste juste que l'assignation de notre variable est bien une référence. Dans le cas contraire, on plante.)
 
 # Liste et contenu des fichiers
 
@@ -88,20 +92,24 @@ Fichier principal. Lit les argument envoyés au programme et fait les différent
 ### prog_type.ml
     Fichier contenant les définitions des types représentant un programme fouine dans Caml. Type unary_op, binary_op, variable, programme.
 
-
 ### interpreteur.ml :
+    Le fichier contenant la grosse fonction d'interprétation d'un programme fouine.
 
-### debug.ml
+### debug.ml :
+    Contient la fonction debug, qui permet d'afficher un programme fouine parsé
 
 ### environnement.ml
+    La définition du module Environnement, construit à l'aide d'un dictionnaire.
 
 ### LexParInterface.ml :
+    Fichier faisant l'interface entre le parser et le reste du code. Fournit simplement une primitive read_prgm <fichier>.
 
 ### parser.mly , lexer.mll
 Ces fichiers permettent de lire la formule donnée en entrée par le programme, et de construire un objet de type programme représentant le code à exécuter.
 
 ### Dossier de programmes
-- programme d'exemple sur les exceptions
-- programme codant la suite de fibonacci récursive
-- programme codant la factorielle
-- programme d'exemple sur les fonctions à plusieurs arguments
+- exemples simples sur les différentes fonctionnalités de fouine (les noms des programmes sont a priori explicites)
+- fibonacci récursif stupide
+- fibonacci temps linéaire
+- factorielle
+- tours de Hanoi

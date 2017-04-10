@@ -71,11 +71,9 @@ let execute : programme -> int = fun prg ->
                                     Env.remove clt x; ret
                                 | _ -> failwith "Error in function call")
 
-    | TryWith(p1,x,p2) -> let prev_env = Env.copy env in
-                       (try
-                        (exec_aux env p1)
-                       with | (E u) -> let _ = Env.add prev_env x u in
-                                                (exec_aux prev_env p2))
+    | TryWith(p1,x,p2) -> (try (exec_aux env p1)
+                            with | (E u) -> let _ = Env.add env x u
+                                in (exec_aux env p2))
 
     | Raise(x) -> raise (E (exec_aux env x))
 
