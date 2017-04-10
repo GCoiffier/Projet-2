@@ -73,7 +73,13 @@ Cette structure de donnée supporte l'ajout d'un couple d'élément, la suppress
 # Les fonctions et les fonctions récursives
 
 Pour l'implémentation des fonctions, on a ajouté un constructeur Cloture au type Env.elt.  Un cloture comprend l'expression de la fonction (le A de `let f x = A in`) et une copie de l'environnement au moment de la définition de la fonction. Cette copie est "brutale" : on copie l'intégralité de l'environnement sans chercher à savoir quelles valeurs sont inutiles.
-Dans le cas des fonctions récursives, on ajoute à la clôture crée... elle-même. Ainsi, on évite de faire autant de clôtures que d'appel récursif. Cela ne pose pas de problème tant qu'il existe un cas de sortie à la fonction récursive
+
+Dans le cas des fonctions récursives, on ajoute à la clôture crée... elle-même. Ainsi, on évite de faire autant de clôtures que d'appel récursif. Cela ne pose pas de problème tant qu'il existe un cas de sortie à la fonction récursive. NOTE : il est possible qu'ainsi, on ne puisse pas faire d'effet de bord dans une fonction récursive.
+
+Deux constructeurs sont associés aux fonctions dans le type programme :
+    Function_def : appellé lors de la définition de fonction, contient l'argument (unique) et l'expression de la fonction (qui peut elle même être une fonction).
+    Function_call : appellé lors de l'appel à une fonction, contient le nom de la fonction et la valeur de l'argument (qui est une expression non interprétée)
+                        le nom de la fonction permet de retrouver la définition dans l'environnement. On interprète l'expression associée à la cloture en ajoutant à l'environnement de la cloture la valeur de l'argument.
 
 # Exceptions
 
