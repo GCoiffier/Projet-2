@@ -18,9 +18,13 @@ let execute : programme -> int = fun prg ->
 
     | PrInt(p) -> let ret = (exec_aux env p) in
                   ( match ret with
-                     Env.Int(x) -> print_int x; print_newline ()
+                     Env.Int(x) -> print_int x; print_string " "
                      |_ -> failwith "Execution Error in prInt"
                   ) ; ret
+	
+	| PrStr(s) -> print_string s ; Env.Int(0)
+	
+	| PrNL -> print_newline(); Env.Int(0)
 
     | Let(x,val_x,p) ->  Env.add env x (exec_aux env val_x);
                         let ret = (exec_aux env p) in

@@ -1,0 +1,5 @@
+let rec fibo n =
+    if (n<=1) then 1
+    else ( let x = fibo (n-1) + fibo (n-2) in prInt x; prNl; x)
+
+in fibo 10;;

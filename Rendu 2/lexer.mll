@@ -8,6 +8,8 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
 	| [' ' '\t' '\n']     		{ token lexbuf }
 
 	| "prInt"			{ PRINT }
+	| "prStr \"" ([' '-'!' '#'-'}']+ as s) "\""      { PRSTR(s) }
+	| "prNl"            { PRNL }
 
 	| "let"		 		{ LET }
 	| "rec"             { REC }

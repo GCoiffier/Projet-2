@@ -12,6 +12,10 @@ let rec debug : programme -> unit = fun prg ->
 
     | PrInt(a) -> pstr "prInt("; debug a ; pstr ")"
 
+	| PrStr(s) -> pstr "prStr \""; pstr s; pstr "\""
+	
+	| PrNL -> pstr "PrNL"
+
     | IfThenElse(b,p1,p2) -> pstr "If (" ;
                             debug b ;
                             pstr ") Then (" ;

@@ -12,6 +12,8 @@ type programme =
     Const of int
     | Var of variable
     | PrInt of programme
+    | PrStr of variable
+    | PrNL
     | UnOp of unary_op * programme
     | BinOp of programme * binary_op * programme
     | Let of programme  * programme * programme (* let x = A in B  : (x,A,B) *)

@@ -18,6 +18,8 @@ open Prog_type
 %token EOL EINSTR
 %token TRY WITH EXCEPT RAISE
 %token REF AFFECT ACCESS UNDERSCORE
+%token <string> PRSTR
+%token PRNL
 
 %left LET, IN
 %left EINSTR
@@ -60,6 +62,8 @@ expr:
   | IF expr THEN expr ELSE expr		              { IfThenElse($2,$4,$6) }
   | BEGIN expr END                                { $2 }
   | PRINT expr					                  { PrInt($2) }
+  | PRSTR                                         { PrStr($1) }
+  | PRNL                                          { PrNL }
   | LET variable EGALE expr IN expr		          { Let($2,$4,$6) }
   | LPAREN expr RPAREN 			                  { $2 }
   | LET UNDERSCORE EGALE expr IN expr             { Imp($4,$6) }
