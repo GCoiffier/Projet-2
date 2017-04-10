@@ -73,12 +73,12 @@ Cette structure de donnée supporte l'ajout d'un couple d'élément, la suppress
 # Bugs connus et non corrigés
 
 - `let f x y = (x+2)*(y+1) in f 3 4;;` plante au parsing, alors que
-  `let f x y = ((x+2)*(y+1)) in f 3 4;;` fonctionne parfaitement
+  `let f x y = ((x+2)*(y+1)) in f 3 4;;` fonctionne parfaitement (corrigé)
 
 - `x := 40 + 2; !x ;;` renvoie 40
-  `x := (40 +2) ; !x ;;` renvoie bien 42
+  `x := (40 +2) ; !x ;;` renvoie bien 42 (corrigé)
 
-- il reste un shift/reduce conflict en rapport avec la gestion du begin ... end (bexpr)
+- il reste un shift/reduce conflict en rapport avec la gestion du begin ... end (bexpr) (corrigé)
 
 # Liste et contenu des fichiers
 

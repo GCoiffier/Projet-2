@@ -22,7 +22,10 @@ open Prog_type
 %left LET, IN
 %left EINSTR
 %left IF, THEN, ELSE
+%left BEGIN
+%left END
 %left PRINT
+%left EGALE
 %right FUN, IMPLIES
 %left AFFECT
 %left ADD, MINUS
@@ -30,7 +33,7 @@ open Prog_type
 %left NOT
 %left DIV, MULT, MOD
 %left VARIABLE, CONST
-%left EGALE, NEG, SUPS, INFS, INFE, SUPE
+%left NEG, SUPS, INFS, INFE, SUPE
 
 
 %start main
@@ -43,28 +46,23 @@ main:
   | expr EOL                                      { $1 }
 
 variable :
-    | VARIABLE                                    { Var($1) }
+  | VARIABLE                                      { Var($1) }
 ;
 
-sexpr: /* il faut mettre en parenthese une expression qui n'est pas "simple" (evite les shifts reduces */
+sexpr: /* il faut mettre en parenthese une expression qui n'est pas "simple" (evite les shifts reduces) */
   | variable					                  { $1 }
   | CONST					                      { Const($1) }
   | LPAREN expr RPAREN                            { $2 }
 ;
 
-bexpr : /* begin ... end */
-    | bexpr EINSTR expr                           { Imp($1 , $3) }
-    | expr                                        { $1 }
-;
-
 expr:
   /* règles générales  */
   | IF expr THEN expr ELSE expr		              { IfThenElse($2,$4,$6) }
-  | BEGIN bexpr END                               { $2 }
+  | BEGIN expr END                                { $2 }
   | PRINT expr					                  { PrInt($2) }
   | LET variable EGALE expr IN expr		          { Let($2,$4,$6) }
   | LPAREN expr RPAREN 			                  { $2 }
-  | LET UNDERSCORE EGALE expr IN expr             { Imp($4, $6) }
+  | LET UNDERSCORE EGALE expr IN expr             { Imp($4,$6) }
   | expr EINSTR expr				              { Imp($1,$3) }
 
  /* definition de fonction */
@@ -81,7 +79,7 @@ expr:
  /* reference */
   | LET variable EGALE REF expr IN expr          { Let($2, Ref($5), $7) }
   | ACCESS variable                              { Bang($2) }
-  | variable AFFECT sexpr                        { Assign($1,$3) }
+  | variable AFFECT expr                         { Assign($1,$3) }
 
  /* Expression arithmétique */
   | expr ADD expr				                 { BinOp ($1, Add, $3) }
@@ -112,12 +110,15 @@ expr:
 fun_arg:
   | variable fun_arg						     { Function_def($1, $2) }
   | variable EGALE expr                          { Function_def($1, $3) }
-  /* destine a la definition a fun x -> x */
+;
+
+fun_arg2: 
+  | variable fun_arg2						     { Function_def($1, $2) }
   | variable IMPLIES expr                        { Function_def($1, $3) }
 ;
 
 fun_def:
-  | FUN fun_arg                                   { $2 }
+  | FUN fun_arg2                                   { $2 }
 ;
 
 /* Appels de fonctions */

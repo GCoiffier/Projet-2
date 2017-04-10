@@ -1,1 +1,1 @@
-let x = -2 in -x;;
+let _ = prInt 2+3*2 in 2;;
