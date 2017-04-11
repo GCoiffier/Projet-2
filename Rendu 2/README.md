@@ -49,7 +49,7 @@ Coiffier Guillaume - Valque Léo
 
 [X] Gestion du begin...end et du let _ = ...
 
-[X] Ajout d'une primitive "bonus" PrStr qui renvoie 0 et affiche une string
+[X] Ajout de primitives "bonus" prStr (qui renvoie 0 et affiche une string) prNl (qui passe une ligne et renvoie aussi 0)
 
 ### Le futur
 
