@@ -28,10 +28,7 @@ let main () =
 
 	| "-machine" -> (* compile et execute sur machine à pile *)
 					let p = read_prgm t.(n-1) in
-					let mach = init p in
-					while not(step mach)
-					do ()
-					done
+					StackMachine.init_and_compute p
 
 	| "-interm" ->  (* compile vers machine à pile mais n'execute pas : affiche le code *)
 					print_string "Option non implémentée";
