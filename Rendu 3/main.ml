@@ -28,7 +28,10 @@ let main () =
 
 	|"-machine" -> (* compile et execute sur machine à pile *)
 					let p = read_prgm t.(n-1) in
-					
+					let mach = init p in
+					while not(step mach)
+					do ()
+					done;
 					print_newline ();
 
 	|"-interm" ->  (* compile vers machine à pile mais n'execute pas : affiche le code *)

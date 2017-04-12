@@ -82,7 +82,7 @@ expr:
 
  /* exceptions */
   | TRY expr WITH EXCEPT variable IMPLIES expr    { TryWith($2,$5,$7) }
-  | RAISE EXCEPT sexpr                            { Raise($2) }
+  | RAISE EXCEPT sexpr                            { Raise($3) }
 
  /* reference */
   | LET variable EGALE REF expr IN expr          { Let($2, Ref($5), $7) }
