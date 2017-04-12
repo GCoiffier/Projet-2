@@ -2,15 +2,15 @@ open Prog_type
 
 type instruction =
 	INT of int
-	
-	|ADD
-	|MINUS
-	|MULT
-	|DIV
-	|MOD
-	
-	|UMINUS
-	|PRINT
+
+	| ADD
+	| MINUS
+	| MULT
+	| DIV
+	| MOD
+
+	| UMINUS
+	| PRINT
 
 type machine =
 	Mach of instruction list * int * int list (*int est la cloture qui ne sera jamais utilise ici *)
@@ -41,7 +41,7 @@ let rec built p_ l = match p_ with
     | Ref(a) -> failwith "not implement in machine" (* ref A *)
     | Bang(x) -> failwith "not implement in machine" (* !x *)
     | Assign(x,a) -> failwith "not implement in machine" (* x := A *)
-    
+
 let init p = ref (Mach( built p [], 0, []))
 
 let step machine = let m = !machine in
@@ -54,12 +54,11 @@ let step machine = let m = !machine in
 							|[] -> failwith "expression not valid 1"
 							|ti::qi -> machine := Mach(q,0, (-ti)::qi) ; false
 						   )
-						   
 				|PRINT ->  (match l with
 							|[] -> failwith "expression not valid 2"
 							|ti::qi -> print_int ti; print_newline(); machine := Mach(q,0,l) ; false
 						   )
-						   
+
 				|_ ->      (match l with
 							|t2::t1::qi -> (match t with
 											|ADD -> machine := Mach(q,0, (t1+t2)::qi); false
@@ -71,10 +70,8 @@ let step machine = let m = !machine in
 										  )
 							|_ -> failwith "expression not valid 3"
 						   )
-			
-			
-			
-			)
-	| _ -> failwith "expression not valid 4"
-	
 
+
+
+			)
+	| _ -> failwith "expression not valid "

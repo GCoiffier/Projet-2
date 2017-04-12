@@ -20,24 +20,26 @@ let main () =
 	let t = Sys.argv in
 	let n = Array.length t in
 	match t.(1) with
-	|"-debug" ->  (* affiche le code *)
+	| "-debug" ->  (* affiche le code *)
                   let p = read_prgm t.(n-1) in
 				  debug p; print_newline ();
                   print_string "result = "; print_int (execute p);
-                  print_newline ();
+                  print_newline ()
 
-	|"-machine" -> (* compile et execute sur machine à pile *)
+	| "-machine" -> (* compile et execute sur machine à pile *)
 					let p = read_prgm t.(n-1) in
-					
-					print_newline ();
+					let mach = init p in
+					while not(step mach)
+					do ()
+					done
 
-	|"-interm" ->  (* compile vers machine à pile mais n'execute pas : affiche le code *)
+	| "-interm" ->  (* compile vers machine à pile mais n'execute pas : affiche le code *)
 					print_string "Option non implémentée";
-					print_newline ();
+					print_newline ()
 
-	|_ ->  (* interpréteur simple*)
-					let p = read_prgm t.(n-1) in
-							print_int (execute p); print_newline ()
+	| _ ->  (* interpréteur simple*)
+			let p = read_prgm t.(n-1) in
+					print_int (execute p); print_newline ()
 
 
 let _ = main ();;
