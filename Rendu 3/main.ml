@@ -12,6 +12,7 @@
 open Interpreteur
 open Debug
 open LexParInterface
+open Machine
 
 (* main : unit -> unit
 	Fonction principale : lit les arguments donnés au programme et appelle les parties du code correspondantes *)
@@ -26,7 +27,8 @@ let main () =
                   print_newline ();
 
 	|"-machine" -> (* compile et execute sur machine à pile *)
-					print_string "Option non implémentée";
+					let p = read_prgm t.(n-1) in
+					
 					print_newline ();
 
 	|"-interm" ->  (* compile vers machine à pile mais n'execute pas : affiche le code *)

@@ -1,0 +1,48 @@
+type instruction =
+	INT of int
+	
+	|ADD
+	|MINUS
+	|MULT
+	|DIV
+	
+	|UMINUS
+	|PRINT
+
+type machine =
+	Mach of instruction list * int * int list (*int est la cloture qui ne sera jamais utilise ici *)
+
+let init l = ref ( Mach(l,0,[]) )
+
+let step machine = let m = !machine in
+	match m with
+	| Mach([],_,t::[]) -> print_string "End of calcul : "; print_int t; print_newline()
+	| Mach(t::q,_,l) ->(
+				match t with
+				|INT(i) -> machine := Mach(q,_,i::l)
+				|UMINUS -> (match l with
+							|[] -> failwith "expression not valid"
+							|ti::qi -> Mach(q,_, (-ti)::qi) 
+						   )
+						   
+				|PRINT ->  (match l with
+							|[] -> failwith "expression not valid"
+							|ti::qi -> print_int ti; print_newline(); Mach(q,_,l) 
+						   )
+						   
+				|_ ->      (match l with
+							|t1::t2::qi -> (match t with
+											|ADD -> Mach(q,_, (t1+t2)::qi)
+											|MINUS -> Mach(q,_, (t1-t2)::qi)
+											|MULT -> Mach(q,_, (t1*t2)::qi)
+											|DIV -> Mach(q,_, (t1/t2)::qi)
+										  )
+							|_ -> failwith "expression not valid"
+						   )
+			
+			
+			
+			)
+	| _ -> failwith "expression not valid"
+	
+
