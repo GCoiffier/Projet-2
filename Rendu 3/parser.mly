@@ -8,6 +8,7 @@ open Prog_type
 
 %token <int> CONST
 %token <string> VARIABLE
+%token <string> TAFFECT
 %token ADD MINUS MULT DIV MOD
 %token AND OR NOT
 %token EGALE NEG SUPS INFS SUPE INFE
@@ -20,6 +21,7 @@ open Prog_type
 %token REF AFFECT ACCESS UNDERSCORE
 %token <string> PRSTR
 %token PRNL
+%token AMAKE, LARROW
 
 %left LET, IN
 %left EINSTR
@@ -30,11 +32,13 @@ open Prog_type
 %left EGALE
 %right FUN, IMPLIES
 %left AFFECT
+%left LARROW
 %left ADD, MINUS
 %left AND, OR
 %left NOT
 %left DIV, MULT, MOD
 %left VARIABLE, CONST
+%left AMAKE, TAFFECT
 %left NEG, SUPS, INFS, INFE, SUPE
 
 
@@ -78,12 +82,17 @@ expr:
 
  /* exceptions */
   | TRY expr WITH EXCEPT variable IMPLIES expr    { TryWith($2,$5,$7) }
-  | RAISE sexpr                                   { Raise($2) }
+  | RAISE EXCEPT sexpr                            { Raise($2) }
 
  /* reference */
   | LET variable EGALE REF expr IN expr          { Let($2, Ref($5), $7) }
   | ACCESS variable                              { Bang($2) }
   | variable AFFECT expr                         { Assign($1,$3) }
+  
+ /* tableau */
+  | AMAKE sexpr                                  { $2 }
+  | TAFFECT expr RPAREN LARROW expr              { $2 }
+  | TAFFECT expr RPAREN                          { $2 }                         
 
  /* Expression arithmétique */
   | expr ADD expr				                 { BinOp ($1, Add, $3) }

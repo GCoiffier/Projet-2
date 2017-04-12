@@ -8,7 +8,8 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
 	| [' ' '\t' '\n']     		{ token lexbuf }
 
 	| "prInt"			{ PRINT }
-	| "prStr \"" ([' '-'!' '#'-'}']+ as s) "\""      { PRSTR(s) }
+	| "prStr \"" ([' '-'!' '#'-'}']+ as s) "\""      
+	                    { PRSTR(s) }
 	| "prNl"            { PRNL }
 
 	| "let"		 		{ LET }
@@ -29,6 +30,11 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
 	| ":="              { AFFECT }
 	| "!"               { ACCESS }
     | '_'               { UNDERSCORE }
+    
+    | "aMake"           { AMAKE }
+    | "<-"              { LARROW }
+    | (['a'-'z' 'A'-'Z']+ as s) ".("
+                        { TAFFECT(s) }
 
 	| '+' 				{ ADD }
 	| '-' 				{ MINUS }
