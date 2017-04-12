@@ -9,7 +9,8 @@ type binary_op = Equal | Neq | Infeq | Inf | Supeq | Sup
 
 (* le type d'un programme fouine après parsing *)
 type programme =
-    Const of int
+    Unit
+    | Const of int
     | Var of variable
     | PrInt of programme
     | PrStr of variable
@@ -21,7 +22,7 @@ type programme =
     | Function_def of programme * programme  (* fun x -> A  :  (x,A) *)
     | Function_call of programme * programme (* f A : (f,A) *)
     | IfThenElse of programme * programme * programme (* if x then A else B : (x,A,B) *)
-    | TryWith of programme * programme * programme (* try A with E x -> B : (x,A,B) *)
+    | TryWith of programme * programme * programme (* try A with E x -> B : (A,x,B) *)
     | Raise of programme
     | Imp of programme * programme (* A;B *)
     | Ref of programme (* ref A *)
