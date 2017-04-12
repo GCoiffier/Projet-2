@@ -91,6 +91,7 @@ let execute : programme -> int = fun prg ->
                      exec_aux old_env stack p
                   with | Stack.Empty -> failwith "Error : exception not caught"
                   )
+                  
     | Imp(p1,p2) -> let _ = exec_aux env stack  p1 in exec_aux env stack  p2
 
     | Ref(x) -> let v = return (exec_aux env stack  x) in Env.Ref(v)
