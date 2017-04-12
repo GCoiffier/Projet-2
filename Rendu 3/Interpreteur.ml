@@ -109,17 +109,22 @@ let execute : programme -> int = fun prg ->
                         Env.add env x (Env.Ref(u));
                         Env.Int(u)
     (* tableaux  *)
-    | AMake(x) ->
+    | AMake(x) -> let n = return (exec_aux env stack x) in
+                        Env.Array (Array.make n 0)
 
     | Affect(t,i,x) -> let ind = return (exec_aux env stack i) in
                         let tab = Env.find env t in
-                            let ret = exec_aux env stack x
-                            tab.(ind) <- return ret;
-                            ret
+                            (match tab with
+                                Env.Array(ar) -> let ret = exec_aux env stack x in
+                                            ar.(ind) <- return ret; ret
+                                | _ -> failwith "Error with affect : not an array"
+                            )
 
     | Access(t,i) -> let ind = return (exec_aux env stack i) in
                         let tab = Env.find env t in
-                            Env.Int(tab.(ind))
-
+                            (match tab with
+                                Env.Array(ar) -> Env.Int(ar.(ind))
+                                | _ -> failwith "Error with access : not an array"
+                            )
 
     in return (exec_aux (Env.create 10) (Stack.create ()) prg)

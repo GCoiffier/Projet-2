@@ -26,9 +26,9 @@ let main () =
                   print_string "result = "; print_int (execute p);
                   print_newline ();
 
-	| "-machine" -> (* compile et execute sur machine à pile *)
+	| "-machine" -> (* compile et execute sur machine à pile
 					let p = read_prgm t.(n-1) in
-
+					*)
 					print_newline ();
 
 	| "-interm" ->  (* compile vers machine à pile mais n'execute pas : affiche le code *)
