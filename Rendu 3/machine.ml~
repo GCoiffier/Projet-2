@@ -16,8 +16,7 @@ type machine =
 	Mach of instruction list * int * int list (*int est la cloture qui ne sera jamais utilise ici *)
 
 let rec built p_ l = match p_ with
-	Unit -> failwith "not implement in machine"
-	| Const(i) -> (INT(i))::l
+	Const(i) -> (INT(i))::l
     | Var(v) -> failwith "not implement in machine"
     | PrInt(p) -> (built p (PRINT::l))
     | PrStr(v) -> failwith "not implement in machine"
