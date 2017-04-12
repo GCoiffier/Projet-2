@@ -6,14 +6,16 @@ let pstr = print_string (* abréviation *)
 let rec debug : programme -> unit = fun prg ->
     (* affiche le programme parsé dans la console *)
     match prg with
-    Const(n) -> print_int n
+    Unit -> print_string "()"
+
+    | Const(n) -> print_int n
 
     | Var(x) -> pstr x
 
     | PrInt(a) -> pstr "prInt("; debug a ; pstr ")"
 
 	| PrStr(s) -> pstr "prStr \""; pstr s; pstr "\""
-	
+
 	| PrNL -> pstr "PrNL"
 
     | IfThenElse(b,p1,p2) -> pstr "If (" ;
@@ -67,12 +69,12 @@ let rec debug : programme -> unit = fun prg ->
 
     | TryWith(p1,x,p2) -> pstr "try ";
                             debug p1;
-                            pstr " with | ";
+                            pstr " with E ";
                             debug x;
                             pstr " -> ";
                             debug p2
 
-    | Raise(x) -> pstr "raise E "; debug x
+    | Raise(x) -> pstr "raise E ("; debug x; pstr ")"
 
     | Imp(p1,p2) -> debug p1; pstr " ; "; debug p2;
 
