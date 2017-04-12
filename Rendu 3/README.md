@@ -55,18 +55,27 @@ Coiffier Guillaume - Valque Léo
 ## Rendu 3
 ### Semaine 4
 
-[ ] Réalisation de clôtures plus intelligentes en ne considérant que les variables comprises dans l'environnement
+[X] Correction des exceptions (on utilise plus try ... with de Caml)
 
-[ ] Correction des exceptions
+[X] Possibilité de faire des tableaux
+
+[X] Compilation des expressions arithmétiques vers une machine à pile
+
+[X] Exécution des expressions arithmétiques sur une machine à pile
+
+### Semaine 5
 
 [ ] Référence sur les fonctions
 
-[ ] Possibilité de faire des tableaux
+[ ] Réalisation de clôtures plus intelligentes en ne considérant que les variables comprises dans l'environnement
 
-[ ] Compilation vers une machine à pile
+### Semaine 6
 
-[ ] Exécution sur une machine à pile
+[ ]
 
+### Le futur
+
+[ ]
 
 # L'interprétation
 L'interprétation est réalisée dans la fonction execute du fichier interpreteur.ml . Cette fonction prend en argument un programme fouine parsé (de type programme) et renvoie un entier. On utilise une fonction récursive auxiliaire qui associe une valeur de type 'ret' au programme. Ensuite, on appelle la petite fonction return qui renvoie un int à partir de ce ret.
@@ -92,12 +101,15 @@ Deux constructeurs sont associés aux fonctions dans le type programme :
 
 # Exceptions
 
-Pour gérer les exceptions, nous utilisons directement le mécanisme de try ... with de OCaml. Lors de la levée d'une exception, on reprend avec "with..." l'environnement que l'on avait lors du raise (il est toujours possible de faire des effets de bord, comme en Ocaml. Voir exception2.ml pour un example).
-Comme dans le sujet, on omet le | après le with
+Todo
 
 # Références et aspects impératifs
 
 Les références se font sur des entiers uniquement. Elles sont implémentées en ajoutant un constructeur Ref au type Env.elt. Ainsi, elles sont stockées dans l'environnement au même titre que les variables classiques. Lors de la création d'une référence à l'aide du mot clé ref, on ajouter Env.Ref(x) dans l'environnement. Lors de l'assignation de la référence à une autre valeur, on supprime l'assignation courante avant de réinsérer la nouvelle valeur. Accéder à la valeur d'une référence revient simplement à accéder à l'environnement (on teste juste que l'assignation de notre variable est bien une référence. Dans le cas contraire, on plante.)
+
+# Les tableaux
+
+Todo
 
 # Liste et contenu des fichiers
 
@@ -112,6 +124,9 @@ Le fichier contenant la grosse fonction d'interprétation d'un programme fouine.
 
 ### debug.ml :
 Contient la fonction debug, qui permet d'afficher un programme fouine parsé
+
+### machine.ml :
+Modules implémentant la machine à pile.
 
 ### environnement.ml
 La définition du module Environnement, construit à l'aide d'un dictionnaire.
