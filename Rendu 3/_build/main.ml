@@ -36,8 +36,8 @@ let main () =
 					print_newline ();
 
 	| _ ->  (* interpréteur simple*)
-			let p = read_prgm t.(n-1) in
-					print_int (execute p); print_newline ()
+					let p = read_prgm t.(n-1) in
+							print_int (execute p); print_newline ()
 
 
 let _ = main ();;

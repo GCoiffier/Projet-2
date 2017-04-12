@@ -7,7 +7,6 @@ exception E of Env.elt (* Ce type retour peut être une exception *)
 
 let return : ret -> int = function
       Env.Int(n) -> n
-    | Env.Array(_) -> failwith "Execution Error: expected integer, got array"
     | Env.Ref(_) -> failwith "Execution Error: expected integer, got reference"
     | Env.Cloture(_,_) -> failwith "Execution Error: expected integer, got function"
 
@@ -108,18 +107,5 @@ let execute : programme -> int = fun prg ->
                         Env.remove env x;
                         Env.add env x (Env.Ref(u));
                         Env.Int(u)
-    (* tableaux  *)
-    | AMake(x) ->
-
-    | Affect(t,i,x) -> let ind = return (exec_aux env stack i) in
-                        let tab = Env.find env t in
-                            let ret = exec_aux env stack x
-                            tab.(ind) <- return ret;
-                            ret
-
-    | Access(t,i) -> let ind = return (exec_aux env stack i) in
-                        let tab = Env.find env t in
-                            Env.Int(tab.(ind))
-
 
     in return (exec_aux (Env.create 10) (Stack.create ()) prg)

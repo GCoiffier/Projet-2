@@ -14,7 +14,6 @@ module Environnement =
           soit une référence *)
         | Int of int
         | Ref of int
-        | Array of int array
         | Cloture of programme * (programme , elt) D.t
 
       let create n = D.create n
