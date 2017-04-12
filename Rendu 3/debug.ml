@@ -84,4 +84,8 @@ let rec debug : programme -> unit = fun prg ->
 
     | Assign(x,p) -> pstr "(" ; debug x ; pstr " := "; debug p ; pstr ")"
 
-    | _ -> failwith "Not implemented yet"
+    | AMake(x) -> pstr "aMake (" ; debug x; pstr ")"
+
+    | Affect(t,i,x) -> debug t; pstr ".("; debug i; pstr ") <- " ; debug x
+
+    | Access(t,i) -> debug t; pstr ".("; debug i; pstr ")"
