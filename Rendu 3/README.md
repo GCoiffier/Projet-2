@@ -105,19 +105,19 @@ Les références se font sur des entiers uniquement. Elles sont implémentées e
 Fichier principal. Lit les argument envoyés au programme et fait les différents appels aux différentes parties du code.
 
 ### prog_type.ml
-    Fichier contenant les définitions des types représentant un programme fouine dans Caml. Type unary_op, binary_op, variable, programme.
+Fichier contenant les définitions des types représentant un programme fouine dans Caml. Type unary_op, binary_op, variable, programme.
 
 ### interpreteur.ml :
-    Le fichier contenant la grosse fonction d'interprétation d'un programme fouine.
+Le fichier contenant la grosse fonction d'interprétation d'un programme fouine.
 
 ### debug.ml :
-    Contient la fonction debug, qui permet d'afficher un programme fouine parsé
+Contient la fonction debug, qui permet d'afficher un programme fouine parsé
 
 ### environnement.ml
-    La définition du module Environnement, construit à l'aide d'un dictionnaire.
+La définition du module Environnement, construit à l'aide d'un dictionnaire.
 
 ### LexParInterface.ml :
-    Fichier faisant l'interface entre le parser et le reste du code. Fournit simplement une primitive read_prgm <fichier>.
+Fichier faisant l'interface entre le parser et le reste du code. Fournit simplement une primitive read_prgm <fichier>.
 
 ### parser.mly , lexer.mll
 Ces fichiers permettent de lire la formule donnée en entrée par le programme, et de construire un objet de type programme représentant le code à exécuter.
