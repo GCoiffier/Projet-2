@@ -31,8 +31,8 @@ let main () =
 					StackMachine.init_and_compute p
 
 	| "-interm" ->  (* compile vers machine à pile mais n'execute pas : affiche le code *)
-					print_string "Option non implémentée";
-					print_newline ()
+					let p = read_prgm t.(n-1) in
+					StackMachine.init_and_display p
 
 	| _ ->  (* interpréteur simple*)
 			let p = read_prgm t.(n-1) in

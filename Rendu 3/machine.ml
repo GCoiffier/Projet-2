@@ -10,6 +10,8 @@ module type StackMachineSig = sig
 	val step : machine ref -> bool
 
 	val init_and_compute : programme -> unit
+
+	val init_and_display : programme -> unit
 end
 
 
@@ -42,14 +44,18 @@ module StackMachine : StackMachineSig = struct
 			|[] -> print_string ";;"
 			|t::q ->
 				( match t with
-					Int(i) ->
-					| _ ->
+					  INT(i) -> print_int i
+					| ADD -> print_string "ADD"
+					| MINUS -> print_string "MINUS"
+					| MULT -> print_string "MULT"
+					| DIV -> print_string "DIV"
+					| MOD -> print_string "MOD"
+					| UMINUS -> print_string "UMINUS"
+					| PRINT -> print_string "PRINT"
 				);
 				print_string "; " ;
 				print_instr_list q
-		in match (!machine) with
-		| Mach(l,_,_) -> print_instr_list l
-		| _ -> failwith "error in display"
+		in match (!machine) with Mach(l,_,_) -> print_instr_list l; print_newline ()
 
 	let step machine =
 		match !machine with
@@ -85,5 +91,9 @@ module StackMachine : StackMachineSig = struct
 		while not(step mach)
 			do ()
 		done
+
+	let init_and_display prg =
+		let mach = init prg in
+			display mach
 
 end
