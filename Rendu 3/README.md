@@ -26,6 +26,7 @@ Coiffier Guillaume - Valque Léo
 
 # Avancement du projet
 
+## Rendu 2
 ### Semaine 1
 
 [X] Lexer et parser de base
@@ -51,13 +52,21 @@ Coiffier Guillaume - Valque Léo
 
 [X] Ajout de primitives "bonus" prStr (qui renvoie 0 et affiche une string) prNl (qui passe une ligne et renvoie aussi 0)
 
-### Le futur
+## Rendu 3
+### Semaine 4
 
 [ ] Réalisation de clôtures plus intelligentes en ne considérant que les variables comprises dans l'environnement
+
+[ ] Correction des exceptions
 
 [ ] Référence sur les fonctions
 
 [ ] Possibilité de faire des tableaux
+
+[ ] Compilation vers une machine à pile
+
+[ ] Exécution sur une machine à pile
+
 
 # L'interprétation
 L'interprétation est réalisée dans la fonction execute du fichier interpreteur.ml . Cette fonction prend en argument un programme fouine parsé (de type programme) et renvoie un entier. On utilise une fonction récursive auxiliaire qui associe une valeur de type 'ret' au programme. Ensuite, on appelle la petite fonction return qui renvoie un int à partir de ce ret.
