@@ -4,14 +4,20 @@ module type StackMachineSig = sig
 	type machine
 
 	val init : programme -> machine ref
+	(* builds a stack machine out of a fouine program *)
 
 	val display : machine ref -> unit
+	(* prints the machine in the shell (ie the stack of instruction)*)
 
 	val step : machine ref -> bool
+	(* executes the instruction on top of the stack *)
 
 	val init_and_compute : programme -> unit
+	(* inits a machine and execute every instruction, then print out the result *)
 
 	val init_and_display : programme -> unit
+	(* inits a machine and prints its stack of instruction*)
+
 end
 
 
