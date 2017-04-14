@@ -77,6 +77,10 @@ Coiffier Guillaume - Valque Léo
 
 [ ]
 
+# Bugs repérés mais non corrigé :
+
+- ENORME problème avec les exceptions. Il faut revoir la façon dont elles sont gérées en profondeur, car pour l'instant, tout le code situé après un "raise" dans un try with est quand même exécuté !
+
 # L'interprétation
 L'interprétation est réalisée dans la fonction execute du fichier interpreteur.ml . Cette fonction prend en argument un programme fouine parsé (de type programme) et renvoie un entier. On utilise une fonction récursive auxiliaire qui associe une valeur de type 'ret' au programme. Ensuite, on appelle la petite fonction return qui renvoie un int à partir de ce ret.
 

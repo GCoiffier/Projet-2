@@ -1,4 +1,4 @@
-open Prog_type
+open Fouine_type
 open Dictionnaire
 
 module Environnement =

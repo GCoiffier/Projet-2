@@ -1,1 +1,1 @@
-let t = aMake 10 in t.(5) <- 2; t.(5) ;;
+try raise E 3; prInt 42 ; 45 with E x -> x;;

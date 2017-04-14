@@ -1,4 +1,4 @@
-open Prog_type
+open Fouine_type
 
 module type StackMachineSig = sig
 	type machine

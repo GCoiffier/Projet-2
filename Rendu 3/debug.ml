@@ -1,5 +1,5 @@
 open Environnement
-open Prog_type
+open Fouine_type
 
 let pstr = print_string (* abréviation *)
 

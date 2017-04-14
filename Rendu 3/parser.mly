@@ -1,7 +1,7 @@
 %{
 
 open Interpreteur
-open Prog_type
+open Fouine_type
 
 %}
 
@@ -44,7 +44,7 @@ open Prog_type
 
 
 %start main
-%type <Prog_type.programme> main
+%type <Fouine_type.programme> main
 
 %%
     /* --- début des règles de grammaire --- */
