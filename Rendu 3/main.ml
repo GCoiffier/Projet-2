@@ -18,7 +18,7 @@ open Machine
 	Fonction principale : lit les arguments donnés au programme et appelle les parties du code correspondantes *)
 
 let main_standard_entry () =
-(* pas d'arguments -> lit l'entrée standard *)
+
 	print_string "# "; flush stdout;
 	let p = read_standard () in
 		(try
@@ -31,14 +31,13 @@ let main_standard_entry () =
 let main () =
 	let t = Sys.argv in
 	let n = Array.length t in
-	let p =  if (String.get t.(n-1) 0) == '-' then
-				begin
-				print_string "# ";
-				flush stdout;
-				read_standard ()
-				end
-			   else
-				read_prgm t.(n-1) in
+	let p =  if (String.get t.(n-1) 0) == '-' (* pas d'arguments -> lit l'entrée standard *)
+				then begin
+					print_string "# ";
+					flush stdout;
+					read_standard () end
+			  	else
+					read_prgm t.(n-1) in
 	match t.(1) with
 	| "-debug" ->  (* affiche le code *)
 				  debug p; print_newline ();
