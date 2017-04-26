@@ -31,13 +31,16 @@ let main_standard_entry () =
 let main () =
 	let t = Sys.argv in
 	let n = Array.length t in
-	if (String.get t.(n-1) 0) == '-' then
-		main_standard_entry ()
-	else
-		let p = read_prgm t.(n-1) in
-		match t.(1) with
+	let p =  if (String.get t.(n-1) 0) == '-' then
+				begin
+				print_string "# ";
+				flush stdout;
+				read_standard ()
+				end
+			   else
+				read_prgm t.(n-1) in
+	match t.(1) with
 	| "-debug" ->  (* affiche le code *)
-                  let p = read_prgm t.(n-1) in
 				  debug p; print_newline ();
 				  let res = execute p in
 	  				print_string "- : int = ";
@@ -45,25 +48,25 @@ let main () =
 	  				print_newline ()
 
 	| "-machine" -> (* compile et execute sur machine à pile *)
-					let p = read_prgm t.(n-1) in
 					StackMachine.init_and_compute p
 
 	| "-interm" ->  (* compile vers machine à pile mais n'execute pas : affiche le code *)
-					let p = read_prgm t.(n-1) in
 					StackMachine.init_and_display p
 
 	| "-NbE" -> print_string "Not implemented yet. Sorry." ; print_newline ()
 
-	| "E" -> print_string "Not implemented yet. Sorry." ; print_newline ()
+	| "-E" -> print_string "Not implemented yet. Sorry." ; print_newline ()
 
-	| "R" -> print_string "Not implemented yet. Sorry." ; print_newline ()
+	| "-R" -> print_string "Not implemented yet. Sorry." ; print_newline ()
 
-	| "ER" -> print_string "Not implemented yet. Sorry." ; print_newline ()
+	| "-ER" -> print_string "Not implemented yet. Sorry." ; print_newline ()
 
 	| _ ->  (* interpréteur simple*)
+			(try
 				let res = execute p in
 				print_string "- : int = ";
 				print_int res;
-				print_newline ()
+			with | _ -> print_string "- : "; debug p);
+			print_newline ()
 
 let _ = main ();;
