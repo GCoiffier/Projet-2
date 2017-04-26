@@ -31,10 +31,10 @@ let main_standard_entry () =
 let main () =
 	let t = Sys.argv in
 	let n = Array.length t in
-
-	if (n==1) then
+	if (String.get t.(n-1) 0) == '-' then
 		main_standard_entry ()
 	else
+		let p = read_prgm t.(n-1) in
 		match t.(1) with
 	| "-debug" ->  (* affiche le code *)
                   let p = read_prgm t.(n-1) in
@@ -61,7 +61,6 @@ let main () =
 	| "ER" -> print_string "Not implemented yet. Sorry." ; print_newline ()
 
 	| _ ->  (* interpréteur simple*)
-			let p = read_prgm t.(n-1) in
 				let res = execute p in
 				print_string "- : int = ";
 				print_int res;
