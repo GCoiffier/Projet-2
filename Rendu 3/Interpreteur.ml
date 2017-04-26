@@ -95,7 +95,9 @@ let execute : programme -> int = fun prg ->
                   )
 
     (* aspects impératifs et références *)
-    | Imp(p1,p2) -> let _ = exec_aux env stack p1 in exec_aux env stack p2
+    | Imp(p1,p2) -> let n = Stack.length stack in
+                        let u = exec_aux env stack p1 in
+                        if (Stack.length stack ==n) then (exec_aux env stack p2) else u
 
     | Ref(x) -> let v = return (exec_aux env stack x) in
                     Env.Ref(ref v)

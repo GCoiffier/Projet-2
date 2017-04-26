@@ -39,8 +39,10 @@ let main () =
 	| "-debug" ->  (* affiche le code *)
                   let p = read_prgm t.(n-1) in
 				  debug p; print_newline ();
-                  print_string "result = "; print_int (execute p);
-                  print_newline ()
+				  let res = execute p in
+	  				print_string "- : int = ";
+	  				print_int res;
+	  				print_newline ()
 
 	| "-machine" -> (* compile et execute sur machine à pile *)
 					let p = read_prgm t.(n-1) in
@@ -60,7 +62,9 @@ let main () =
 
 	| _ ->  (* interpréteur simple*)
 			let p = read_prgm t.(n-1) in
-					print_int (execute p); print_newline ()
-
+				let res = execute p in
+				print_string "- : int = ";
+				print_int res;
+				print_newline ()
 
 let _ = main ();;

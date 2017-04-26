@@ -45,9 +45,8 @@ let rec debug : programme -> unit = fun prg ->
                         debug x;
                         pstr " = (";
                         debug p1;
-                        pstr ") in (";
+                        pstr ") in ";
                         debug p2;
-                        pstr ")"
 
     | LetRec(x,p1,p2) -> pstr "let rec ";
                         debug x;
@@ -68,7 +67,9 @@ let rec debug : programme -> unit = fun prg ->
                             debug a
 
     | TryWith(p1,x,p2) -> pstr "try ";
+                            pstr "(";
                             debug p1;
+                            pstr ")";
                             pstr " with E ";
                             debug x;
                             pstr " -> ";
