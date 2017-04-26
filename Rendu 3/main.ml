@@ -23,8 +23,11 @@ let main () =
 	if (n==1) then begin(* pas d'arguments -> lit l'entrée standard *)
 		print_string "# "; flush stdout;
 		let p = read_standard () in
-			print_string "- : int = ";
-			print_int (execute p);
+			(try
+				let res = execute p in
+				print_string "- : int = ";
+				print_int res;
+			with | _ -> print_string "- : "; debug p);
 			print_newline ()
 		end
 	else match t.(1) with
