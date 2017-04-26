@@ -67,7 +67,9 @@ Coiffier Guillaume - Valque Léo
 
 [X] Corrections de bugs du retour du rendu 2 (references, bugs mineurs)
 
-[ ] Extension de la machine à pile qui gère les variables et les fonctions
+[X] Le programme peut désormais lire l'entrée standard dans le cas où on ne donne pas de fichier en argument
+
+[X] Extension de la machine à pile qui gère les variables et les fonctions
 
 ### Semaine 6
 
