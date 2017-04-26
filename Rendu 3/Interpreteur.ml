@@ -97,6 +97,7 @@ let execute : programme -> int = fun prg ->
     (* aspects impératifs et références *)
     | Imp(p1,p2) -> let n = Stack.length stack in
                         let u = exec_aux env stack p1 in
+                        (* test pour vérifier que l'on a pas de raise dans p1, auquel cas il ne faut PAS executer p2 *)
                         if (Stack.length stack ==n) then (exec_aux env stack p2) else u
 
     | Ref(x) -> let v = return (exec_aux env stack x) in

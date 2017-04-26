@@ -16,6 +16,7 @@ let read_prgm entree =
       close_in fd; a
 
 let read_standard () =
+	(* lit l'entrée standard *)
 	let fd = stdin in
 	let a = parse fd in
 	  close_in fd; a

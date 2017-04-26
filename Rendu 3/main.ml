@@ -41,11 +41,8 @@ let main () =
 					StackMachine.init_and_display p
 
 	| "-NbE" -> print_string "Not implemented yet. Sorry." ; print_newline ()
-
 	| "-E" -> print_string "Not implemented yet. Sorry." ; print_newline ()
-
 	| "-R" -> print_string "Not implemented yet. Sorry." ; print_newline ()
-
 	| "-ER" -> print_string "Not implemented yet. Sorry." ; print_newline ()
 
 	| _ ->  (* interpréteur simple*)

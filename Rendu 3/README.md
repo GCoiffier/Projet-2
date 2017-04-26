@@ -100,7 +100,7 @@ Cette structure de donnée supporte l'ajout d'un couple d'élément, la suppress
 
 Pour l'implémentation des fonctions, on a ajouté un constructeur Cloture au type Env.elt.  Un cloture comprend l'expression de la fonction (le A de `let f x = A in`) et une copie de l'environnement au moment de la définition de la fonction. Cette copie est "brutale" : on copie l'intégralité de l'environnement sans chercher à savoir quelles valeurs sont inutiles.
 
-Dans le cas des fonctions récursives, on ajoute à la clôture crée... elle-même. Ainsi, on évite de faire autant de clôtures que d'appel récursif. Cela ne pose pas de problème tant qu'il existe un cas de sortie à la fonction récursive. NOTE : il est possible qu'ainsi, on ne puisse pas faire d'effet de bord dans une fonction récursive.
+Dans le cas des fonctions récursives, on ajoute à la clôture crée... elle-même. Ainsi, on évite de faire autant de clôtures que d'appel récursif. Cela ne pose pas de problème tant qu'il existe un cas de sortie à la fonction récursive.
 
 Deux constructeurs sont associés aux fonctions dans le type programme :
     Function_def : appellé lors de la définition de fonction, contient l'argument (unique) et l'expression de la fonction (qui peut elle même être une fonction).
@@ -109,11 +109,13 @@ Deux constructeurs sont associés aux fonctions dans le type programme :
 
 # Exceptions
 
-Todo
+TODO
 
 # Références et aspects impératifs
 
-Les références se font sur des entiers uniquement. Elles sont implémentées en ajoutant un constructeur Ref au type Env.elt. Ainsi, elles sont stockées dans l'environnement au même titre que les variables classiques. Lors de la création d'une référence à l'aide du mot clé ref, on ajouter Env.Ref(x) dans l'environnement. Lors de l'assignation de la référence à une autre valeur, on supprime l'assignation courante avant de réinsérer la nouvelle valeur. Accéder à la valeur d'une référence revient simplement à accéder à l'environnement (on teste juste que l'assignation de notre variable est bien une référence. Dans le cas contraire, on plante.)
+Les références se font sur des entiers uniquement. Elles sont implémentées en ajoutant un constructeur Ref au type Env.elt et sont stockées en tant que références de Caml dans l'environnement. Les trois opérations (déclaration, assignation et déréférencement) se font alors naturellement.
+
+Gestion du simple ; : Attention avec les exceptions
 
 # Les tableaux
 
@@ -124,7 +126,7 @@ Todo
 ### main.ml :
 Fichier principal. Lit les argument envoyés au programme et fait les différents appels aux différentes parties du code.
 
-### prog_type.ml
+### fouine_type.ml
 Fichier contenant les définitions des types représentant un programme fouine dans Caml. Type unary_op, binary_op, variable, programme.
 
 ### interpreteur.ml :
