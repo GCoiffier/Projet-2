@@ -5,7 +5,8 @@ exception Eof;;
 }
 
 rule token = parse    (* la "fonction" aussi s'appelle token .. *)
-	| [' ' '\t' '\n']     		{ token lexbuf }
+	| [' ' '\t' '\n']   { token lexbuf }
+	| "(*" [' '-')' '+'-'}']+ "*)" { token lexbuf }
 
 	| "prInt"			{ PRINT }
 	| "prStr \"" ([' '-'!' '#'-'}']+ as s) "\""      

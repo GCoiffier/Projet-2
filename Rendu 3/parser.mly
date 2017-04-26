@@ -32,6 +32,7 @@ open Fouine_type
 %left PRINT
 %left EGALE
 %right FUN, IMPLIES
+%left UNIT
 %left AFFECT
 %left LARROW
 %left ADD, MINUS
@@ -118,7 +119,6 @@ expr:
   | expr INFE expr				                 { BinOp($1, Infeq ,$3) }
 
   | funct_call								     { $1 }
-  | variable UNIT                                { Function_call($1, Const(0) ) }
 ;
 
 /* Arguments de fonctions */
