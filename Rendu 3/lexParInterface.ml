@@ -14,3 +14,8 @@ let read_prgm entree =
 	let fd = open_in entree in
     let a = parse fd in
       close_in fd; a
+
+let read_standard () =
+	let fd = stdin in
+	let a = parse fd in
+	  close_in fd; a

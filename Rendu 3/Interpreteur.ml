@@ -11,6 +11,7 @@ let return : ret -> int = function
     | Env.Ref(_) -> failwith "Execution Error: expected integer, got reference"
     | Env.Cloture(_,_) -> failwith "Execution Error: expected integer, got function"
 
+
 (* ------ Execution complète (avec les extensions) ------ *)
 let execute : programme -> int = fun prg ->
     let rec exec_aux env stack  = function
@@ -23,7 +24,7 @@ let execute : programme -> int = fun prg ->
 
     | PrInt(p) -> let ret = (exec_aux env stack p) in
                   ( match ret with
-                     Env.Int(x) -> print_int x; print_string " "
+                     Env.Int(x) -> print_int x; print_newline ()
                      |_ -> failwith "Execution Error in prInt"
                   ) ; ret
 
@@ -94,20 +95,22 @@ let execute : programme -> int = fun prg ->
                   )
 
     (* aspects impératifs et références *)
-    | Imp(p1,p2) -> let _ = exec_aux env stack  p1 in exec_aux env stack  p2
+    | Imp(p1,p2) -> let _ = exec_aux env stack p1 in exec_aux env stack p2
 
-    | Ref(x) -> let v = return (exec_aux env stack  x) in Env.Ref(v)
+    | Ref(x) -> let v = return (exec_aux env stack x) in
+                    Env.Ref(ref v)
 
     | Bang(x) -> let u = (Env.find env x) in
                     (match u with
-                        Env.Ref(a) -> Env.Int(a)
+                        Env.Ref(a) -> Env.Int(!a)
                         | _ -> failwith "Error : Not a reference"
                     )
 
     | Assign(x,p) -> let u = return (exec_aux env stack p) in
-                        Env.remove env x;
-                        Env.add env x (Env.Ref(u));
-                        Env.Int(u)
+                         (match (Env.find env x) with
+                            Env.Ref(r) -> r :=u
+                            | _ -> failwith "Error : Not a reference")
+                        ; Env.Int(u)
     (* tableaux  *)
     | AMake(x) -> let n = return (exec_aux env stack x) in
                         Env.Array (Array.make n 0)
@@ -128,67 +131,3 @@ let execute : programme -> int = fun prg ->
                             )
 
     in return (exec_aux (Env.create 10) (Stack.create ()) prg)
-
-
-
-(* ------ Execution simple (sans extensions à fouine) ------
-    C'est une ancienne version de la fonction d'interprétation *)
-
-    let execute : programme -> int = fun prg ->
-        let rec exec_aux env = function
-
-        Unit -> Env.Int(0)
-        | Const(n) -> Env.Int(n)
-        | Var(x) as v -> Env.find env v
-        | PrInt(p) -> let ret = (exec_aux env p) in
-                      ( match ret with
-                         Env.Int(x) -> print_int x; print_string " "
-                         |_ -> failwith "Execution Error in prInt"
-                      ) ; ret
-        | Let(x,val_x,p) ->  Env.add env x (exec_aux env val_x);
-                            let ret = (exec_aux env p) in
-                            Env.remove env x; ret
-        | LetRec(f,expr_f,p) ->  let copy = Env.copy env in
-                                let clt = Env.Cloture(expr_f, copy) in
-                                Env.add copy f clt; (* Comme la fonction s'appelle elle-même, la cloture se contient elle même*)
-                                Env.add env f clt;
-                                let ret = (exec_aux env p) in
-                                Env.remove env f; ret
-        | IfThenElse(b,p1,p2) -> let x = return (exec_aux env b) in
-                                  if (x==1) then (exec_aux env p1)
-                                            else (exec_aux env p2)
-        | UnOp(op,a) ->  let x = return (exec_aux env a) in
-                        ( match op with
-                             Neg -> Env.Int(-x)
-                           | Not -> Env.Int(1-x)
-                        )
-        | BinOp(a,op,b) -> let xa = return (exec_aux env a) and
-                              xb = return (exec_aux env b) in
-                          let c1 = Env.Int(1) and c0 = Env.Int(0) in
-                           ( match op with
-                              | Add -> Env.Int(xa+xb)
-                              | Minus -> Env.Int(xa - xb)
-                              | And -> Env.Int(xa*xb)
-                              | Or -> if ((xa+xb)>0) then c1 else c0
-                              | Mult -> Env.Int(xa*xb)
-                              | Div -> Env.Int(xa/xb)
-                              | Mod -> Env.Int(xa mod xb)
-                              | Equal -> if (xa==xb) then c1 else c0
-                              | Neq -> if (xa<>xb) then c1 else c0
-                              | Infeq -> if (xa<=xb) then c1 else c0
-                              | Inf -> if (xa<xb) then c1 else c0
-                              | Supeq -> if (xa>=xb) then c1 else c0
-                              | Sup -> if (xa>xb) then c1 else c0
-                           )
-        | Function_def(_,_) as f -> Env.Cloture(f, Env.copy env)
-        | Function_call(f,arg) -> let v = (exec_aux env f) in
-                                    (match v with
-                                    | Env.Cloture(Function_def(x,expr), clt ) ->
-                                        Env.add clt x (exec_aux env arg);
-                                        let ret = exec_aux clt expr in
-                                        Env.remove clt x; ret
-                                    | _ -> failwith "Error in function call"
-                                    )
-        | _ -> failwith "This constructor does not belong to the core fouine langage"
-
-        in return (exec_aux (Env.create 10) prg)

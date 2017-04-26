@@ -16,10 +16,26 @@ open Machine
 
 (* main : unit -> unit
 	Fonction principale : lit les arguments donnés au programme et appelle les parties du code correspondantes *)
+
+let main_standard_entry () =
+(* pas d'arguments -> lit l'entrée standard *)
+	print_string "# "; flush stdout;
+	let p = read_standard () in
+		(try
+			let res = execute p in
+			print_string "- : int = ";
+			print_int res;
+		with | _ -> print_string "- : "; debug p);
+		print_newline ()
+
 let main () =
 	let t = Sys.argv in
 	let n = Array.length t in
-	match t.(1) with
+
+	if (n==1) then
+		main_standard_entry ()
+	else
+		match t.(1) with
 	| "-debug" ->  (* affiche le code *)
                   let p = read_prgm t.(n-1) in
 				  debug p; print_newline ();

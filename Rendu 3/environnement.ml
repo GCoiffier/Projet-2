@@ -11,9 +11,10 @@ module Environnement =
       (* Ce que l'on stocke dans l'environnement.
           C'est soit la valeur d'une variable,
           soit l'expression et la cloture associée à une fonction,
-          soit une référence *)
+          soit une référence,
+          soit un tableau *)
         | Int of int
-        | Ref of int
+        | Ref of int ref
         | Array of int array
         | Cloture of programme * (programme , elt) D.t
 
