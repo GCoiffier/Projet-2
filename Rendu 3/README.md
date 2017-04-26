@@ -24,6 +24,14 @@ Coiffier Guillaume - Valque Léo
     - `./fouine Programs/factorielle.fouine`
     - `./fouine -debug Programs/function.fouine`
 
+# Bugs non corrigés
+
+- l'ordre d'exécution n'est pas
+identique à Caml sur l'exemple donné sur le sujet: let f x y=x*y in f (prInt 3)
+(2+prInt 2);; est censé afficher 2 avant 3
+
+- 
+
 # Avancement du projet
 
 ## Rendu 2
