@@ -63,21 +63,20 @@ Coiffier Guillaume - Valque Léo
 
 [X] Exécution des expressions arithmétiques sur une machine à pile
 
-### Semaine 5
+### Semaine 5 et 6
 
-[X] Corrections de bugs du retour du rendu 2 (references, bugs mineurs)
+[X] Corrections de bugs du retour du rendu 2 (réferences, ordre d'execution des fonctions, exceptions)
 
 [X] Le programme peut désormais lire l'entrée standard dans le cas où on ne donne pas de fichier en argument
 
-[X] Extension de la machine à pile qui gère les variables et les fonctions
+[X] Extension de la machine à pile qui gère les variables, les fonctions et les branchements conditionnels
 
+## Rendu 4
 ### Semaine 6
-
-[ ] Réalisation de clôtures plus intelligentes en ne considérant que les variables comprises dans l'environnement
 
 [ ]
 
-### Le futur
+### Semaine 7
 
 [ ]
 
