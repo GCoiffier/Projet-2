@@ -6,7 +6,6 @@ open Fouine_type
 %}
 
 /* description des lexèmes, ceux-ci sont décrits dans lexer.mll */
-
 %token <int> CONST
 %token <string> VARIABLE
 %token <string> TAFFECT
@@ -24,6 +23,7 @@ open Fouine_type
 %token PRNL
 %token AMAKE, LARROW
 
+/* priorités et associativité */
 %left LET, IN
 %left EINSTR
 %left IF, THEN, ELSE
@@ -31,10 +31,11 @@ open Fouine_type
 %left END
 %left PRINT
 %left EGALE
-%right FUN, IMPLIES
+%right FUN
+%nonassoc IMPLIES
 %left UNIT
 %left AFFECT
-%left LARROW
+%nonassoc LARROW
 %left ADD, MINUS
 %left AND, OR
 %left NOT

@@ -1,1 +1,1 @@
-try raise E 3; prInt 42 ; 45 with E x -> x;;
+let f x y = x+y in f (prInt 2) (prInt 3);;

@@ -74,10 +74,11 @@ let execute : programme -> int = fun prg ->
     (* Fonctions *)
     | Function_def(_,_) as f -> Env.Cloture(f, Env.copy env)
 
-    | Function_call(f,arg) -> let v = (exec_aux env stack  f) in
+    | Function_call(f,arg) ->   let value = exec_aux env stack arg in
+                                let v = (exec_aux env stack f) in
                                 (match v with
                                 | Env.Cloture(Function_def(x,expr), clt ) ->
-                                    Env.add clt x (exec_aux env stack  arg);
+                                    Env.add clt x value;
                                     let ret = exec_aux clt stack expr in
                                     Env.remove clt x; ret
                                 | _ -> failwith "Error in function call"
