@@ -20,12 +20,19 @@ Coiffier Guillaume - Valque Léo
 
 - `./fouine -debug fichier` commence par afficher le code parsé dans la console,   puis exécute le code et affiche le résultat.
 
-- `./fouine -machine fichier` compile le code parsé et l'exécute sur la machine à pile
+- `./fouine -interm sortie fichier` compile le code parsé et le stocke dans sortie. Les fichiers de sortie sont par défaut dans le dossier Stack_programs. Donnez simplement le nom du fichier "toto.code" et il sera enregistré dans le bon dossier. Si aucun fichier de sortie n'est spécifié, le programme affichera le code dans la console.
 
-- `./fouine -interm sortie fichier` compile le code parsé et le stocke dans la sortie (Pour l'instant , il n'y a pas d'options 																							pour exécuter un code déjà compiler)
+- `./fouine -machine fichier` compile le code parsé et l'exécute sur la machine à pile. Ce code doit être un code fouine. La lecture des codes machine à pile n'est pas encore implémentée.
+
+- NB : il est dans tous les cas possibles de ne pas donner de fichier d'entrée à fouine. Le programme s'éxecute alors en mode interactif et il faut entrer un programme dans la console.
 
 - Exemples :
+    - `./fouine`
     - `./fouine Programs/factorielle.fouine`
+    - `./fouine -debug Programs/function.fouine`
+    - `./fouine -interm`
+    - `./fouine -interm toto.code Programs/prog1.fouine`
+    - `./fouine -machine Programs/prog2.fouine`
     - `./fouine -debug Programs/function.fouine`
 
 # Avancement du projet
@@ -73,7 +80,7 @@ Coiffier Guillaume - Valque Léo
 
 [X] Le programme peut désormais lire l'entrée standard dans le cas où on ne donne pas de fichier en argument
 
-[X] Extension de la machine à pile qui gère les variables, les fonctions et les branchements conditionnels
+[X] Extension de la machine à pile qui gère les variables et les branchements conditionnels
 
 ## Rendu 4
 ### Semaine 6
@@ -83,12 +90,6 @@ Coiffier Guillaume - Valque Léo
 ### Semaine 7
 
 [ ]
-
-# Bugs repérés mais non corrigé :
-
-- l'ordre d'exécution n'est pas identique à Caml sur l'exemple donné sur le sujet:
-let f x y=x*y in f (prInt 3) (2+prInt 2);;
-est censé afficher 2 avant 3 (corrigé)
 
 # L'interprétation
 L'interprétation est réalisée dans la fonction execute du fichier interpreteur.ml . Cette fonction prend en argument un programme fouine parsé (de type programme) et renvoie un entier. On utilise une fonction récursive auxiliaire qui associe une valeur de type 'ret' au programme. Ensuite, on appelle la petite fonction return qui renvoie un int à partir de ce ret.
@@ -111,25 +112,26 @@ Deux constructeurs sont associés aux fonctions dans le type programme :
     Function_def : appellé lors de la définition de fonction, contient l'argument (unique) et l'expression de la fonction (qui peut elle même être une fonction).
     Function_call : appellé lors de l'appel à une fonction, contient le nom de la fonction et la valeur de l'argument (qui est une expression non interprétée)
                         le nom de la fonction permet de retrouver la définition dans l'environnement. On interprète l'expression associée à la cloture en ajoutant à l'environnement de la cloture la valeur de l'argument.
-                        
+
 # La machine à pile
 La machine à pile est réalisée par la fonction step du fichier machine.ml . Cette fonction prend en argument une pile d'instruction machine (de type instruction list) et affiche un entier lorsqu'il a terminé. Chaque step lit et exécute l'instruction au sommet de la pile.
 
-La compilation du code parsé est effectué par la fonction built situé dans le même fichier . Cette fonction prend en argument un programme fouine parsé (de type programme) et renvoie une pile d'instruction machine (de type instruction list).
+La compilation du code parsé est effectuée par la fonction build situé dans le même fichier . Cette fonction prend en argument un programme fouine parsé (de type programme) et renvoie une pile d'instruction machine (de type instruction list).
 
 # Exceptions
 
-TODO
+Les exceptions sont gérées grâce à un système de pile. TODO
+
+
+NOTE : cela pose des problèmes lorsqu'un raise n'est pas la valeur renvoyée par une expression. C'est notamment le cas dans les séquencements impératifs. La façon dont est construit l'interpréteur fait que l'intégralité du code est executée. Ainsi, raise E 2; x:=3 changeait la valeur de x. Nous avons pallié à ce problème en vérifiant, dans le séquencement, si la pile d'exceptions avait changé de taille ou non. D'autres cas d'erreur un peu plus subtils posent cependant encore problème (voir bugtest4.ml)
 
 # Références et aspects impératifs
 
 Les références se font sur des entiers uniquement. Elles sont implémentées en ajoutant un constructeur Ref au type Env.elt et sont stockées en tant que références de Caml dans l'environnement. Les trois opérations (déclaration, assignation et déréférencement) se font alors naturellement.
 
-Gestion du simple ; : Attention avec les exceptions
-
 # Les tableaux
 
-Todo
+Les tableaux ont été implémentés quasiment comme les références. Le type Env.elt a été enrichi d'un constructeur Array contenant un tableau. Les trois opérations (création de tableau, assignation à un indice, lecture d'une case) se font alors naturellement.
 
 # Liste et contenu des fichiers
 

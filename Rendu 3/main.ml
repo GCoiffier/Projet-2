@@ -40,7 +40,7 @@ let main () =
 
 	| "-interm" ->  (* compile vers machine à pile et enregistre le code dans un fichier. Si pas de fichier -> sortie standard *)
 					let s = StackMachine.init_and_display p in
-					if n==3 (* pas de fichiers *) then
+					if n<=3 (* pas de fichiers *) then
 						begin print_string s;
 							  print_newline () end
 					else let file = open_out ("Stack_programs/"^(t.(2))) in
