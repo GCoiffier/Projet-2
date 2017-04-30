@@ -166,3 +166,4 @@ Ces fichiers permettent de lire la formule donnée en entrée par le programme, 
 - fibonacci intelligent
 - factorielle
 - tours de Hanoi
+- crible d'erathosthène (illustration des tableaux)
