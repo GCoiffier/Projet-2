@@ -26,8 +26,8 @@ let main () =
 					read_standard () end
 			  	else (* On lit l'argument donné *)
 					read_prgm t.(n-1)
-	in let arg = if n=1 then "None" else t.(1)
-	in match arg with
+	in let opt = if n=1 then "None" else t.(1)
+	in match opt with
 	| "-debug" ->  (* affiche le code *)
 				  debug p; print_newline ();
 				  let res = execute p in
@@ -38,8 +38,14 @@ let main () =
 	| "-machine" -> (* compile et execute sur machine à pile *)
 					StackMachine.init_and_compute p
 
-	| "-interm" ->  (* compile vers machine à pile mais n'execute pas : affiche le code *)
-					StackMachine.init_and_display p
+	| "-interm" ->  (* compile vers machine à pile et enregistre le code dans un fichier. Si pas de fichier -> sortie standard *)
+					let s = StackMachine.init_and_display p in
+					if n==3 (* pas de fichiers *) then
+						begin print_string s;
+							  print_newline () end
+					else let file = open_out ("Stack_programs/"^(t.(2))) in
+						begin output_string file s;
+						      close_out file end
 
 	| "-NbE" -> print_string "Not implemented yet. Sorry." ; print_newline ()
 	| "-E" -> print_string "Not implemented yet. Sorry." ; print_newline ()
