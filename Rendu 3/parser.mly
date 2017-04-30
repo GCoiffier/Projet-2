@@ -36,6 +36,7 @@ open Fouine_type
 %left UNIT
 %left AFFECT
 %nonassoc LARROW
+%nonassoc RAISE
 %left ADD, MINUS
 %left AND, OR
 %left NOT

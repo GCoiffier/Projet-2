@@ -120,10 +120,11 @@ La compilation du code parsé est effectuée par la fonction build situé dans l
 
 # Exceptions
 
-Les exceptions sont gérées grâce à un système de pile. TODO
+Les exceptions sont gérées grâce à l'ajout d'un booléen au type de retour de l'interpréteur. Ce booléen vaut vrai si une exception a été levée durant l'éxecution d'un bout de programme. Ainsi, seule l'instruction raise renvoie un booléen vrai. Le try with éxecute son premier argument normalement. Si une exception a été levée, alors on revient à l'ancien environnement et on éxecute la partie 'with ...' en prenant soin d'ajouter la valeur renvoyer par le raise à l'environnement.
 
+Tous les autres constructeurs ont été modifiés à cet effet : soit ils obtiennent récursivement un résultat sans exception, et tout se passe normalement, soit ce résultat renvoie une exception, et ils ne font alors que la propager. C'est ce qui permet à la valeur de l'exception de remonter jusqu'au dernier try.
 
-NOTE : cela pose des problèmes lorsqu'un raise n'est pas la valeur renvoyée par une expression. C'est notamment le cas dans les séquencements impératifs. La façon dont est construit l'interpréteur fait que l'intégralité du code est executée. Ainsi, raise E 2; x:=3 changeait la valeur de x. Nous avons pallié à ce problème en vérifiant, dans le séquencement, si la pile d'exceptions avait changé de taille ou non. D'autres cas d'erreur un peu plus subtils posent cependant encore problème (voir bugtest4.ml)
+Si un raise est executé à l'extérieur d'un try, on vérifie que le booléen est vrai en sortie de la fonction d'évaluation, et donc on peut planter en annonçant une exception non rattrapée.
 
 # Références et aspects impératifs
 

@@ -5,6 +5,6 @@ let rec fiboIntelligent n x sx=
 		let z = !sx in
 		sx := !sx + !x;
 		x := z;
-		prInt !sx; prNl; fiboIntelligent (n-1) x sx
+		prInt !sx; fiboIntelligent (n-1) x sx
 	) in let x = ref 1 in let sx = ref 1 in
 	fiboIntelligent 10 x sx ;;

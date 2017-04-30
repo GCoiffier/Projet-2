@@ -53,11 +53,10 @@ let main () =
 	| "-ER" -> print_string "Not implemented yet. Sorry." ; print_newline ()
 
 	| _ ->  (* interpréteur simple*)
-			(try
 				let res = execute p in
 				print_string "- : int = ";
 				print_int res;
-			with | _ -> print_string "- : "; debug p);
-			print_newline ()
+				print_newline ()
+
 
 let _ = main ();;

@@ -95,6 +95,7 @@ let execute : programme -> int = fun prg ->
     (* Exceptions  *)
     | TryWith(p1,x,p2) -> let old_env = Env.copy env in
                             let v,b = (exec_aux env p1) in
+                                Env.add old_env x v;
                                 if b then (exec_aux old_env p2)
                                      else v,false
 
