@@ -1,1 +1,1 @@
-let f = fun x -> 2*x in f f 2;;
+let f x y = x+y in f (prInt 2) (prInt 3);;

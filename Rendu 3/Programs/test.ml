@@ -1,1 +1,1 @@
-let f x y = x+y in f (prInt 2) (prInt 3);;
+let x = 3+2 in x/2+5;;
