@@ -1,1 +1,1 @@
-try 3+(raise E 2) with E x -> x;;
+let u = try (raise (E 2))+3 with E x -> x in u;;
