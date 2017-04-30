@@ -19,14 +19,15 @@ open Machine
 let main () =
 	let t = Sys.argv in
 	let n = Array.length t in
-	let p =  if (n=1 || (String.get t.(n-1) 0) == '-') (* pas d'arguments -> lit l'entrée standard *)
+	let p =  if (n=1 || (String.get t.(n-1) 0) = '-') (* pas d'arguments -> lit l'entrée standard *)
 				then begin
 					print_string "# ";
 					flush stdout;
 					read_standard () end
 			  	else (* On lit l'argument donné *)
 					read_prgm t.(n-1)
-	in match t.(1) with
+	in let arg = if n=1 then "None" else t.(1)
+	in match arg with
 	| "-debug" ->  (* affiche le code *)
 				  debug p; print_newline ();
 				  let res = execute p in
