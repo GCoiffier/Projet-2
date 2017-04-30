@@ -19,7 +19,7 @@ open Machine
 let main () =
 	let t = Sys.argv in
 	let n = Array.length t in
-	let p =  if (String.get t.(n-1) 0) == '-' (* pas d'arguments -> lit l'entrée standard *)
+	let p =  if (n=1 || (String.get t.(n-1) 0) == '-') (* pas d'arguments -> lit l'entrée standard *)
 				then begin
 					print_string "# ";
 					flush stdout;
