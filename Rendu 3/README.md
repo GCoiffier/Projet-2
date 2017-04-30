@@ -20,6 +20,10 @@ Coiffier Guillaume - Valque Léo
 
 - `./fouine -debug fichier` commence par afficher le code parsé dans la console,   puis exécute le code et affiche le résultat.
 
+- `./fouine -machine fichier` compile le code parsé et l'exécute sur la machine à pile
+
+- `./fouine -interm sortie fichier` compile le code parsé et le stocke dans la sortie (Pour l'instant , il n'y a pas d'options 																							pour exécuter un code déjà compiler)
+
 - Exemples :
     - `./fouine Programs/factorielle.fouine`
     - `./fouine -debug Programs/function.fouine`
@@ -84,7 +88,7 @@ Coiffier Guillaume - Valque Léo
 
 - l'ordre d'exécution n'est pas identique à Caml sur l'exemple donné sur le sujet:
 let f x y=x*y in f (prInt 3) (2+prInt 2);;
-est censé afficher 2 avant 3
+est censé afficher 2 avant 3 (corrigé)
 
 # L'interprétation
 L'interprétation est réalisée dans la fonction execute du fichier interpreteur.ml . Cette fonction prend en argument un programme fouine parsé (de type programme) et renvoie un entier. On utilise une fonction récursive auxiliaire qui associe une valeur de type 'ret' au programme. Ensuite, on appelle la petite fonction return qui renvoie un int à partir de ce ret.
@@ -107,6 +111,11 @@ Deux constructeurs sont associés aux fonctions dans le type programme :
     Function_def : appellé lors de la définition de fonction, contient l'argument (unique) et l'expression de la fonction (qui peut elle même être une fonction).
     Function_call : appellé lors de l'appel à une fonction, contient le nom de la fonction et la valeur de l'argument (qui est une expression non interprétée)
                         le nom de la fonction permet de retrouver la définition dans l'environnement. On interprète l'expression associée à la cloture en ajoutant à l'environnement de la cloture la valeur de l'argument.
+                        
+# La machine à pile
+La machine à pile est réalisée par la fonction step du fichier machine.ml . Cette fonction prend en argument une pile d'instruction machine (de type instruction list) et affiche un entier lorsqu'il a terminé. Chaque step lit et exécute l'instruction au sommet de la pile.
+
+La compilation du code parsé est effectué par la fonction built situé dans le même fichier . Cette fonction prend en argument un programme fouine parsé (de type programme) et renvoie une pile d'instruction machine (de type instruction list).
 
 # Exceptions
 

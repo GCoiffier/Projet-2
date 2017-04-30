@@ -35,7 +35,7 @@ module StackMachine : StackMachineSig = struct
 		| EQUAL | NEQUAL | INFEQ | INF | SUPEQ | SUP
 		| UMINUS | PRINT
 		| LET of string |ENDLET |ACCESS of string
-		| IF
+		| IF of instruction list * instruction list
 
 	type machine =
 		Mach of instruction list * environnement * int list
@@ -59,21 +59,20 @@ module StackMachine : StackMachineSig = struct
     	| BinOp(p1,Sup,p2)   -> (built p1 (built p2 (SUP::l)))
     	| BinOp(p1,And,p2)   -> (built p1 (built p2 (AND::l)))
     	| BinOp(p1,Or,p2)    -> (built p1 (built p2 (OR::l)))
-    	| BinOp(p1,_,p2) -> failwith "not implement in machine"
     	| Let(Var(x),a,b) -> built a (LET(x)::(built b (ENDLET::l))) (* let x = A in B  : (x,A,B) *)
-    	| IfThenElse(x,a,b) -> IF::l(* if x then A else B : (x,A,B) *)
+    	| IfThenElse(x,a,b) -> built x (IF(built a [], built b [])::l) (* if x then A else B : (x,A,B) *)
     	| _ -> failwith "not implement in machine"
 
 	let init p = ref (Mach( built p [], [], []))
 	
-	let rec find env x = match env with
+	let rec find env x = match env with (* trouve la variable dans l'environnement : s'arrête au plus récent *)
 		|[] -> failwith "environnement empty"
 		|(v,t)::q when v=x -> t
 		|t::q -> find q x
 
 	let display machine =
 		let rec print_instr_list = function
-			|[] -> print_string ";;"
+			|[] -> ()
 			|t::q ->
 				( match t with
 					  INT(i) -> print_int i
@@ -84,14 +83,25 @@ module StackMachine : StackMachineSig = struct
 					| MOD -> print_string "MOD"
 					| UMINUS -> print_string "UMINUS"
 					| PRINT -> print_string "PRINT"
+					
 					| LET(x) -> print_string "LET "; print_string(x)
 					| ENDLET -> print_string "ENDLET"
 					| ACCESS(x) -> print_string "ACCESS "; print_string(x)
-					| _ -> ()
+					
+					| IF(a,b) -> print_string "IF"; print_string ";\n" ; print_instr_list a; print_string "ELSE"; 
+													print_string ";\n" ; print_instr_list b; print_string "IFEND";
+					| AND    -> print_string "AND"
+					| OR     -> print_string "OR"
+					| EQUAL  -> print_string "EQUAL"
+					| NEQUAL -> print_string "NEQUAL"
+					| INFEQ  -> print_string "INFEQ"
+					| INF    -> print_string "INF"
+					| SUPEQ  -> print_string "SUPEQ"
+					| SUP    -> print_string "SUP"
 				);
-				print_string "; " ;
+				print_string ";\n" ;
 				print_instr_list q
-		in match (!machine) with Mach(l,_,_) -> print_instr_list l; print_newline ()
+		in match (!machine) with Mach(l,_,_) -> print_instr_list l; print_string ";;"; print_newline ()
 
 	let step machine =
 		match !machine with
@@ -100,16 +110,16 @@ module StackMachine : StackMachineSig = struct
 					match t with
 					|INT(i) -> machine := Mach(q,env,i::l); false
 					|UMINUS -> (match l with
-								|[] -> failwith "expression not valid 1"
+								|[] -> failwith "stack empty"
 								|ti::qi -> machine := Mach(q,env, (-ti)::qi) ; false
 							   )
 					|PRINT ->  (match l with
-								|[] -> failwith "expression not valid 2"
+								|[] -> failwith "stack empty"
 								|ti::qi -> print_int ti; print_newline(); machine := Mach(q,env,l) ; false
 							   )
 							   
 					|LET(x) -> (match l with
-								|[] -> failwith "expression not valid 3"
+								|[] -> failwith "stack empty"
 								|ti::qi -> machine := Mach(q, (x,ti)::env ,qi) ; false
 						  	   )
 						   
@@ -119,6 +129,13 @@ module StackMachine : StackMachineSig = struct
 							   )
 					
 					|ACCESS(x) -> machine := Mach(q, env , (find env x)::l) ; false
+					
+					|IF(a,b) -> (match l with
+							|[] -> failwith "environnement empty"
+							|ti::qi -> if ti=0 then machine := Mach(b@q, env ,qi)
+											   else machine := Mach(a@q, env ,qi) ;
+							false
+						   )
 
 					|_ ->      (match l with
 								|t2::t1::qi -> (let c0 = ref 0 in match t with
@@ -145,10 +162,10 @@ module StackMachine : StackMachineSig = struct
 												|OR  -> machine := Mach(q,env, (t1+t2)::qi); false
 												|_ -> false
 											  )
-								|_ -> failwith "expression not valid 4"
+								|_ -> failwith "stack empty"
 							   )
 				)
-		| _ -> failwith "expression not valid 4"
+		| _ -> failwith ""
 
 	let init_and_compute prg =
 		let mach = init prg in
