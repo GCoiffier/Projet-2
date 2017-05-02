@@ -40,30 +40,30 @@ module StackMachine : StackMachineSig = struct
 	type machine =
 		Mach of instruction list * environnement * int list
 
-	let rec built p_ l = match p_ with
+	let rec build p_ l = match p_ with
 		 Unit -> failwith "not implement in machine"
 		| Const(i) -> (INT(i))::l
   		| Var(v) -> ACCESS(v)::l
-  		| PrInt(p) -> (built p (PRINT::l))
-    	| UnOp(Neg,p) -> (built p (UMINUS::l))
-    	| BinOp(p1,Add,p2)   -> (built p1 (built p2 (ADD::l)))
-    	| BinOp(p1,Minus,p2) -> (built p1 (built p2 (MINUS::l)))
-    	| BinOp(p1,Mult,p2)  -> (built p1 (built p2 (MULT::l)))
-    	| BinOp(p1,Div,p2)   -> (built p1 (built p2 (DIV::l)))
-    	| BinOp(p1,Mod,p2)   -> (built p1 (built p2 (MOD::l)))
-    	| BinOp(p1,Equal,p2) -> (built p1 (built p2 (EQUAL::l)))
-    	| BinOp(p1,Neq,p2)   -> (built p1 (built p2 (NEQUAL::l)))
-    	| BinOp(p1,Infeq,p2) -> (built p1 (built p2 (INFEQ::l)))
-    	| BinOp(p1,Inf,p2)   -> (built p1 (built p2 (INF::l)))
-    	| BinOp(p1,Supeq,p2) -> (built p1 (built p2 (SUPEQ::l)))
-    	| BinOp(p1,Sup,p2)   -> (built p1 (built p2 (SUP::l)))
-    	| BinOp(p1,And,p2)   -> (built p1 (built p2 (AND::l)))
-    	| BinOp(p1,Or,p2)    -> (built p1 (built p2 (OR::l)))
-    	| Let(Var(x),a,b) -> built a (LET(x)::(built b (ENDLET::l))) (* let x = A in B  : (x,A,B) *)
-    	| IfThenElse(x,a,b) -> built x (IF(built a [], built b [])::l) (* if x then A else B : (x,A,B) *)
+  		| PrInt(p) -> (build p (PRINT::l))
+    	| UnOp(Neg,p) -> (build p (UMINUS::l))
+    	| BinOp(p1,Add,p2)   -> (build p1 (build p2 (ADD::l)))
+    	| BinOp(p1,Minus,p2) -> (build p1 (build p2 (MINUS::l)))
+    	| BinOp(p1,Mult,p2)  -> (build p1 (build p2 (MULT::l)))
+    	| BinOp(p1,Div,p2)   -> (build p1 (build p2 (DIV::l)))
+    	| BinOp(p1,Mod,p2)   -> (build p1 (build p2 (MOD::l)))
+    	| BinOp(p1,Equal,p2) -> (build p1 (build p2 (EQUAL::l)))
+    	| BinOp(p1,Neq,p2)   -> (build p1 (build p2 (NEQUAL::l)))
+    	| BinOp(p1,Infeq,p2) -> (build p1 (build p2 (INFEQ::l)))
+    	| BinOp(p1,Inf,p2)   -> (build p1 (build p2 (INF::l)))
+    	| BinOp(p1,Supeq,p2) -> (build p1 (build p2 (SUPEQ::l)))
+    	| BinOp(p1,Sup,p2)   -> (build p1 (build p2 (SUP::l)))
+    	| BinOp(p1,And,p2)   -> (build p1 (build p2 (AND::l)))
+    	| BinOp(p1,Or,p2)    -> (build p1 (build p2 (OR::l)))
+    	| Let(Var(x),a,b) -> build a (LET(x)::(build b (ENDLET::l))) (* let x = A in B  : (x,A,B) *)
+    	| IfThenElse(x,a,b) -> build x (IF(build a [], build b [])::l) (* if x then A else B : (x,A,B) *)
     	| _ -> failwith "not implement in machine"
 
-	let init p = ref (Mach( built p [], [], []))
+	let init p = ref (Mach( build p [], [], []))
 
 
 	let rec find env x = match env with (* trouve la variable dans l'environnement : s'arrête au plus récent *)
@@ -103,7 +103,7 @@ module StackMachine : StackMachineSig = struct
 
 	let step machine =
 		match !machine with
-		  Mach([],_,t::[]) -> print_string "Result = "; print_int t; print_newline(); true
+		  Mach([],_,t::[]) -> print_string "- Result = "; print_int t; print_newline(); true
 		| Mach(t::q,env,l) ->(
 					match t with
 					|INT(i) -> machine := Mach(q,env,i::l); false
