@@ -70,6 +70,8 @@ Coiffier Guillaume - Valque Léo
 
 [X] Possibilité de faire des tableaux
 
+[X] Ajout de commentaires sur le code fouine.
+
 [X] Compilation des expressions arithmétiques vers une machine à pile
 
 [X] Exécution des expressions arithmétiques sur une machine à pile
@@ -133,6 +135,9 @@ Les références se font sur des entiers uniquement. Elles sont implémentées e
 # Les tableaux
 
 Les tableaux ont été implémentés quasiment comme les références. Le type Env.elt a été enrichi d'un constructeur Array contenant un tableau. Les trois opérations (création de tableau, assignation à un indice, lecture d'une case) se font alors naturellement.
+
+# Commentaires
+Il est possible d'ajouter des commentaires au code fouine selon la même syntaxe que les commentaires Caml `(* *)`. Attention cependant, il ne faut pas que le message du commentaire ne contienne que des lettres (pas d'accent, de ponctuation, et surtout pas le caractère * ).
 
 # Liste et contenu des fichiers
 

@@ -1,4 +1,5 @@
 let n = 100 in
+(* Le crible d erathostene pour obtenir les nombres premiers plus petit que 100 *)
 let t = aMake n in
 let rec fa i k =
 	if i>=n
