@@ -34,14 +34,14 @@ end
 
 module StackMachine : StackMachineSig = struct
 
-	type env_type =
+	type mach_type =
 		INT of int
 		| FUN of string * instruction list
 	type environnement =
-		(string * env_type) list
+		(string * mach_type) list
 
 	type machine =
-		Mach of instruction list * environnement * int list
+		Mach of instruction list * environnement * mach_type list
 
 	let rec built p_ l = match p_ with
 		 Unit -> failwith "not implement in machine"
@@ -106,22 +106,22 @@ module StackMachine : StackMachineSig = struct
 
 	let step machine =
 		match !machine with
-		  Mach([],_,t::[]) -> print_string "Result = "; print_int t; print_newline(); true
+		  Mach([],_,INT(t)::[]) -> print_string "Result = "; print_int t; print_newline(); true
 		| Mach(t::q,env,l) ->(
 					match t with
-					|INT(i) -> machine := Mach(q,env,i::l); false
+					|INT(i) -> machine := Mach(q,env,INT(i)::l); false
 					|UMINUS -> (match l with
 								|[] -> failwith "stack empty"
-								|ti::qi -> machine := Mach(q,env, (-ti)::qi) ; false
+								|INT(ti)::qi -> machine := Mach(q,env, INT(-ti)::qi) ; false
 							   )
 					|PRINT ->  (match l with
 								|[] -> failwith "stack empty"
-								|ti::qi -> print_int ti; print_newline(); machine := Mach(q,env,l) ; false
+								|INT(ti)::qi -> print_int ti; print_newline(); machine := Mach(q,env,l) ; false
 							   )
 
 					|LET(x) -> (match l with
 								|[] -> failwith "stack empty"
-								|ti::qi -> machine := Mach(q, (x,ti)::env ,qi) ; false
+								|INT(ti)::qi -> machine := Mach(q, (x,ti)::env ,qi) ; false
 						  	   )
 
 					|ENDLET -> (match env with
