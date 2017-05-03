@@ -1,0 +1,17 @@
+3;
+2;
+INF;
+IF;
+1;
+ELSE;
+42;
+IFEND;
+LET(y);
+3;
+LET(x);
+ACCESS(y);
+ACCESS(x);
+ADD;
+ENDLET;
+ENDLET;
+;;

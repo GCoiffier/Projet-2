@@ -1,0 +1,14 @@
+3;
+LET(x);
+ACCESS(x);
+2;
+EQUAL;
+IF;
+4;
+PRINT;
+ELSE;
+3;
+PRINT;
+IFEND;
+ENDLET;
+;;
