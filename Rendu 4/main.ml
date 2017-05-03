@@ -19,10 +19,6 @@ open Machine
 let main () =
 	let t = Sys.argv in
 	let n = Array.length t in
-	if(n=3 && t.(1) = "-execute")
-	then StackMachine.compute ( read_mach t.(2) )
-	else(
-	
 	let p =  if (n=1 || (String.get t.(n-1) 0) = '-') (* pas d'arguments -> lit l'entrée standard *)
 				then begin
 					print_string "# ";
@@ -50,6 +46,8 @@ let main () =
 					else let file = open_out ("Stack_programs/"^(t.(2))) in
 						begin output_string file s;
 						      close_out file end
+	| "-execute" -> try StackMachine.compute ("Stack_programs/"^(t.(2)))
+					with | _ -> failwith "Error with execute. Perhaps a .code file was missing."
 
 	| "-NbE" -> print_string "Not implemented yet. Sorry." ; print_newline ()
 	| "-E" -> print_string "Not implemented yet. Sorry." ; print_newline ()
@@ -61,6 +59,5 @@ let main () =
 				print_string "- : int = ";
 				print_int res;
 				print_newline ()
-	)
 
 let _ = main ();;

@@ -66,14 +66,6 @@ module StackMachine : StackMachineSig = struct
     	| IfThenElse(x,a,b) -> built x (IF(built a [], built b [])::l) (* if x then A else B : (x,A,B) *)
     	| _ -> failwith "not implement in machine"
 
-	let init p = ref (Mach( built p [], [], []))
-
-
-	let rec find env x = match env with (* trouve la variable dans l'environnement : s'arrête au plus récent *)
-		|[] -> failwith "variable not found"
-		|(v,t)::q when v=x -> t
-		|t::q -> find q x
-
 	let display machine =
 		let rec print_instr_list = function
 			|[] -> ""
