@@ -35,23 +35,19 @@ let main () =
 	  				print_int res;
 	  				print_newline ()
 
-	| "-machine" -> (* compile et execute sur machine à pile *)
-					if (n=3) then
-						(* Execution sur l'interpréteur mixte + machine à pile simple *)
-						(StackMachine.init_and_compute p)
-					else if (n=4 && t.(3) = "-full") then
-						(* Execution sur la machine à pile enrichie *)
-						(StackMachine.init_and_compute p)
-					else failwith "Don't know what to do with arguments"
+	| "-machine" -> (* compile et execute sur machine à pile en utilisant un interpéteur mixte *)
+					print_int (StackMachine.init_and_compute p); print_newline ()
 
 	| "-interm" ->  (* compile vers machine à pile et enregistre le code dans un fichier. Si pas de fichier -> sortie standard *)
-					let s = StackMachine.init_and_display p in
-					if n<=3 (* pas de fichiers *) then
+					let s = (StackMachine.init_and_display p) in
+					if n<=3 then
+						(* pas de fichiers *)
 						begin print_string s;
 							  print_newline () end
 					else let file = open_out ("Stack_programs/"^(t.(2))) in
 						begin output_string file s;
 						      close_out file end
+
 	| "-execute" -> try StackMachine.compute ("Stack_programs/"^(t.(2)))
 					with | _ -> failwith "Error with execute. Perhaps a .code file was missing."
 
