@@ -3,23 +3,16 @@ open Fouine_type
 
 type ret = Env.elt * bool (* Le type de retour de l'interprétation. Le booléen indique si on a levé une exception *)
 
+exception E of Env.elt (* Ce type retour peut être une exception *)
+
 let return = function
       Env.Int(n) -> n
     | Env.Array(_) -> failwith "Execution Error: expected integer, got array"
     | Env.Ref(_) -> failwith "Execution Error: expected integer, got reference"
     | Env.Cloture(_,_) -> failwith "Execution Error: expected integer, got function"
 
-let rec is_pure_code = function
-    Unit -> true
-    | Const(n) -> true
-    | Var(x) -> true
-    | PrInt(p) -> true
-    | Let(x,val_x,p) -> (is_pure_code val_x)&&(is_pure_code p)
-    | UnOp(op,a) ->  is_pure_code a
-    | BinOp(a,op,b) -> (is_pure_code a) && (is_pure_code b)
-    | _ -> false
 
-(* ------ Execution mixte fouine/machine à pile ------ *)
+(* ------ Execution complète (avec les extensions) ------ *)
 let execute : programme -> int = fun prg ->
     let rec exec_aux env  = function
 

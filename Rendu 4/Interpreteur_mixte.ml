@@ -3,8 +3,6 @@ open Fouine_type
 
 type ret = Env.elt * bool (* Le type de retour de l'interprétation. Le booléen indique si on a levé une exception *)
 
-exception E of Env.elt (* Ce type retour peut être une exception *)
-
 let return = function
       Env.Int(n) -> n
     | Env.Array(_) -> failwith "Execution Error: expected integer, got array"

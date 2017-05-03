@@ -36,13 +36,8 @@ let main () =
 	  				print_newline ()
 
 	| "-machine" -> (* compile et execute sur machine à pile *)
-					if (n=3) then
-						(* Execution sur l'interpréteur mixte + machine à pile simple *)
-						(StackMachine.init_and_compute p)
-					else if (n=4 && t.(3) = "-full") then
-						(* Execution sur la machine à pile enrichie *)
-						(StackMachine.init_and_compute p)
-					else failwith "Don't know what to do with arguments"
+					if (n=3) then (StackMachine.init_and_compute p)
+					else if (n=4 && t.(3) = "-full") then (StackMachine.init_and_compute p)
 
 	| "-interm" ->  (* compile vers machine à pile et enregistre le code dans un fichier. Si pas de fichier -> sortie standard *)
 					let s = StackMachine.init_and_display p in
