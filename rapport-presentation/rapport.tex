@@ -1,0 +1,95 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel} %% installer texlive-lang-french pour cela
+
+% pour compiler: 
+
+% faire    pdflatex ex-rapport
+% (si les references aux numeros de parties apparaissent comme des
+% "?", recompiler une fois)
+
+% la compilation de la bibliographie est davantage une "incantation":
+% faire     bibtex ex-biblio
+% puis      pdflatex ex-rapport (un nombre premier de fois)
+
+
+% vous pouvez ensuite ouvrir le fichier ex-rapport.pdf
+
+% elements du titre
+\title{Rapport projet 2, où l'on parle de rongeurs}
+\author{Guillaume Coiffier - Léo Valque}
+\date{2017}
+
+
+% definition de quelques macros, pour les maths
+\newcommand{\litt}{\alpha}
+\newcommand{\non}[1]{\overline{#1}}
+
+\begin{document}
+
+\maketitle
+
+\section{Présentation}
+
+Nous avons programmé \textbf{en D}, en interfaçant notre programme
+avec des morceaux d'assembleur que nous avons écrits à la main, entre
+3 et 4 heures du matin uniquement sinon ça ne compte pas.
+
+Nous exposons à la partie~\ref{s:orga} comment notre programme est structuré.
+
+
+Un peu de maths en \LaTeX: voici un exemple de formule~:
+$$
+\sum_{i\geq 0} \litt_1\lor\non{\litt_2}\lor\litt_4
+$$
+On remarque au passage que $\non{\non{\litt}}$ est pareil que $\litt$.
+
+\section{Organisation du code}
+\label{s:orga}
+
+Le code est structuré de la manière suivante~:
+\begin{itemize}
+\item bli
+\item bla
+\item blo
+\item Digression à propos des Mustélidés.
+\end{itemize}
+
+\section{Critique des performances}
+
+On constate que blibla.
+
+
+On est par ailleurs capable de citer des références, ainsi~: \cite{ProjInt16}.
+
+\medskip
+
+Pour citer une référence bibliographique, il faut insérer les
+informations correspondantes au format BibTeX dans le fichier
+\texttt{ex-biblio.bib}, et puis faire la citation en utilisant la
+commande \verb+\cite{tititoto}+.
+
+Ensuite, on compile de la manière suivante~:
+\begin{enumerate}
+\item \texttt{pdflatex ex-rapport}
+
+et là il proteste, car il a vu une citation de \texttt{tititoto}, mais
+ne sait pas à quoi cela fait référence
+
+\item \texttt{bibtex ex-rapport}
+
+et là il met ensemble les informations pour savoir engendrer
+l'information correspondant à la citation de \texttt{tititoto}
+
+\item \texttt{pdflatex ex-rapport}
+
+et là il peut engendrer le fichier pdf, avec la bonne citation et la
+bonne description dans les références
+\end{enumerate}
+
+
+\bibliographystyle{plain}
+\bibliography{biblio}
+
+\end{document}
