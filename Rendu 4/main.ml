@@ -44,12 +44,13 @@ let main () =
 						(* pas de fichiers *)
 						begin print_string s;
 							  print_newline () end
-					else let file = open_out ("Stack_programs/"^(t.(2))) in
+					else let file = open_out t.(2) in
 						begin output_string file s;
 						      close_out file end
 
-	| "-execute" -> try StackMachine.compute ("Stack_programs/"^(t.(2)))
-					with | _ -> failwith "Error with execute. Perhaps a .code file was missing."
+	| "-execute" -> let prg = read_mach t.(2) in
+					let ret = StackMachine.compute prg in
+					print_string "- Result = "; print_int ret; print_newline ()
 
 	| "-NbE" -> print_string "Not implemented yet. Sorry." ; print_newline ()
 	| "-E" -> print_string "Not implemented yet. Sorry." ; print_newline ()
