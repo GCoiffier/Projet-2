@@ -1,0 +1,13 @@
+\begin{thebibliography}{1}
+
+\bibitem{allProjInt16}
+Eddy Caron, editor.
+\newblock {\em Recueil des projets intégrés de l'année}, volume~1 of {\em
+  Best sellers du DI}. ENS de Lyon, 2016.
+
+\bibitem{ProjInt16}
+Les~M1 du~DI.
+\newblock Notre beau projet intégré.
+\newblock In Caron \cite{allProjInt16}, pages 10--22.
+
+\end{thebibliography}

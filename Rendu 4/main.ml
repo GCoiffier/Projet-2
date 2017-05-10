@@ -10,6 +10,7 @@
 *)
 
 open Interpreteur
+open Interpreteur_mixte
 open Debug
 open LexParInterface
 open Machine
@@ -19,10 +20,6 @@ open Machine
 let main () =
 	let t = Sys.argv in
 	let n = Array.length t in
-	if(n=3 && t.(1) = "-execute")
-	then StackMachine.compute ( read_mach t.(2) )
-	else(
-	
 	let p =  if (n=1 || (String.get t.(n-1) 0) = '-') (* pas d'arguments -> lit l'entrée standard *)
 				then begin
 					print_string "# ";
@@ -39,17 +36,22 @@ let main () =
 	  				print_int res;
 	  				print_newline ()
 
-	| "-machine" -> (* compile et execute sur machine à pile *)
-					StackMachine.init_and_compute p
+	| "-machine" -> (* compile et execute sur machine à pile en utilisant un interpéteur mixte *)
+					print_string "- Result = "; print_int (StackMachine.init_and_compute p); print_newline ()
 
 	| "-interm" ->  (* compile vers machine à pile et enregistre le code dans un fichier. Si pas de fichier -> sortie standard *)
-					let s = StackMachine.init_and_display p in
-					if n<=3 (* pas de fichiers *) then
+					let s = (StackMachine.init_and_display p) in
+					if n<=3 then
+						(* pas de fichiers *)
 						begin print_string s;
 							  print_newline () end
-					else let file = open_out ("Stack_programs/"^(t.(2))) in
+					else let file = open_out t.(2) in
 						begin output_string file s;
 						      close_out file end
+
+	| "-execute" -> let prg = read_mach t.(2) in
+					let ret = StackMachine.compute prg in
+					print_string "- Result = "; print_int ret; print_newline ()
 
 	| "-NbE" -> print_string "Not implemented yet. Sorry." ; print_newline ()
 	| "-E" -> print_string "Not implemented yet. Sorry." ; print_newline ()
@@ -61,6 +63,5 @@ let main () =
 				print_string "- : int = ";
 				print_int res;
 				print_newline ()
-	)
 
 let _ = main ();;

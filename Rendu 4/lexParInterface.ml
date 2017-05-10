@@ -10,31 +10,23 @@ let lexbuf fd = Lexing.from_channel fd
 
 let parse entree = Parser.main Lexer.token (lexbuf entree)
 
-(* la fonction que l'on lance ci-dessous *)
 let read_prgm entree =
+	(* lit un programme fouine *)
 	let fd = open_in entree in
     let a = parse fd in
-      close_in fd; a
+     	close_in fd; a
 
 let read_standard () =
 	(* lit l'entrée standard *)
 	let fd = stdin in
 	let a = parse fd in
-	  close_in fd; a
-	 
-	 
-	 
-	 
-	 
-	 
+	 	close_in fd; a
 
-(* on enchaîne les tuyaux: lexbuf est passé à Lexer.token,
-   et le résultat est donné à Parser.main *)
 
 let parse_mach entree = ParsMachine.main LexMachine.token (lexbuf entree)
 
-(* la fonction que l'on lance ci-dessous *)
 let read_mach entree =
+	(* lit un programme .code pour la machine à pile *)
 	let fd = open_in entree in
-    let a = parse_mach fd in
-      close_in fd; a
+  	let a = parse_mach fd in
+    	close_in fd; a

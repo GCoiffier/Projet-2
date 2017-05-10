@@ -8,11 +8,11 @@ type instruction =
 		| EQUAL | NEQUAL | INFEQ | INF | SUPEQ | SUP
 		| UMINUS | PRINT
 		| POP
-		
+
 		| LET of string |ENDLET |ACCESS of string
-		
+
 		| IF of instruction list * instruction list
-		
+
 		| FUNCT of instruction list
 		| LETREC of string
 		| CALL | RETURN
@@ -30,14 +30,13 @@ module type StackMachineSig = sig
 	(* executes the instruction on top of the stack *)
 
 	val compute : instruction list -> int
+	(* runs a machine code *)
 
 	val init_and_compute : programme -> int
-	(* inits a machine and execute every instruction, then print out the result *)
+	(* inits a machine and execute every instruction, then returns the result *)
 
 	val init_and_display : programme -> string
 	(* inits a machine and returns its stack of instruction*)
-	
-	val mach_empty : machine ref -> bool
 
 end
 
@@ -60,7 +59,7 @@ module StackMachine : StackMachineSig = struct
   		| Var(v) 				 -> ACCESS(v)::l
   		| PrInt(p) 				 -> (built p (PRINT::l))
   		| Imp(a,b) 				 -> (built a (POP::(built b l)))
-  		
+
     	| UnOp(Neg,p) 		 	 -> (built p (UMINUS::l))
     	| BinOp(p1,Add,p2)   	 -> (built p1 (built p2 (ADD::l)))
     	| BinOp(p1,Minus,p2) 	 -> (built p1 (built p2 (MINUS::l)))
@@ -75,14 +74,14 @@ module StackMachine : StackMachineSig = struct
     	| BinOp(p1,Sup,p2)   	 -> (built p1 (built p2 (SUP::l)))
     	| BinOp(p1,And,p2)   	 -> (built p1 (built p2 (AND::l)))
     	| BinOp(p1,Or,p2)    	 -> (built p1 (built p2 (OR::l)))
-    	
+
     	| Let(Var(x),a,b) 		 -> built a (LET(x)::(built b (ENDLET::l))) (* let x = A in B  : (x,A,B) *)
-    	
+
     	| IfThenElse(x,a,b) 	 -> built x (IF(built a [], built b [])::l) (* if x then A else B : (x,A,B) *)
-    	
+
     	| Function_def(Var(x),b) -> FUNCT(LET(x)::(built b [RETURN]))::l
     	| Function_call(a,b) 	 -> built a (built b (CALL::l))
-    	
+
     	| _ -> failwith "not implement in machine"
 
 	let init p = ref (Mach( built p [], [], []))
@@ -97,34 +96,34 @@ module StackMachine : StackMachineSig = struct
 			|[] -> ""
 			|t::q ->
 			( match t with
-				  INT(i) 	-> (string_of_int i)^";\n"
-				| ADD		-> "ADD;\n"
-				| MINUS 	-> "MINUS;\n"
-				| MULT 		-> "MULT;\n"
-				| DIV 		->  "DIV;\n"
-				| MOD 		-> "MOD;\n"
-				| UMINUS 	-> "UMINUS;\n"
-				| PRINT 	-> "PRINT;\n"
-				| POP 		-> "POP;\n"
+				  INT(i) 	-> (string_of_int i)^"\n"
+				| ADD		-> "ADD\n"
+				| MINUS 	-> "MINUS\n"
+				| MULT 		-> "MULT\n"
+				| DIV 		-> "DIV\n"
+				| MOD 		-> "MOD\n"
+				| UMINUS 	-> "UMINUS\n"
+				| PRINT 	-> "PRINT\n"
+				| POP 		-> "POP\n"
 
-				| LET(x) 	-> "LET("^x^");\n"
-				| ENDLET 	-> "ENDLET;\n"
-				| ACCESS(x) -> "ACCESS("^x^");\n"
+				| LET(x) 	-> "LET("^x^")\n"
+				| ENDLET 	-> "ENDLET\n"
+				| ACCESS(x) -> "ACCESS("^x^")\n"
 
-				| IF(a,b) 	-> "IF;\n"^(print_instr_list a)^"ELSE;\n"^(print_instr_list b)^"IFEND;\n";
-				
-				| AND    	-> "AND;\n"
-				| OR     	-> "OR;\n"
-				| EQUAL  	-> "EQUAL;\n"
-				| NEQUAL 	-> "NEQUAL;\n"
-				| INFEQ  	-> "INFEQ;\n"
-				| INF    	-> "INF;\n"
-				| SUPEQ  	-> "SUPEQ;\n"
-				| SUP    	-> "SUP;\n"
-				
-				| FUNCT(c) 	-> "FUNCT;\n"^(print_instr_list c)
-				| RETURN 	-> "RETURN;\n"
-				| CALL 		-> "CALL;\n"
+				| IF(a,b) 	-> "IF\n"^(print_instr_list a)^"ELSE\n"^(print_instr_list b)^"IFEND\n";
+
+				| AND    	-> "AND\n"
+				| OR     	-> "OR\n"
+				| EQUAL  	-> "EQUAL\n"
+				| NEQUAL 	-> "NEQUAL\n"
+				| INFEQ  	-> "INFEQ\n"
+				| INF    	-> "INF\n"
+				| SUPEQ  	-> "SUPEQ\n"
+				| SUP    	-> "SUP\n"
+
+				| FUNCT(c) 	-> "FUNCT\n"^(print_instr_list c)
+				| RETURN 	-> "RETURN\n"
+				| CALL 		-> "CALL\n"
 
 				)^(print_instr_list q)
 		in match (!machine) with Mach(l,_,_) -> (print_instr_list l)^";;"
@@ -147,8 +146,8 @@ module StackMachine : StackMachineSig = struct
 					|POP 		-> (match l with
 									|[] -> failwith "stack empty"
 									|ti::qi -> machine := Mach(q,env,qi)
-								 )		   
-							   
+								 )
+
 
 					|LET(x) 	-> (match l with
 									|[] -> failwith "stack empty"
@@ -159,8 +158,8 @@ module StackMachine : StackMachineSig = struct
 									|(x,ti)::qi -> machine := Mach(q, qi ,l)
 							     )
 					|ACCESS(x) 	-> machine := Mach(q, env , (find env x)::l)
-					
-					
+
+
 
 					|IF(a,b) 	-> (match l with
 									|[] -> failwith "stack empty"
@@ -168,9 +167,9 @@ module StackMachine : StackMachineSig = struct
 											   else machine := Mach(a@q, env ,qi)
 									| _ -> failwith "top object has not an int"
 						   		 )
-						   
-						   
-						   
+
+
+
 					|FUNCT(c) 	-> machine := Mach(q, env , FUN(env,c)::l)
 					|LETREC(f)  -> (match l with
 									|[] -> failwith "stack empty"
@@ -182,13 +181,13 @@ module StackMachine : StackMachineSig = struct
 									|[] -> failwith "stack empty"
 									|ti::FUN(envf, cf)::qi -> machine := Mach(cf,envf, ti::ENV(env)::INST(q)::qi)
 									| _ -> failwith "top of stack has not the good object"
-							     )   
+							     )
 					|RETURN 	-> (match l with
 									|[] -> failwith "stack empty"
 									|ti::ENV(env)::INST(c)::qi -> machine := Mach(c,env, ti::qi)
 									| _ -> failwith "top of stack has not the good object"
 								 )
-								
+
 
 					|_ ->      (match l with
 								|VAL(t2)::VAL(t1)::qi -> (let c0 = ref 0 in match t with
@@ -220,12 +219,15 @@ module StackMachine : StackMachineSig = struct
 				)
 		| _ -> failwith "execution failed"
 
+
 	let mach_empty machine =
 		match !machine with
 			| Mach([],_,_) -> true
 			| _ 		   -> false
-	
+
+
 	let compute prg =
+		(* prg is a list of machine instruction *)
 		let mach = ref (Mach(prg,[],[])) in
 		while not(mach_empty mach)
 			do step mach
@@ -234,7 +236,9 @@ module StackMachine : StackMachineSig = struct
 		 | Mach([],_,VAL(t)::[]) -> t
 		 | _ 					 -> failwith "execution failed : end value not an int or too much end values"
 
+
 	let init_and_compute prg =
+		(* prg is a fouine program *)
 		let mach = init prg in
 		while not(mach_empty mach)
 			do step mach
@@ -242,6 +246,7 @@ module StackMachine : StackMachineSig = struct
 		match !mach with
 		 | Mach([],_,VAL(t)::[]) -> t
 		 | _ 					 -> failwith "execution failed : end value not an int or too much end values"
+
 
 	let init_and_display prg =
 		let mach = init prg in
