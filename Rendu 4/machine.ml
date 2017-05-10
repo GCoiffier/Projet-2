@@ -7,7 +7,7 @@ type instruction =
 		| AND | OR
 		| EQUAL | NEQUAL | INFEQ | INF | SUPEQ | SUP
 		| UMINUS | PRINT
-		| POP
+		| POP (* utile pour l'imp *)
 
 		| LET of string |ENDLET |ACCESS of string
 
@@ -76,6 +76,7 @@ module StackMachine : StackMachineSig = struct
     	| BinOp(p1,Or,p2)    	 -> (built p1 (built p2 (OR::l)))
 
     	| Let(Var(x),a,b) 		 -> built a (LET(x)::(built b (ENDLET::l))) (* let x = A in B  : (x,A,B) *)
+    	| LetRec(Var(f),a,b)     -> built a (LETREC(f)::(built b (ENDLET::l))) (* let x = A in B  : (x,A,B) *)
 
     	| IfThenElse(x,a,b) 	 -> built x (IF(built a [], built b [])::l) (* if x then A else B : (x,A,B) *)
 
@@ -83,6 +84,7 @@ module StackMachine : StackMachineSig = struct
     	| Function_call(a,b) 	 -> built a (built b (CALL::l))
 
     	| _ -> failwith "not implement in machine"
+    	
 
 	let init p = ref (Mach( built p [], [], []))
 
@@ -124,6 +126,7 @@ module StackMachine : StackMachineSig = struct
 				| FUNCT(c) 	-> "FUNCT\n"^(print_instr_list c)
 				| RETURN 	-> "RETURN\n"
 				| CALL 		-> "CALL\n"
+				| LETREC(f) -> "LETREC("^f^")\n"
 
 				)^(print_instr_list q)
 		in match (!machine) with Mach(l,_,_) -> (print_instr_list l)^";;"
@@ -143,7 +146,7 @@ module StackMachine : StackMachineSig = struct
 									|VAL(ti)::qi -> print_int ti; print_newline(); machine := Mach(q,env,l)
 									| _ -> failwith "top object has not an int"
 							   	 )
-					|POP 		-> (match l with
+					|POP 		-> (match l with (* utile pour l'imperatif *)
 									|[] -> failwith "stack empty"
 									|ti::qi -> machine := Mach(q,env,qi)
 								 )

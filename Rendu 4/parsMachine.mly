@@ -9,11 +9,13 @@ open Machine
 %token <string> LET
 %token <string> ACCESS
 %token ENDLET
-%token ADD MINUS MULT DIV MOD UMINUS PRINT
+%token ADD MINUS MULT DIV MOD UMINUS PRINT POP
 %token AND OR
 %token EQUAL NEQUAL SUP SUPEQ INFEQ SUP INF
 %token IF ELSE IFEND
 %token EOL
+%token <string> LETREC
+%token FUNCT RETURN CALL 
 
 %start main
 %type <Machine.instruction list> main
@@ -40,6 +42,7 @@ instr:
 	| MOD											{ MOD }
 	| UMINUS										{ UMINUS }
 	| PRINT											{ PRINT }
+	| POP											{ POP }
 	
 	| AND											{ AND }
 	| OR											{ OR }
@@ -53,5 +56,9 @@ instr:
 	| LET											{ LET($1) }
 	| ACCESS										{ ACCESS($1) }
 	| ENDLET										{ ENDLET }
+	
+	| FUNCT instrl RETURN							{ FUNCT($2@[RETURN]) }
+	| CALL											{ CALL }
+	| LETREC										{ LETREC($1) }
 ;
 

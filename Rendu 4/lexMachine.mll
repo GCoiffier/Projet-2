@@ -15,6 +15,7 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
 	| "MOD"				    { MOD }
 	| "UMINUS"				{ UMINUS }
 	| "PRINT"				{ PRINT }
+	| "POP"					{ POP }
 
 	| "IF"					{ IF }
 	| "IFEND"				{ IFEND }
@@ -33,5 +34,9 @@ rule token = parse    (* la "fonction" aussi s'appelle token .. *)
 	| "LET("  (['a'-'z' 'A'-'Z' '_']+ as s)  ")"   { LET (s) }
 	| "ACCESS(" (['a'-'z' 'A'-'Z' '_']+ as s)  ")" { ACCESS (s) }
 	| "ENDLET"			                           { ENDLET }
-
+	
+	| "FUNCT"				{ FUNCT }
+	| "RETURN"				{ RETURN }
+	| "CALL"				{ CALL }
+	| "LETREC("  (['a'-'z' 'A'-'Z' '_']+ as s)  ")"{ LETREC (s) } 
 	| ";;"				    { EOL }

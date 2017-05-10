@@ -10,7 +10,6 @@
 *)
 
 open Interpreteur
-open Interpreteur_mixte
 open Debug
 open LexParInterface
 open Machine
