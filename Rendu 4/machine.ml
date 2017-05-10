@@ -14,6 +14,7 @@ type instruction =
 		| IF of instruction list * instruction list
 		
 		| FUNCT of instruction list
+		| LETREC of string
 		| CALL | RETURN
 
 module type StackMachineSig = sig
@@ -171,6 +172,12 @@ module StackMachine : StackMachineSig = struct
 						   
 						   
 					|FUNCT(c) 	-> machine := Mach(q, env , FUN(env,c)::l)
+					|LETREC(f)  -> (match l with
+									|[] -> failwith "stack empty"
+									|FUN(envf,c)::qi -> let rec envs = (f,FUN(envs,c))::envf in
+										machine := Mach(q, envs, qi)			
+									|ti::qi -> machine := Mach(q, (f,ti)::env ,qi) (*si c'est pas une fonction on fait un let 																						normal *)
+								   )
 					|CALL 		-> (match l with
 									|[] -> failwith "stack empty"
 									|ti::FUN(envf, cf)::qi -> machine := Mach(cf,envf, ti::ENV(env)::INST(q)::qi)
