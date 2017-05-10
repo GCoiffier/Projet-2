@@ -9,12 +9,12 @@ type instruction =
 		| UMINUS | PRINT
 		| POP (* utile pour l'imp *)
 
-		| LET of string |ENDLET |ACCESS of string
+		| LET |ENDLET |ACCESS
 
 		| IF of instruction list * instruction list
 
 		| FUNCT of instruction list
-		| LETREC of string
+		| LETREC
 		| CALL | RETURN
 
 module type StackMachineSig = sig
@@ -43,7 +43,7 @@ end
 module StackMachine : StackMachineSig = struct
 
 	type environnement =
-		(string * mach_type) list
+		mach_type list
 
 	and  mach_type =
 		VAL of int
@@ -54,44 +54,51 @@ module StackMachine : StackMachineSig = struct
 	type machine =
 		Mach of instruction list * environnement * mach_type list
 
-	let rec built p_ l = match p_ with
+	let rec find_bruijn x env = match env with
+		|[] -> failwith "variable not found"
+		|t::q when t=x -> 0
+		|t::q -> 1 + (find_bruijn x q)
+	let rec built p_ l env = match p_ with
 		| Const(i) 				 -> INT(i)::l
-  		| Var(v) 				 -> ACCESS(v)::l
-  		| PrInt(p) 				 -> (built p (PRINT::l))
-  		| Imp(a,b) 				 -> (built a (POP::(built b l)))
+  		| Var(v) 				 -> INT(find_bruijn v env)::ACCESS::l
+  		| PrInt(p) 				 -> (built p (PRINT::l) env)
+  		| Imp(a,b) 				 -> (built a (POP::(built b l env)) env)
 
-    	| UnOp(Neg,p) 		 	 -> (built p (UMINUS::l))
-    	| BinOp(p1,Add,p2)   	 -> (built p1 (built p2 (ADD::l)))
-    	| BinOp(p1,Minus,p2) 	 -> (built p1 (built p2 (MINUS::l)))
-    	| BinOp(p1,Mult,p2)  	 -> (built p1 (built p2 (MULT::l)))
-    	| BinOp(p1,Div,p2)   	 -> (built p1 (built p2 (DIV::l)))
-    	| BinOp(p1,Mod,p2)   	 -> (built p1 (built p2 (MOD::l)))
-    	| BinOp(p1,Equal,p2) 	 -> (built p1 (built p2 (EQUAL::l)))
-    	| BinOp(p1,Neq,p2)   	 -> (built p1 (built p2 (NEQUAL::l)))
-    	| BinOp(p1,Infeq,p2) 	 -> (built p1 (built p2 (INFEQ::l)))
-    	| BinOp(p1,Inf,p2)   	 -> (built p1 (built p2 (INF::l)))
-    	| BinOp(p1,Supeq,p2) 	 -> (built p1 (built p2 (SUPEQ::l)))
-    	| BinOp(p1,Sup,p2)   	 -> (built p1 (built p2 (SUP::l)))
-    	| BinOp(p1,And,p2)   	 -> (built p1 (built p2 (AND::l)))
-    	| BinOp(p1,Or,p2)    	 -> (built p1 (built p2 (OR::l)))
+    	| UnOp(Neg,p) 		 	 -> (built p (UMINUS::l) env)
+    	| BinOp(p1,Add,p2)   	 -> (built p1 (built p2 (ADD::l) env) env)
+    	| BinOp(p1,Minus,p2) 	 -> (built p1 (built p2 (MINUS::l) env) env)
+    	| BinOp(p1,Mult,p2)  	 -> (built p1 (built p2 (MULT::l) env) env)
+    	| BinOp(p1,Div,p2)   	 -> (built p1 (built p2 (DIV::l) env) env)
+    	| BinOp(p1,Mod,p2)   	 -> (built p1 (built p2 (MOD::l) env) env)
+    	| BinOp(p1,Equal,p2) 	 -> (built p1 (built p2 (EQUAL::l) env) env)
+    	| BinOp(p1,Neq,p2)   	 -> (built p1 (built p2 (NEQUAL::l) env) env)
+    	| BinOp(p1,Infeq,p2) 	 -> (built p1 (built p2 (INFEQ::l) env) env)
+    	| BinOp(p1,Inf,p2)   	 -> (built p1 (built p2 (INF::l) env) env)
+    	| BinOp(p1,Supeq,p2) 	 -> (built p1 (built p2 (SUPEQ::l) env) env)
+    	| BinOp(p1,Sup,p2)   	 -> (built p1 (built p2 (SUP::l) env) env)
+    	| BinOp(p1,And,p2)   	 -> (built p1 (built p2 (AND::l) env) env)
+    	| BinOp(p1,Or,p2)    	 -> (built p1 (built p2 (OR::l) env) env)
 
-    	| Let(Var(x),a,b) 		 -> built a (LET(x)::(built b (ENDLET::l))) (* let x = A in B  : (x,A,B) *)
-    	| LetRec(Var(f),a,b)     -> built a (LETREC(f)::(built b (ENDLET::l))) (* let x = A in B  : (x,A,B) *)
+		| LetRec(Var(f), Function_def(Var(x), b_), b) -> let a = Function_def(Var(x), b_) in
+				built a (LETREC::(built b (ENDLET::l) (f::env))) (f::env)
 
-    	| IfThenElse(x,a,b) 	 -> built x (IF(built a [], built b [])::l) (* if x then A else B : (x,A,B) *)
+    	| Let(Var(x),a,b) 		 -> built a (LET::(built b (ENDLET::l) (x::env))) env (* let x = A in B  : (x,A,B) *)
+    	| LetRec(Var(f),a,b)     -> built a (LETREC::(built b (ENDLET::l) (f::env))) env (* let x = A in B  : (x,A,B) *)
 
-    	| Function_def(Var(x),b) -> FUNCT(LET(x)::(built b [RETURN]))::l
-    	| Function_call(a,b) 	 -> built a (built b (CALL::l))
+    	| IfThenElse(x,a,b) 	 -> built x (IF(built a [] env, built b [] env)::l) env (* if x then A else B : (x,A,B) *)
+
+    	| Function_def(Var(x),b) -> FUNCT(LET::(built b [RETURN]) (x::env))::l
+    	| Function_call(a,b) 	 -> built a (built b (CALL::l) env) env
 
     	| _ -> failwith "not implement in machine"
     	
 
-	let init p = ref (Mach( built p [], [], []))
+	let init p = ref (Mach( built p [] [], [], []))
 
-	let rec find env x = match env with (* trouve la variable dans l'environnement : s'arrête au plus récent *)
-		|[] -> failwith "variable not found"
-		|(v,t)::q when v=x -> t
-		|t::q -> find q x
+	let rec find env n = match env with (* trouve la variable dans l'environnement : s'arrête au plus récent *)
+		|[] -> failwith "environnement too small"
+		|t::q when n=0 -> t
+		|t::q -> find q (n-1)
 
 	let display machine =
 		let rec print_instr_list = function
@@ -108,9 +115,9 @@ module StackMachine : StackMachineSig = struct
 				| PRINT 	-> "PRINT\n"
 				| POP 		-> "POP\n"
 
-				| LET(x) 	-> "LET("^x^")\n"
+				| LET   	-> "LET\n"
 				| ENDLET 	-> "ENDLET\n"
-				| ACCESS(x) -> "ACCESS("^x^")\n"
+				| ACCESS    -> "ACCESS\n"
 
 				| IF(a,b) 	-> "IF\n"^(print_instr_list a)^"ELSE\n"^(print_instr_list b)^"IFEND\n";
 
@@ -126,7 +133,7 @@ module StackMachine : StackMachineSig = struct
 				| FUNCT(c) 	-> "FUNCT\n"^(print_instr_list c)
 				| RETURN 	-> "RETURN\n"
 				| CALL 		-> "CALL\n"
-				| LETREC(f) -> "LETREC("^f^")\n"
+				| LETREC    -> "LETREC\n"
 
 				)^(print_instr_list q)
 		in match (!machine) with Mach(l,_,_) -> (print_instr_list l)^";;"
@@ -152,15 +159,19 @@ module StackMachine : StackMachineSig = struct
 								 )
 
 
-					|LET(x) 	-> (match l with
+					|LET    	-> (match l with
 									|[] -> failwith "stack empty"
-									|ti::qi -> machine := Mach(q, (x,ti)::env ,qi)
+									|ti::qi -> machine := Mach(q, ti::env ,qi)
 						  	     )
 					|ENDLET 	-> (match env with
 									|[] -> failwith "environnement empty"
-									|(x,ti)::qi -> machine := Mach(q, qi ,l)
+									|ti::qi -> machine := Mach(q, qi ,l)
 							     )
-					|ACCESS(x) 	-> machine := Mach(q, env , (find env x)::l)
+					|ACCESS 	-> (match l with
+									|[] -> failwith "stack empty"
+									|VAL(n)::qi -> machine := Mach(q, env , (find env n)::qi)
+									|_ -> failwith "stack top is not value when our try an access"
+						  	     )
 
 
 
@@ -174,11 +185,11 @@ module StackMachine : StackMachineSig = struct
 
 
 					|FUNCT(c) 	-> machine := Mach(q, env , FUN(env,c)::l)
-					|LETREC(f)  -> (match l with
+					|LETREC    -> (match l with
 									|[] -> failwith "stack empty"
-									|FUN(envf,c)::qi -> let rec envs = (f,FUN(envs,c))::envf in
+									|FUN(envf,c)::qi -> let rec envs = FUN(envs,c)::envf in
 										machine := Mach(q, envs, qi)			
-									|ti::qi -> machine := Mach(q, (f,ti)::env ,qi) (*si c'est pas une fonction on fait un let 																						normal *)
+									|ti::qi -> machine := Mach(q, ti::env ,qi) (*si c'est pas une fonction on fait un let 																						normal *)
 								   )
 					|CALL 		-> (match l with
 									|[] -> failwith "stack empty"

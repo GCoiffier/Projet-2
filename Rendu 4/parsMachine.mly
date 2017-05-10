@@ -6,15 +6,15 @@ open Machine
 
 /* description des lexèmes, ceux-ci sont décrits dans lexer.mll */
 %token <int> INT
-%token <string> LET
-%token <string> ACCESS
+%token LET
+%token ACCESS
 %token ENDLET
 %token ADD MINUS MULT DIV MOD UMINUS PRINT POP
 %token AND OR
 %token EQUAL NEQUAL SUP SUPEQ INFEQ SUP INF
 %token IF ELSE IFEND
 %token EOL
-%token <string> LETREC
+%token LETREC
 %token FUNCT RETURN CALL 
 
 %start main
@@ -53,12 +53,12 @@ instr:
 	| SUPEQ											{ SUPEQ }
 	| SUP											{ SUP }
 	
-	| LET											{ LET($1) }
-	| ACCESS										{ ACCESS($1) }
+	| LET											{ LET }
+	| ACCESS										{ ACCESS }
 	| ENDLET										{ ENDLET }
 	
 	| FUNCT instrl RETURN							{ FUNCT($2@[RETURN]) }
 	| CALL											{ CALL }
-	| LETREC										{ LETREC($1) }
+	| LETREC										{ LETREC }
 ;
 
