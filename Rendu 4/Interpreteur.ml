@@ -9,16 +9,6 @@ let return = function
     | Env.Ref(_) -> failwith "Execution Error: expected integer, got reference"
     | Env.Cloture(_,_) -> failwith "Execution Error: expected integer, got function"
 
-let rec is_pure_code = function
-    Unit -> true
-    | Const(n) -> true
-    | Var(x) -> true
-    | PrInt(p) -> true
-    | Let(x,val_x,p) -> (is_pure_code val_x)&&(is_pure_code p)
-    | UnOp(op,a) ->  is_pure_code a
-    | BinOp(a,op,b) -> (is_pure_code a) && (is_pure_code b)
-    | _ -> false
-
 (* ------ Execution mixte fouine/machine à pile ------ *)
 let execute : programme -> int = fun prg ->
     let rec exec_aux env  = function

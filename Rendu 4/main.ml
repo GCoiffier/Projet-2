@@ -10,6 +10,7 @@
 *)
 
 open Interpreteur
+open Interpreteur_mixte
 open Debug
 open LexParInterface
 open Machine
@@ -36,7 +37,7 @@ let main () =
 	  				print_newline ()
 
 	| "-machine" -> (* compile et execute sur machine à pile en utilisant un interpéteur mixte *)
-					print_int (StackMachine.init_and_compute p); print_newline ()
+					print_string "- Result = "; print_int (StackMachine.init_and_compute p); print_newline ()
 
 	| "-interm" ->  (* compile vers machine à pile et enregistre le code dans un fichier. Si pas de fichier -> sortie standard *)
 					let s = (StackMachine.init_and_display p) in
