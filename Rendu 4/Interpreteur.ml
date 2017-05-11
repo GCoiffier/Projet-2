@@ -28,7 +28,8 @@ module Interpreteur:InterpreteurSig = struct
     let execute : programme -> int = fun prg ->
         let rec exec_aux env  = function
 
-        | Pure(prg) -> Env.Int(StackMachine.init_and_compute prg),false
+        | Pure(prg) -> (* print_string "Call stack machine"; print_newline (); *)
+                        Env.Int(StackMachine.init_and_compute prg),false
         (* N'arrive que si l'on appelle l'interprétation mixte*)
 
         | Unit -> Env.Int(0),false
@@ -237,72 +238,51 @@ module Interpreteur:InterpreteurSig = struct
 
 
     (* ------ exécution mixte interpréteur/machine à pile ------ *)
-    let rec label_pure_code : programme -> programme = function prg -> prg
-        (* Unit -> Pure(Const(0))
+
+    let is_pure = function
+        | Pure(_) -> true
+        | _ -> false
+
+    let rec label_pure_code : programme -> programme = function
+        Pure(_) -> failwith "Error : trying to label a code that is already labeled"
+        | Unit -> Pure(Unit)
         | Const(n) as c -> Pure(c)
-
         | Var(x) as v -> Pure(v)
-
         | PrInt(p) as prt-> let x = label_pure_code p in
-                            (match x with
-                            | Pure(_) -> Pure(prt)
-                            | _ -> PrInt(x))
+                            if (is_pure x) then Pure(prt) else PrInt(x)
 
         | PrStr(s) as p -> Pure(p)
-
         | PrNL -> Pure(PrNL)
-
         | Let(x,val_x,p) as lt -> let rx = label_pure_code val_x and px = label_pure_code p in
-                                    let resx = (match rx with Pure(_) as a -> a | _ -> resx Pure(lt)
+                                    if (is_pure rx)&&(is_pure px) then Pure(lt)
+                                    else Let(x,rx,px)
 
-        | LetRec(f,expr_f,p) as ltrec ->  Pure(ltrec)
+        | LetRec(f,expr_f,p) as ltrec ->  let rf = label_pure_code expr_f and px = label_pure_code p in
+                                    if (is_pure rf)&&(is_pure px) then Pure(ltrec)
+                                    else LetRec(f,rf,p)
 
-        | IfThenElse(b,p1,p2) -> Pure()
+        | IfThenElse(b,p1,p2) as ite -> let rb = label_pure_code b and
+                                     rp1 = label_pure_code p1 and
+                                     rp2 = label_pure_code p2 in
+                                    if (is_pure rb)&&(is_pure rp1)&&(is_pure rp2) then Pure(ite)
+                                    else IfThenElse(rb,rp1,rp2)
 
-        | UnOp(op,a) ->  let v,b = (exec_aux env a) in
-                        if b then v,b else
-                        let x = return v in
-                        ( match op with
-                             Neg -> Env.Int(-x)
-                           | Not -> Env.Int(1-x)
-                        ),false
 
-        | BinOp(a,op,b) -> let va,ba = (exec_aux env a) and
-                              vb,bb = (exec_aux env b) in
-                          if ba then va,true else
-                          if bb then vb,true else
-                          let xa = return va and xb = return vb in
-                          let c1 = Env.Int(1) and c0 = Env.Int(0) in
-                           ( match op with
-                              | Add -> Env.Int(xa+xb)
-                              | Minus -> Env.Int(xa - xb)
-                              | And -> Env.Int(xa*xb)
-                              | Or -> if ((xa+xb)>0) then c1 else c0
-                              | Mult -> Env.Int(xa*xb)
-                              | Div -> Env.Int(xa/xb)
-                              | Mod -> Env.Int(xa mod xb)
-                              | Equal -> if (xa==xb) then c1 else c0
-                              | Neq -> if (xa<>xb) then c1 else c0
-                              | Infeq -> if (xa<=xb) then c1 else c0
-                              | Inf -> if (xa<xb) then c1 else c0
-                              | Supeq -> if (xa>=xb) then c1 else c0
-                              | Sup -> if (xa>xb) then c1 else c0
-                           ),false
+        | UnOp(op,a) as un -> let ra = label_pure_code a in
+                            if (is_pure ra) then Pure(un) else UnOp(op,ra)
+
+        | BinOp(a,op,b) as bin -> let ra = label_pure_code a and rb = label_pure_code b in
+                                    if (is_pure ra)&&(is_pure rb) then Pure(bin)
+                                    else BinOp(ra,op,rb)
         (* Fonctions *)
-        | Function_def(_,_) as f -> Env.Cloture(f, Env.copy env),false
+        | Function_def(var,expr) as f -> let r = label_pure_code expr in
+                                            if (is_pure r) then Pure(f) else
+                                            Function_def(var,r)
 
-        | Function_call(f,arg) ->   let value,b = exec_aux env arg in
-                                    if b then value,b else
-                                    let v,b = (exec_aux env f) in
-                                    if b then v,b else
-                                    (match v with
-                                    | Env.Cloture(Function_def(x,expr), clt ) ->
-                                        Env.add clt x value;
-                                        let ret,b = exec_aux clt expr in
-                                        if b then ret,b else begin
-                                        Env.remove clt x; ret,false end
-                                    | _ -> failwith "Error in function call"
-                                    )
+        | Function_call(f,arg) as call-> let r = label_pure_code arg in
+                                            if (is_pure r) then Pure(call) else
+                                            Function_def(f,r)
+
         (* Exceptions  *)
         | TryWith(p1,x,p2) -> TryWith(label_pure_code p1, label_pure_code x, label_pure_code p2)
 
@@ -317,7 +297,7 @@ module Interpreteur:InterpreteurSig = struct
         (* tableaux  *)
         | AMake(x) -> AMake(label_pure_code x)
         | Affect(t,i,x) -> Affect( label_pure_code t, label_pure_code i, label_pure_code x)
-        | Access(t,i) -> Acces(label_pure_code t, label_pure_code i) *)
+        | Access(t,i) -> Access(label_pure_code t, label_pure_code i)
 
 
     let execute_mixte = function
