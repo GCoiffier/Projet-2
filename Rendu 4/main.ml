@@ -10,7 +10,6 @@
 *)
 
 open Interpreteur
-open Debug
 open LexParInterface
 open Machine
 
@@ -29,14 +28,17 @@ let main () =
 	in let opt = if n=1 then "None" else t.(1)
 	in match opt with
 	| "-debug" ->  (* affiche le code *)
-				  debug p; print_newline ();
-				  let res = execute p in
+				  Interpreteur.debug p; print_newline ();
+				  let res = Interpreteur.execute p in
 	  				print_string "- : int = ";
 	  				print_int res;
 	  				print_newline ()
 
 	| "-machine" -> (* compile et execute sur machine à pile en utilisant un interpéteur mixte *)
-					print_string "- Result = "; print_int (StackMachine.init_and_compute p); print_newline ()
+					let res = Interpreteur.execute_mixte p in
+						print_string "- : int = ";
+						print_int res;
+						print_newline ()
 
 	| "-interm" ->  (* compile vers machine à pile et enregistre le code dans un fichier. Si pas de fichier -> sortie standard *)
 					let s = (StackMachine.init_and_display p) in
@@ -48,17 +50,13 @@ let main () =
 						begin output_string file s;
 						      close_out file end
 
-	| "-execute" -> let prg = read_mach t.(2) in
+	| "-execute" -> (* lit un fichier préalablement compilé et l'execute sur une machine à pile*)
+					let prg = read_mach t.(2) in
 					let ret = StackMachine.compute prg in
 					print_string "- Result = "; print_int ret; print_newline ()
 
-	| "-NbE" -> print_string "Not implemented yet. Sorry." ; print_newline ()
-	| "-E" -> print_string "Not implemented yet. Sorry." ; print_newline ()
-	| "-R" -> print_string "Not implemented yet. Sorry." ; print_newline ()
-	| "-ER" -> print_string "Not implemented yet. Sorry." ; print_newline ()
-
 	| _ ->  (* interpréteur simple*)
-				let res = execute p in
+				let res = Interpreteur.execute p in
 				print_string "- : int = ";
 				print_int res;
 				print_newline ()
