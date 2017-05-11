@@ -1,0 +1,11 @@
+3
+2
+ADD
+LET(x)
+ACCESS(x)
+2
+DIV
+5
+ADD
+ENDLET
+;;

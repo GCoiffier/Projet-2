@@ -31,3 +31,4 @@ type programme =
     | AMake of programme
     | Affect of programme * programme * programme (* t.(i) <- x : (t,i,x) *)
     | Access of programme * programme (* t.(i)  : (t,i) *)
+    | Pure of programme (* utilisé dans l'interprétation mixte *)
