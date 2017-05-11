@@ -193,12 +193,12 @@ module StackMachine : StackMachineSig = struct
 								   )
 					|CALL 		-> (match l with
 									|[] -> failwith "stack empty"
-									|ti::FUN(envf, cf)::qi -> machine := Mach(cf,envf, ti::ENV(env)::INST(q)::qi)
+									|ti::FUN(envf, cf)::qi -> machine := Mach(cf@q,envf, ti::ENV(env)::qi)
 									| _ -> failwith "top of stack has not the good object"
 							     )
 					|RETURN 	-> (match l with
 									|[] -> failwith "stack empty"
-									|ti::ENV(env)::INST(c)::qi -> machine := Mach(c,env, ti::qi)
+									|ti::ENV(env)::qi -> machine := Mach(q,env, ti::qi)
 									| _ -> failwith "top of stack has not the good object"
 								 )
 
