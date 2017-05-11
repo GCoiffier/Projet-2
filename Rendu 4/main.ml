@@ -10,10 +10,6 @@
 *)
 
 open Interpreteur
-<<<<<<< HEAD
-open Debug
-=======
->>>>>>> mixte
 open LexParInterface
 open Machine
 
