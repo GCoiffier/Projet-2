@@ -1,0 +1,411 @@
+   0  $accept : %entry% $end
+
+   1  main : instrl EOL
+
+   2  instrl : instr
+   3         | instr instrl
+
+   4  instr : IF instrl ELSE instrl IFEND
+   5        | INT
+   6        | ADD
+   7        | MINUS
+   8        | MULT
+   9        | DIV
+  10        | MOD
+  11        | UMINUS
+  12        | PRINT
+  13        | POP
+  14        | AND
+  15        | OR
+  16        | EQUAL
+  17        | NEQUAL
+  18        | INFEQ
+  19        | INF
+  20        | SUPEQ
+  21        | SUP
+  22        | LET
+  23        | ACCESS
+  24        | ENDLET
+  25        | FUNCT instrl RETURN
+  26        | CALL
+  27        | LETREC
+
+  28  %entry% : '\001' main
+
+state 0
+	$accept : . %entry% $end  (0)
+
+	'\001'  shift 1
+	.  error
+
+	%entry%  goto 2
+
+
+state 1
+	%entry% : '\001' . main  (28)
+
+	INT  shift 3
+	LET  shift 4
+	ACCESS  shift 5
+	ENDLET  shift 6
+	ADD  shift 7
+	MINUS  shift 8
+	MULT  shift 9
+	DIV  shift 10
+	MOD  shift 11
+	UMINUS  shift 12
+	PRINT  shift 13
+	POP  shift 14
+	AND  shift 15
+	OR  shift 16
+	EQUAL  shift 17
+	NEQUAL  shift 18
+	SUP  shift 19
+	SUPEQ  shift 20
+	INFEQ  shift 21
+	INF  shift 22
+	IF  shift 23
+	LETREC  shift 24
+	FUNCT  shift 25
+	CALL  shift 26
+	.  error
+
+	main  goto 27
+	instrl  goto 28
+	instr  goto 29
+
+
+state 2
+	$accept : %entry% . $end  (0)
+
+	$end  accept
+
+
+state 3
+	instr : INT .  (5)
+
+	.  reduce 5
+
+
+state 4
+	instr : LET .  (22)
+
+	.  reduce 22
+
+
+state 5
+	instr : ACCESS .  (23)
+
+	.  reduce 23
+
+
+state 6
+	instr : ENDLET .  (24)
+
+	.  reduce 24
+
+
+state 7
+	instr : ADD .  (6)
+
+	.  reduce 6
+
+
+state 8
+	instr : MINUS .  (7)
+
+	.  reduce 7
+
+
+state 9
+	instr : MULT .  (8)
+
+	.  reduce 8
+
+
+state 10
+	instr : DIV .  (9)
+
+	.  reduce 9
+
+
+state 11
+	instr : MOD .  (10)
+
+	.  reduce 10
+
+
+state 12
+	instr : UMINUS .  (11)
+
+	.  reduce 11
+
+
+state 13
+	instr : PRINT .  (12)
+
+	.  reduce 12
+
+
+state 14
+	instr : POP .  (13)
+
+	.  reduce 13
+
+
+state 15
+	instr : AND .  (14)
+
+	.  reduce 14
+
+
+state 16
+	instr : OR .  (15)
+
+	.  reduce 15
+
+
+state 17
+	instr : EQUAL .  (16)
+
+	.  reduce 16
+
+
+state 18
+	instr : NEQUAL .  (17)
+
+	.  reduce 17
+
+
+state 19
+	instr : SUP .  (21)
+
+	.  reduce 21
+
+
+state 20
+	instr : SUPEQ .  (20)
+
+	.  reduce 20
+
+
+state 21
+	instr : INFEQ .  (18)
+
+	.  reduce 18
+
+
+state 22
+	instr : INF .  (19)
+
+	.  reduce 19
+
+
+state 23
+	instr : IF . instrl ELSE instrl IFEND  (4)
+
+	INT  shift 3
+	LET  shift 4
+	ACCESS  shift 5
+	ENDLET  shift 6
+	ADD  shift 7
+	MINUS  shift 8
+	MULT  shift 9
+	DIV  shift 10
+	MOD  shift 11
+	UMINUS  shift 12
+	PRINT  shift 13
+	POP  shift 14
+	AND  shift 15
+	OR  shift 16
+	EQUAL  shift 17
+	NEQUAL  shift 18
+	SUP  shift 19
+	SUPEQ  shift 20
+	INFEQ  shift 21
+	INF  shift 22
+	IF  shift 23
+	LETREC  shift 24
+	FUNCT  shift 25
+	CALL  shift 26
+	.  error
+
+	instrl  goto 30
+	instr  goto 29
+
+
+state 24
+	instr : LETREC .  (27)
+
+	.  reduce 27
+
+
+state 25
+	instr : FUNCT . instrl RETURN  (25)
+
+	INT  shift 3
+	LET  shift 4
+	ACCESS  shift 5
+	ENDLET  shift 6
+	ADD  shift 7
+	MINUS  shift 8
+	MULT  shift 9
+	DIV  shift 10
+	MOD  shift 11
+	UMINUS  shift 12
+	PRINT  shift 13
+	POP  shift 14
+	AND  shift 15
+	OR  shift 16
+	EQUAL  shift 17
+	NEQUAL  shift 18
+	SUP  shift 19
+	SUPEQ  shift 20
+	INFEQ  shift 21
+	INF  shift 22
+	IF  shift 23
+	LETREC  shift 24
+	FUNCT  shift 25
+	CALL  shift 26
+	.  error
+
+	instrl  goto 31
+	instr  goto 29
+
+
+state 26
+	instr : CALL .  (26)
+
+	.  reduce 26
+
+
+state 27
+	%entry% : '\001' main .  (28)
+
+	.  reduce 28
+
+
+state 28
+	main : instrl . EOL  (1)
+
+	EOL  shift 32
+	.  error
+
+
+state 29
+	instrl : instr .  (2)
+	instrl : instr . instrl  (3)
+
+	INT  shift 3
+	LET  shift 4
+	ACCESS  shift 5
+	ENDLET  shift 6
+	ADD  shift 7
+	MINUS  shift 8
+	MULT  shift 9
+	DIV  shift 10
+	MOD  shift 11
+	UMINUS  shift 12
+	PRINT  shift 13
+	POP  shift 14
+	AND  shift 15
+	OR  shift 16
+	EQUAL  shift 17
+	NEQUAL  shift 18
+	SUP  shift 19
+	SUPEQ  shift 20
+	INFEQ  shift 21
+	INF  shift 22
+	IF  shift 23
+	LETREC  shift 24
+	FUNCT  shift 25
+	CALL  shift 26
+	ELSE  reduce 2
+	IFEND  reduce 2
+	EOL  reduce 2
+	RETURN  reduce 2
+
+	instrl  goto 33
+	instr  goto 29
+
+
+state 30
+	instr : IF instrl . ELSE instrl IFEND  (4)
+
+	ELSE  shift 34
+	.  error
+
+
+state 31
+	instr : FUNCT instrl . RETURN  (25)
+
+	RETURN  shift 35
+	.  error
+
+
+state 32
+	main : instrl EOL .  (1)
+
+	.  reduce 1
+
+
+state 33
+	instrl : instr instrl .  (3)
+
+	.  reduce 3
+
+
+state 34
+	instr : IF instrl ELSE . instrl IFEND  (4)
+
+	INT  shift 3
+	LET  shift 4
+	ACCESS  shift 5
+	ENDLET  shift 6
+	ADD  shift 7
+	MINUS  shift 8
+	MULT  shift 9
+	DIV  shift 10
+	MOD  shift 11
+	UMINUS  shift 12
+	PRINT  shift 13
+	POP  shift 14
+	AND  shift 15
+	OR  shift 16
+	EQUAL  shift 17
+	NEQUAL  shift 18
+	SUP  shift 19
+	SUPEQ  shift 20
+	INFEQ  shift 21
+	INF  shift 22
+	IF  shift 23
+	LETREC  shift 24
+	FUNCT  shift 25
+	CALL  shift 26
+	.  error
+
+	instrl  goto 36
+	instr  goto 29
+
+
+state 35
+	instr : FUNCT instrl RETURN .  (25)
+
+	.  reduce 25
+
+
+state 36
+	instr : IF instrl ELSE instrl . IFEND  (4)
+
+	IFEND  shift 37
+	.  error
+
+
+state 37
+	instr : IF instrl ELSE instrl IFEND .  (4)
+
+	.  reduce 4
+
+
+31 terminals, 5 nonterminals
+29 grammar rules, 38 states

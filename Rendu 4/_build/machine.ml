@@ -9,7 +9,7 @@ type instruction =
 		| UMINUS | PRINT
 		| POP (* utile pour l'imp *)
 
-		| LET | ENDLET |ACCESS
+		| LET |ENDLET |ACCESS
 
 		| IF of instruction list * instruction list
 
