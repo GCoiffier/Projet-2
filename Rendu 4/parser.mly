@@ -30,7 +30,6 @@ open Fouine_type
 %left BEGIN
 %left END
 %left PRINT
-%left EGALE
 %right FUN
 %nonassoc IMPLIES
 %left UNIT
@@ -44,6 +43,7 @@ open Fouine_type
 %left VARIABLE, CONST
 %left AMAKE, TAFFECT
 %left NEG, SUPS, INFS, INFE, SUPE
+%left EGALE
 
 
 %start main

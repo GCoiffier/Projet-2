@@ -1,6 +1,75 @@
 open Fouine_type
 open Environnement
 
+let pstr = print_string
+let rec debug2 : programme -> unit = fun prg ->
+        (* affiche le programme parsé dans la console *)
+        match prg with
+        Unit -> print_string "()"
+        | Const(n) -> print_int n
+        | Var(x) -> pstr x
+        | PrInt(a) -> pstr "prInt("; debug2 a ; pstr ")"
+    	| PrStr(s) -> pstr "prStr \""; pstr s; pstr "\""
+    	| PrNL -> pstr "PrNL"
+        | IfThenElse(b,p1,p2) -> pstr "If (" ;
+                                debug2 b ;
+                                pstr ") Then (" ;
+                                debug2 p1 ;
+                                pstr ") Else (";
+                                debug2 p2;
+                                pstr ")"
+        | UnOp(op,a) -> pstr (match op with Neg -> "-(" | Not -> "~(");
+                       debug2 a;
+                       pstr ")"
+        | BinOp(a,op,b) -> pstr "(";
+                            debug2 a;
+                            pstr ( match op with
+                                | Add -> "+"     | Minus -> "-"  | And -> "&&"
+                                | Or -> "||"     | Mult -> "*"   | Div -> "/"
+                                | Mod -> " mod " | Equal -> "="  | Neq -> "<>"
+                                | Infeq -> "<="  | Inf -> "<"    | Supeq -> ">="
+                                | Sup -> ">");
+                            debug2 b;
+                            pstr ")"
+        | Let(x,p1,p2) ->  pstr "let ";
+                            debug2 x;
+                            pstr " = (";
+                            debug2 p1;
+                            pstr ") in ";
+                            debug2 p2;
+        | LetRec(x,p1,p2) -> pstr "let rec ";
+                            debug2 x;
+                            pstr " = ";
+                            debug2 p1;
+                            pstr " in ";
+                            debug2 p2
+        | Function_def(x,a) -> pstr "(";
+                              pstr "fun ";
+                              debug2 x;
+                              pstr " -> ";
+                              debug2 a;
+                              pstr ")"
+        | Function_call(x,a) ->  debug2 x;
+                                pstr " ";
+                                debug2 a
+        | TryWith(p1,x,p2) -> pstr "try ";
+                                pstr "(";
+                                debug2 p1;
+                                pstr ")";
+                                pstr " with E ";
+                                debug2 x;
+                                pstr " -> ";
+                                debug2 p2
+        | Raise(x) -> pstr "raise E ("; debug2 x; pstr ")"
+        | Imp(p1,p2) -> debug2 p1; pstr " ; "; debug2 p2;
+        | Ref(p) -> pstr "ref "; debug2 p
+        | Bang(x) -> pstr "!"; debug2 x
+        | Assign(x,p) -> pstr "(" ; debug2 x ; pstr " := "; debug2 p ; pstr ")"
+        | AMake(x) -> pstr "aMake (" ; debug2 x; pstr ")"
+        | Affect(t,i,x) -> debug2 t; pstr ".("; debug2 i; pstr ") <- " ; debug2 x
+        | Access(t,i) -> debug2 t; pstr ".("; debug2 i; pstr ")"
+        | Pure(_) -> () (* Ne devrait pas arriver *)
+
 type instruction =
 		INT of int
 		| ADD | MINUS | MULT | DIV | MOD
@@ -9,8 +78,7 @@ type instruction =
 		| UMINUS | PRINT
 		| POP (* utile pour l'imp *)
 
-		| LET |ENDLET |ACCESS
-
+		| LET | ENDLET |ACCESS
 		| IF of instruction list * instruction list
 
 		| FUNCT of instruction list
@@ -40,7 +108,13 @@ module type StackMachineSig = sig
 
 end
 
+
+
+
+
 module StackMachine : StackMachineSig = struct
+
+	(*______________________________Types_____________________________*)
 
 	type environnement =
 		mach_type list
@@ -52,37 +126,38 @@ module StackMachine : StackMachineSig = struct
 
 	type machine =
 		Mach of instruction list * environnement * mach_type list
+		
+	(*__________________________Initialisation________________________ *)
+		
 
-	let rec find_bruijn x env = match env with
+	let rec find_bruijn x env = match env with (* transform l'accès à une valeur dans l'environnement par un entier *)
 		|[] -> failwith "variable not found"
 		|t::q when t=x -> 0
 		|t::q -> 1 + (find_bruijn x q)
-	let rec built p_ l env = match p_ with
+		
+	let rec built p_ l env = match p_ with (* transforme un programme interpreteur en programme machine *)
 		| Const(i) 				 -> INT(i)::l
   		| Var(v) 				 -> INT(find_bruijn v env)::ACCESS::l
   		| PrInt(p) 				 -> (built p (PRINT::l) env)
   		| Imp(a,b) 				 -> (built a (POP::(built b l env)) env)
 
     	| UnOp(Neg,p) 		 	 -> (built p (UMINUS::l) env)
-    	| BinOp(p1,Add,p2)   	 -> (built p1 (built p2 (ADD::l) env) env)
-    	| BinOp(p1,Minus,p2) 	 -> (built p1 (built p2 (MINUS::l) env) env)
-    	| BinOp(p1,Mult,p2)  	 -> (built p1 (built p2 (MULT::l) env) env)
-    	| BinOp(p1,Div,p2)   	 -> (built p1 (built p2 (DIV::l) env) env)
-    	| BinOp(p1,Mod,p2)   	 -> (built p1 (built p2 (MOD::l) env) env)
-    	| BinOp(p1,Equal,p2) 	 -> (built p1 (built p2 (EQUAL::l) env) env)
+    	| BinOp(p1,Add,p2)   	 -> (built p1 (built p2 (ADD::l   ) env) env)
+    	| BinOp(p1,Minus,p2) 	 -> (built p1 (built p2 (MINUS::l ) env) env)
+    	| BinOp(p1,Mult,p2)  	 -> (built p1 (built p2 (MULT::l  ) env) env)
+    	| BinOp(p1,Div,p2)   	 -> (built p1 (built p2 (DIV::l   ) env) env)
+    	| BinOp(p1,Mod,p2)   	 -> (built p1 (built p2 (MOD::l   ) env) env)
+    	| BinOp(p1,Equal,p2) 	 -> (built p1 (built p2 (EQUAL::l ) env) env)
     	| BinOp(p1,Neq,p2)   	 -> (built p1 (built p2 (NEQUAL::l) env) env)
-    	| BinOp(p1,Infeq,p2) 	 -> (built p1 (built p2 (INFEQ::l) env) env)
-    	| BinOp(p1,Inf,p2)   	 -> (built p1 (built p2 (INF::l) env) env)
-    	| BinOp(p1,Supeq,p2) 	 -> (built p1 (built p2 (SUPEQ::l) env) env)
-    	| BinOp(p1,Sup,p2)   	 -> (built p1 (built p2 (SUP::l) env) env)
-    	| BinOp(p1,And,p2)   	 -> (built p1 (built p2 (AND::l) env) env)
-    	| BinOp(p1,Or,p2)    	 -> (built p1 (built p2 (OR::l) env) env)
-
-		| LetRec(Var(f), Function_def(Var(x), b_), b) -> let a = Function_def(Var(x), b_) in
-				built a (LETREC::(built b (ENDLET::l) (f::env))) (f::env)
+    	| BinOp(p1,Infeq,p2) 	 -> (built p1 (built p2 (INFEQ::l ) env) env)
+    	| BinOp(p1,Inf,p2)   	 -> (built p1 (built p2 (INF::l   ) env) env)
+    	| BinOp(p1,Supeq,p2) 	 -> (built p1 (built p2 (SUPEQ::l ) env) env)
+    	| BinOp(p1,Sup,p2)   	 -> (built p1 (built p2 (SUP::l   ) env) env)
+    	| BinOp(p1,And,p2)   	 -> (built p1 (built p2 (AND::l   ) env) env)
+    	| BinOp(p1,Or,p2)    	 -> (built p1 (built p2 (OR::l    ) env) env)
 
     	| Let(Var(x),a,b) 		 -> built a (LET::(built b (ENDLET::l) (x::env))) env (* let x = A in B  : (x,A,B) *)
-    	| LetRec(Var(f),a,b)     -> built a (LETREC::(built b (ENDLET::l) (f::env))) env (* let x = A in B  : (x,A,B) *)
+    	| LetRec(Var(f),a,b)     -> built a (LETREC::(built b (ENDLET::l) (f::env))) (f::env) (* let rec x = A in B  : (x,A,B) *)
 
     	| IfThenElse(x,a,b) 	 -> built x (IF(built a [] env, built b [] env)::l) env (* if x then A else B : (x,A,B) *)
 
@@ -90,13 +165,11 @@ module StackMachine : StackMachineSig = struct
     	| Function_call(a,b) 	 -> built a (built b (CALL::l) env) env
 
     	| _ -> failwith "not implement in machine"
-		
-	let init p = ref (Mach( built p [] [], [], []))
 
-	let rec find env n = match env with (* trouve la variable dans l'environnement : s'arrête au plus récent *)
-		|[] -> failwith "environnement too small"
-		|t::q when n=0 -> t
-		|t::q -> find q (n-1)
+	let init p = ref (Mach( built p [] [], [], []))
+	
+	
+	(*__________________________Affichage__________________________*)
 
 	let display machine =
 		let rec print_instr_list = function
@@ -136,6 +209,13 @@ module StackMachine : StackMachineSig = struct
 				)^(print_instr_list q)
 		in match (!machine) with Mach(l,_,_) -> (print_instr_list l)^";;"
 
+
+	(*______________________________La Machine____________________________ *)
+	let rec find env n = match env with (* trouve la variable dans l'environnement : s'arrête au plus récent *)
+		|[] -> failwith "environnement too small"
+		|t::q when n=0 -> t
+		|t::q -> find q (n-1)
+
 	let step machine =
 		match !machine with
 		| Mach(t::q,env,l) ->(
@@ -168,7 +248,7 @@ module StackMachine : StackMachineSig = struct
 					|ACCESS 	-> (match l with
 									|[] -> failwith "stack empty"
 									|VAL(n)::qi -> machine := Mach(q, env , (find env n)::qi)
-									|_ -> failwith "stack top is not value when our try an access"
+									|_ ->  failwith "top object has not an int"
 						  	     )
 
 
@@ -186,28 +266,28 @@ module StackMachine : StackMachineSig = struct
 					|LETREC    -> (match l with
 									|[] -> failwith "stack empty"
 									|FUN(envf,c)::qi -> let rec envs = FUN(envs,c)::envf in
-										machine := Mach(q, envs, qi)			
+										machine := Mach(q, envs, qi)
 									|ti::qi -> machine := Mach(q, ti::env ,qi) (*si c'est pas une fonction on fait un let 																						normal *)
 								   )
 					|CALL 		-> (match l with
 									|[] -> failwith "stack empty"
 									|ti::FUN(envf, cf)::qi -> machine := Mach(cf@q,envf, ti::ENV(env)::qi)
-									| _ -> failwith "top of stack has not the good object"
+									| _ -> failwith "top of stack has not the good objects"
 							     )
 					|RETURN 	-> (match l with
 									|[] -> failwith "stack empty"
 									|ti::ENV(env)::qi -> machine := Mach(q,env, ti::qi)
-									| _ -> failwith "top of stack has not the good object"
+									| _ -> failwith "top of stack has not the good objects"
 								 )
 
 
 					|_ ->      (match l with
 								|VAL(t2)::VAL(t1)::qi -> (let c0 = ref 0 in match t with
-												|ADD -> machine := Mach(q,env, VAL(t1+t2)::qi)
+												|ADD   -> machine := Mach(q,env, VAL(t1+t2)::qi)
 												|MINUS -> machine := Mach(q,env, VAL(t1-t2)::qi)
-												|MULT -> machine := Mach(q,env, VAL(t1*t2)::qi)
-												|DIV -> machine := Mach(q,env, VAL(t1/t2)::qi)
-												|MOD -> machine := Mach(q,env, VAL(t1 mod t2)::qi)
+												|MULT  -> machine := Mach(q,env, VAL(t1*t2)::qi)
+												|DIV   -> machine := Mach(q,env, VAL(t1/t2)::qi)
+												|MOD   -> machine := Mach(q,env, VAL(t1 mod t2)::qi)
 
 												|NEQUAL -> (if t1!=t2 then c0 := 1 else c0 := 0 );
 														machine := Mach(q,env, VAL(!c0)::qi)
@@ -250,6 +330,8 @@ module StackMachine : StackMachineSig = struct
 
 	let init_and_compute prg=
 		(* prg is a fouine program *)
+		debug2 prg;
+		print_newline();
 		let mach = init prg in
 		while not(mach_empty mach)
 			do step mach

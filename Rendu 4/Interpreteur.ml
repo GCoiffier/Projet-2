@@ -27,9 +27,12 @@ module Interpreteur:InterpreteurSig = struct
     (* ------ Fonction d'interprétation ------ *)
     let execute : programme -> int = fun prg ->
         let rec exec_aux env  = function
-
+		
+		| Pure(Const(n)) -> Env.Int(n),false
+		| Pure(Var(x))   -> (Env.find env (Var(x))),false
         | Pure(prg) -> (* print_string "Call stack machine"; print_newline (); *)
-                        Env.Int(StackMachine.init_and_compute (transform_env (revers (Env.to_list env)) prg)),false
+        				let a = StackMachine.init_and_compute (transform_env env prg) in print_string "here\n";
+                        Env.Int(a),false
         (* N'arrive que si l'on appelle l'interprétation mixte*)
 
         | Unit -> Env.Int(0),false
@@ -243,62 +246,65 @@ module Interpreteur:InterpreteurSig = struct
         | Pure(_) -> true
         | _ -> false
 
-    let rec label_pure_code : programme -> programme = function
-        Pure(_) -> failwith "Error : trying to label a code that is already labeled"
-        | Unit -> Pure(Unit)
-        | Const(n) as c -> Pure(c)
-        | Var(x) as v -> Pure(v)
-        | PrInt(p) as prt-> let x = label_pure_code p in
-                            if (is_pure x) then Pure(prt) else PrInt(x)
+    let label_pure_code : programme -> programme = function prg ->
+        let rec lbl l = function
+            Pure(_) -> failwith "Error : trying to label a code that is already labeled"
+            | Unit -> Pure(Unit)
+            | Const(n) as c -> Pure(c)
+            | Var(x) as v -> Pure(v)
+            | PrInt(p) as prt-> let x = lbl l p in
+                                if (is_pure x) then Pure(prt) else PrInt(x)
 
-        | PrStr(s) as p -> Pure(p)
-        | PrNL -> Pure(PrNL)
-        | Let(x,val_x,p) as lt -> let rx = label_pure_code val_x and px = label_pure_code p in
-                                    if (is_pure rx)&&(is_pure px) then Pure(lt)
-                                    else Let(x,rx,px)
+            | PrStr(s) as p -> p
+            | PrNL -> PrNL
+            | Let(x,val_x,p) as lt -> let rx = lbl l val_x in
+                                      let px = lbl (if (is_pure rx) then (x::l) else l) p in
+                                        if (is_pure rx)&&(is_pure px) then Pure(lt)
+                                        else Let(x,rx,px)
 
-        | LetRec(f,expr_f,p) as ltrec ->  let rf = label_pure_code expr_f and px = label_pure_code p in
-                                    if (is_pure rf)&&(is_pure px) then Pure(ltrec)
-                                    else LetRec(f,rf,p)
+            | LetRec(f,expr_f,p) as ltrec ->  let rf = lbl (f::l) expr_f  in
+                                        let px = lbl (if (is_pure rf) then (f::l) else l) p in
+                                        if (is_pure rf)&&(is_pure px) then Pure(ltrec)
+                                        else LetRec(f,rf,px)
 
-        | IfThenElse(b,p1,p2) as ite -> let rb = label_pure_code b and
-                                     rp1 = label_pure_code p1 and
-                                     rp2 = label_pure_code p2 in
-                                    if (is_pure rb)&&(is_pure rp1)&&(is_pure rp2) then Pure(ite)
-                                    else IfThenElse(rb,rp1,rp2)
+            | IfThenElse(b,p1,p2) as ite -> let rb = lbl l b and
+                                         rp1 = lbl l p1 and
+                                         rp2 = lbl l p2 in
+                                        if (is_pure rb)&&(is_pure rp1)&&(is_pure rp2) then Pure(ite)
+                                        else IfThenElse(rb,rp1,rp2)
 
 
-        | UnOp(op,a) as un -> let ra = label_pure_code a in
-                            if (is_pure ra) then Pure(un) else UnOp(op,ra)
+            | UnOp(op,a) as un -> let ra = lbl l a in
+                                if (is_pure ra) then Pure(un) else UnOp(op,ra)
 
-        | BinOp(a,op,b) as bin -> let ra = label_pure_code a and rb = label_pure_code b in
-                                    if (is_pure ra)&&(is_pure rb) then Pure(bin)
-                                    else BinOp(ra,op,rb)
-        (* Fonctions *)
-        | Function_def(var,expr) as f -> let r = label_pure_code expr in
-                                            if (is_pure r) then Pure(f) else
-                                            Function_def(var,r)
+            | BinOp(a,op,b) as bin -> let ra = lbl l a and rb = lbl l b in
+                                        if (is_pure ra)&&(is_pure rb) then Pure(bin)
+                                        else BinOp(ra,op,rb)
+            (* Fonctions *)
+            | Function_def(var,expr) as f -> let r = lbl l expr in
+                                                if (is_pure r) then Pure(f) else
+                                                Function_def(var,r)
 
-        | Function_call(f,arg) as call-> let r = label_pure_code arg in
-                                            if (is_pure r) then Pure(call) else
-                                            Function_def(f,r)
+            | Function_call(f,arg) as call-> let r = lbl l arg in
+                                                if (is_pure r)&&(List.mem f l) then Pure(call) else
+                                                Function_call(f,r)
 
-        (* Exceptions  *)
-        | TryWith(p1,x,p2) -> TryWith(label_pure_code p1, label_pure_code x, label_pure_code p2)
+            (* Exceptions  *)
+            | TryWith(p1,x,p2) -> TryWith(lbl l p1, lbl l x, lbl l p2)
 
-        | Raise(expr) -> Raise(label_pure_code expr)
+            | Raise(expr) -> Raise(lbl l expr)
 
-        (* aspects impératifs et références *)
-        | Imp(p1,p2) -> Imp(label_pure_code p1, label_pure_code p2)
-        | Ref(x) -> Ref(label_pure_code x)
-        | Bang(x) -> Bang(label_pure_code x)
-        | Assign(x,p) -> Assign(label_pure_code x, label_pure_code p)
+            (* aspects impératifs et références *)
+            | Imp(p1,p2) -> Imp(lbl l p1, lbl l p2)
+            | Ref(x) -> Ref(lbl l x)
+            | Bang(x) -> Bang(lbl l x)
+            | Assign(x,p) -> Assign(lbl l x, lbl l p)
 
-        (* tableaux  *)
-        | AMake(x) -> AMake(label_pure_code x)
-        | Affect(t,i,x) -> Affect( label_pure_code t, label_pure_code i, label_pure_code x)
-        | Access(t,i) -> Access(label_pure_code t, label_pure_code i)
-
+            (* tableaux  *)
+            | AMake(x) -> AMake(lbl l x)
+            | Affect(t,i,x) -> Affect( lbl l t, lbl l i, lbl l x)
+            | Access(t,i) -> Access(lbl l t, lbl l i)
+        in lbl [] prg
 
     let execute_mixte = function
         prg -> execute (label_pure_code prg);;
