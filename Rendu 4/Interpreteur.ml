@@ -252,8 +252,8 @@ module Interpreteur:InterpreteurSig = struct
             | PrInt(p) as prt-> let x = lbl l p in
                                 if (is_pure x) then Pure(prt) else PrInt(x)
 
-            | PrStr(s) as p -> Pure(p)
-            | PrNL -> Pure(PrNL)
+            | PrStr(s) as p -> p
+            | PrNL -> PrNL
             | Let(x,val_x,p) as lt -> let rx = lbl l val_x in
                                       let px = lbl (if (is_pure rx) then (x::l) else l) p in
                                         if (is_pure rx)&&(is_pure px) then Pure(lt)
