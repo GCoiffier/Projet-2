@@ -29,3 +29,16 @@ module Environnement =
     end
 
 module Env = Environnement(Dictionnaire)
+
+let revers l=
+	let rec aux l l_renv= match l with
+		|[] -> l_renv
+		|t::q -> aux q (t::l_renv) in
+	aux l []
+	
+let rec transform_env env prg= match env with
+	|[] -> prg
+	|(Var(v), Env.Int(x))::q -> Let(Var(v), Const(x), transform_env q prg)
+	|(Var(f), Env.Cloture(Pure(c),envf))::q -> LetRec(Var(f), c, transform_env q prg)
+	|_::q -> transform_env q prg
+	
