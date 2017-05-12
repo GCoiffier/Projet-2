@@ -9,7 +9,7 @@ type instruction =
 		| UMINUS | PRINT
 		| POP (* utile pour l'imp *)
 
-		| LET |ENDLET |ACCESS
+		| LET | ENDLET |ACCESS
 
 		| IF of instruction list * instruction list
 
@@ -91,9 +91,7 @@ module StackMachine : StackMachineSig = struct
     	| Function_call(a,b) 	 -> built a (built b (CALL::l) env) env
 
     	| _ -> failwith "not implement in machine"
-    	
-    	
-    	
+
 	let rec transform_env env = match env with
 		|[] -> []
 		|(Var(v),elt)::q -> (match elt with
@@ -102,7 +100,7 @@ module StackMachine : StackMachineSig = struct
 							|_ -> transform_env q (* Ce n'est pas Pure donc la machine n'en a pas besoin *)
 							)
 		|_::q -> failwith "error"
-		
+
 	let init p = ref (Mach( built p [] [], [], []))
 
 	let rec find env n = match env with (* trouve la variable dans l'environnement : s'arrête au plus récent *)
@@ -198,7 +196,7 @@ module StackMachine : StackMachineSig = struct
 					|LETREC    -> (match l with
 									|[] -> failwith "stack empty"
 									|FUN(envf,c)::qi -> let rec envs = FUN(envs,c)::envf in
-										machine := Mach(q, envs, qi)			
+										machine := Mach(q, envs, qi)
 									|ti::qi -> machine := Mach(q, ti::env ,qi) (*si c'est pas une fonction on fait un let 																						normal *)
 								   )
 					|CALL 		-> (match l with
