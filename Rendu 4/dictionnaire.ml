@@ -6,6 +6,7 @@ module type Dictsig = sig
     val remove : ('a, 'b) t -> 'a -> unit
     val find : ('a, 'b) t -> 'a -> 'b
     val copy : ('a, 'b) t -> ('a, 'b) t
+    val to_list : ('a, 'b) t -> ('a * 'b) list
 
 end
 
@@ -20,5 +21,6 @@ module Dictionnaire : Dictsig = struct
   let remove = Hashtbl.remove
   let find = Hashtbl.find
   let copy = Hashtbl.copy
+  let to_list = fun h -> Hashtbl.fold (fun k v acc -> (k, v)::acc) h []
 
 end

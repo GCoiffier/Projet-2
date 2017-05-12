@@ -32,7 +32,7 @@ module type StackMachineSig = sig
 	val compute : instruction list -> int
 	(* runs a machine code *)
 
-	val init_and_compute : programme -> int
+	val init_and_compute : programme -> (programme * Env.elt) list -> int
 	(* inits a machine and execute every instruction, then returns the result *)
 
 	val init_and_display : programme -> string
@@ -92,7 +92,17 @@ module StackMachine : StackMachineSig = struct
 
     	| _ -> failwith "not implement in machine"
     	
-
+    	
+    	
+	let rec transform_env env = match env with
+		|[] -> []
+		|(Var(v),elt)::q -> (match elt with
+							|Env.Int(x) -> INT(x)::(transform_env q)
+							|Env.Cloture(Pure(f),envf)-> (transform_env q)
+							|_ -> transform_env q (* Ce n'est pas Pure donc la machine n'en a pas besoin *)
+							)
+		|_::q -> failwith "error"
+		
 	let init p = ref (Mach( built p [] [], [], []))
 
 	let rec find env n = match env with (* trouve la variable dans l'environnement : s'arrête au plus récent *)
@@ -240,7 +250,7 @@ module StackMachine : StackMachineSig = struct
 			| _ 		   -> false
 
 
-	let compute prg =
+	let compute prg=
 		(* prg is a list of machine instruction *)
 		let mach = ref (Mach(prg,[],[])) in
 		while not(mach_empty mach)
@@ -251,7 +261,7 @@ module StackMachine : StackMachineSig = struct
 		 | _ 					 -> failwith "execution failed : end value not an int or too much end values"
 
 
-	let init_and_compute prg =
+	let init_and_compute prg env=
 		(* prg is a fouine program *)
 		let mach = init prg in
 		while not(mach_empty mach)

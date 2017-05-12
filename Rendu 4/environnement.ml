@@ -24,6 +24,7 @@ module Environnement =
       let find = D.find
       let remove = D.remove
       let copy = D.copy
+      let to_list = D.to_list
 
     end
 

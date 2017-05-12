@@ -29,7 +29,7 @@ module Interpreteur:InterpreteurSig = struct
         let rec exec_aux env  = function
 
         | Pure(prg) -> (* print_string "Call stack machine"; print_newline (); *)
-                        Env.Int(StackMachine.init_and_compute prg),false
+                        Env.Int(StackMachine.init_and_compute prg (Env.to_list env)),false
         (* N'arrive que si l'on appelle l'interprétation mixte*)
 
         | Unit -> Env.Int(0),false
