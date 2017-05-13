@@ -35,13 +35,11 @@ let revers l=
 		|[] -> l_renv
 		|t::q -> aux q (t::l_renv) in
 	aux l []
-	
+
 let transform_env env prg=
-	let env_ = Env.copy env in
 	let rec aux env prg= match env with
 		|[] -> prg
 		|(Var(v), Env.Int(x))::q -> Let(Var(v), Const(x), aux q prg)
 		|(Var(f), Env.Cloture(Pure(c),envf))::q -> LetRec(Var(f), c, aux q prg)
 		|_::q -> aux q prg in
-	aux (revers (Env.to_list env_)) prg
-	
+	aux (revers (Env.to_list (Env.copy env))) prg

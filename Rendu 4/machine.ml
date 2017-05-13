@@ -1,75 +1,6 @@
 open Fouine_type
 open Environnement
 
-let pstr = print_string
-let rec debug2 : programme -> unit = fun prg ->
-        (* affiche le programme parsé dans la console *)
-        match prg with
-        Unit -> print_string "()"
-        | Const(n) -> print_int n
-        | Var(x) -> pstr x
-        | PrInt(a) -> pstr "prInt("; debug2 a ; pstr ")"
-    	| PrStr(s) -> pstr "prStr \""; pstr s; pstr "\""
-    	| PrNL -> pstr "PrNL"
-        | IfThenElse(b,p1,p2) -> pstr "If (" ;
-                                debug2 b ;
-                                pstr ") Then (" ;
-                                debug2 p1 ;
-                                pstr ") Else (";
-                                debug2 p2;
-                                pstr ")"
-        | UnOp(op,a) -> pstr (match op with Neg -> "-(" | Not -> "~(");
-                       debug2 a;
-                       pstr ")"
-        | BinOp(a,op,b) -> pstr "(";
-                            debug2 a;
-                            pstr ( match op with
-                                | Add -> "+"     | Minus -> "-"  | And -> "&&"
-                                | Or -> "||"     | Mult -> "*"   | Div -> "/"
-                                | Mod -> " mod " | Equal -> "="  | Neq -> "<>"
-                                | Infeq -> "<="  | Inf -> "<"    | Supeq -> ">="
-                                | Sup -> ">");
-                            debug2 b;
-                            pstr ")"
-        | Let(x,p1,p2) ->  pstr "let ";
-                            debug2 x;
-                            pstr " = (";
-                            debug2 p1;
-                            pstr ") in ";
-                            debug2 p2;
-        | LetRec(x,p1,p2) -> pstr "let rec ";
-                            debug2 x;
-                            pstr " = ";
-                            debug2 p1;
-                            pstr " in ";
-                            debug2 p2
-        | Function_def(x,a) -> pstr "(";
-                              pstr "fun ";
-                              debug2 x;
-                              pstr " -> ";
-                              debug2 a;
-                              pstr ")"
-        | Function_call(x,a) ->  debug2 x;
-                                pstr " ";
-                                debug2 a
-        | TryWith(p1,x,p2) -> pstr "try ";
-                                pstr "(";
-                                debug2 p1;
-                                pstr ")";
-                                pstr " with E ";
-                                debug2 x;
-                                pstr " -> ";
-                                debug2 p2
-        | Raise(x) -> pstr "raise E ("; debug2 x; pstr ")"
-        | Imp(p1,p2) -> debug2 p1; pstr " ; "; debug2 p2;
-        | Ref(p) -> pstr "ref "; debug2 p
-        | Bang(x) -> pstr "!"; debug2 x
-        | Assign(x,p) -> pstr "(" ; debug2 x ; pstr " := "; debug2 p ; pstr ")"
-        | AMake(x) -> pstr "aMake (" ; debug2 x; pstr ")"
-        | Affect(t,i,x) -> debug2 t; pstr ".("; debug2 i; pstr ") <- " ; debug2 x
-        | Access(t,i) -> debug2 t; pstr ".("; debug2 i; pstr ")"
-        | Pure(_) -> () (* Ne devrait pas arriver *)
-
 type instruction =
 		INT of int
 		| ADD | MINUS | MULT | DIV | MOD
@@ -126,15 +57,15 @@ module StackMachine : StackMachineSig = struct
 
 	type machine =
 		Mach of instruction list * environnement * mach_type list
-		
+
 	(*__________________________Initialisation________________________ *)
-		
+
 
 	let rec find_bruijn x env = match env with (* transform l'accès à une valeur dans l'environnement par un entier *)
-		|[] -> failwith "variable not found"
+		|[] -> failwith "Error in Bruijn : variable not found"
 		|t::q when t=x -> 0
 		|t::q -> 1 + (find_bruijn x q)
-		
+
 	let rec built p_ l env = match p_ with (* transforme un programme interpreteur en programme machine *)
 		| Const(i) 				 -> INT(i)::l
   		| Var(v) 				 -> INT(find_bruijn v env)::ACCESS::l
@@ -167,8 +98,8 @@ module StackMachine : StackMachineSig = struct
     	| _ -> failwith "not implement in machine"
 
 	let init p = ref (Mach( built p [] [], [], []))
-	
-	
+
+
 	(*__________________________Affichage__________________________*)
 
 	let display machine =
@@ -310,7 +241,7 @@ module StackMachine : StackMachineSig = struct
 							   )
 				)
 		| _ -> failwith "execution failed"
-		
+
 	let mach_empty machine =
 		match !machine with
 			| Mach([],_,_) -> true
@@ -330,10 +261,8 @@ module StackMachine : StackMachineSig = struct
 
 	let init_and_compute prg=
 		(* prg is a fouine program *)
-		debug2 prg;
-		print_newline();
 		let mach = init prg in
-		while not(mach_empty mach)
+        while not(mach_empty mach)
 			do step mach
 		done;
 		match !mach with

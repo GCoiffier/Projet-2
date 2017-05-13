@@ -13,4 +13,4 @@ let rec fb k =
 	if k>=100
 	then ()
 	else (isPrime k; fb (k+1) ) in
-fb 2;;
+fb 2 ;;

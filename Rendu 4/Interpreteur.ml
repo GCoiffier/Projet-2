@@ -24,16 +24,89 @@ module Interpreteur:InterpreteurSig = struct
         | Env.Ref(_) -> failwith "Execution Error: expected integer, got reference"
         | Env.Cloture(_,_) -> failwith "Execution Error: expected integer, got function"
 
+(* ------ Fonction de debug ------ *)
+
+    let pstr = print_string (* abréviation *)
+
+    let rec debug : programme -> unit = fun prg ->
+        (* affiche le programme parsé dans la console *)
+        match prg with
+        Unit -> print_string "()"
+        | Const(n) -> print_int n
+        | Var(x) -> pstr x
+        | PrInt(a) -> pstr "prInt("; debug a ; pstr ")"
+    	| PrStr(s) -> pstr "prStr \""; pstr s; pstr "\""
+    	| PrNL -> pstr "PrNL"
+        | IfThenElse(b,p1,p2) -> pstr "If (" ;
+                                debug b ;
+                                pstr ") Then (" ;
+                                debug p1 ;
+                                pstr ") Else (";
+                                debug p2;
+                                pstr ")"
+        | UnOp(op,a) -> pstr (match op with Neg -> "-(" | Not -> "~(");
+                       debug a;
+                       pstr ")"
+        | BinOp(a,op,b) -> pstr "(";
+                            debug a;
+                            pstr ( match op with
+                                | Add -> "+"     | Minus -> "-"  | And -> "&&"
+                                | Or -> "||"     | Mult -> "*"   | Div -> "/"
+                                | Mod -> " mod " | Equal -> "="  | Neq -> "<>"
+                                | Infeq -> "<="  | Inf -> "<"    | Supeq -> ">="
+                                | Sup -> ">");
+                            debug b;
+                            pstr ")"
+        | Let(x,p1,p2) ->  pstr "let ";
+                            debug x;
+                            pstr " = (";
+                            debug p1;
+                            pstr ") in ";
+                            debug p2;
+        | LetRec(x,p1,p2) -> pstr "let rec ";
+                            debug x;
+                            pstr " = ";
+                            debug p1;
+                            pstr " in ";
+                            debug p2
+        | Function_def(x,a) -> pstr "(";
+                              pstr "fun ";
+                              debug x;
+                              pstr " -> ";
+                              debug a;
+                              pstr ")"
+        | Function_call(x,a) ->  debug x;
+                                pstr " ";
+                                debug a
+        | TryWith(p1,x,p2) -> pstr "try ";
+                                pstr "(";
+                                debug p1;
+                                pstr ")";
+                                pstr " with E ";
+                                debug x;
+                                pstr " -> ";
+                                debug p2
+        | Raise(x) -> pstr "raise E ("; debug x; pstr ")"
+        | Imp(p1,p2) -> debug p1; pstr " ; "; debug p2;
+        | Ref(p) -> pstr "ref "; debug p
+        | Bang(x) -> pstr "!"; debug x
+        | Assign(x,p) -> pstr "(" ; debug x ; pstr " := "; debug p ; pstr ")"
+        | AMake(x) -> pstr "aMake (" ; debug x; pstr ")"
+        | Affect(t,i,x) -> debug t; pstr ".("; debug i; pstr ") <- " ; debug x
+        | Access(t,i) -> debug t; pstr ".("; debug i; pstr ")"
+        | Pure(p) -> pstr "Pure("; debug p; pstr ") "
+
     (* ------ Fonction d'interprétation ------ *)
     let execute : programme -> int = fun prg ->
         let rec exec_aux env  = function
-		
-		| Pure(Const(n)) -> Env.Int(n),false
+
+		  Pure(Const(n)) -> Env.Int(n),false
 		| Pure(Var(x))   -> (Env.find env (Var(x))),false
-        | Pure(prg) -> (* print_string "Call stack machine"; print_newline (); *)
-        				let a = StackMachine.init_and_compute (transform_env env prg) in print_string "here\n";
+        | Pure(prg) ->  print_string "Call stack machine with code : "; print_newline (); debug prg ; print_newline ();
+        				let a = StackMachine.init_and_compute (transform_env env prg) in
+                        print_string "Machine returns sucessfully"; print_newline ();
                         Env.Int(a),false
-        (* N'arrive que si l'on appelle l'interprétation mixte*)
+        (* Ces trois cas n'arrivent que si l'on appelle l'interprétation mixte *)
 
         | Unit -> Env.Int(0),false
 
@@ -96,6 +169,7 @@ module Interpreteur:InterpreteurSig = struct
                               | Supeq -> if (xa>=xb) then c1 else c0
                               | Sup -> if (xa>xb) then c1 else c0
                            ),false
+
         (* Fonctions *)
         | Function_def(_,_) as f -> Env.Cloture(f, Env.copy env),false
 
@@ -168,79 +242,7 @@ module Interpreteur:InterpreteurSig = struct
         in let v,b =  (exec_aux (Env.create 10) prg) in
             if b then failwith "Error : exception not caught" else return v
 
-            let pstr = print_string (* abréviation *)
-
-(* ------ Fonction de debug ------ *)
-    let rec debug : programme -> unit = fun prg ->
-        (* affiche le programme parsé dans la console *)
-        match prg with
-        Unit -> print_string "()"
-        | Const(n) -> print_int n
-        | Var(x) -> pstr x
-        | PrInt(a) -> pstr "prInt("; debug a ; pstr ")"
-    	| PrStr(s) -> pstr "prStr \""; pstr s; pstr "\""
-    	| PrNL -> pstr "PrNL"
-        | IfThenElse(b,p1,p2) -> pstr "If (" ;
-                                debug b ;
-                                pstr ") Then (" ;
-                                debug p1 ;
-                                pstr ") Else (";
-                                debug p2;
-                                pstr ")"
-        | UnOp(op,a) -> pstr (match op with Neg -> "-(" | Not -> "~(");
-                       debug a;
-                       pstr ")"
-        | BinOp(a,op,b) -> pstr "(";
-                            debug a;
-                            pstr ( match op with
-                                | Add -> "+"     | Minus -> "-"  | And -> "&&"
-                                | Or -> "||"     | Mult -> "*"   | Div -> "/"
-                                | Mod -> " mod " | Equal -> "="  | Neq -> "<>"
-                                | Infeq -> "<="  | Inf -> "<"    | Supeq -> ">="
-                                | Sup -> ">");
-                            debug b;
-                            pstr ")"
-        | Let(x,p1,p2) ->  pstr "let ";
-                            debug x;
-                            pstr " = (";
-                            debug p1;
-                            pstr ") in ";
-                            debug p2;
-        | LetRec(x,p1,p2) -> pstr "let rec ";
-                            debug x;
-                            pstr " = ";
-                            debug p1;
-                            pstr " in ";
-                            debug p2
-        | Function_def(x,a) -> pstr "(";
-                              pstr "fun ";
-                              debug x;
-                              pstr " -> ";
-                              debug a;
-                              pstr ")"
-        | Function_call(x,a) ->  debug x;
-                                pstr " ";
-                                debug a
-        | TryWith(p1,x,p2) -> pstr "try ";
-                                pstr "(";
-                                debug p1;
-                                pstr ")";
-                                pstr " with E ";
-                                debug x;
-                                pstr " -> ";
-                                debug p2
-        | Raise(x) -> pstr "raise E ("; debug x; pstr ")"
-        | Imp(p1,p2) -> debug p1; pstr " ; "; debug p2;
-        | Ref(p) -> pstr "ref "; debug p
-        | Bang(x) -> pstr "!"; debug x
-        | Assign(x,p) -> pstr "(" ; debug x ; pstr " := "; debug p ; pstr ")"
-        | AMake(x) -> pstr "aMake (" ; debug x; pstr ")"
-        | Affect(t,i,x) -> debug t; pstr ".("; debug i; pstr ") <- " ; debug x
-        | Access(t,i) -> debug t; pstr ".("; debug i; pstr ")"
-        | Pure(_) -> () (* Ne devrait pas arriver *)
-
-
-    (* ------ exécution mixte interpréteur/machine à pile ------ *)
+(* ------ exécution mixte interpréteur/machine à pile ------ *)
 
     let is_pure = function
         | Pure(_) -> true
@@ -249,9 +251,9 @@ module Interpreteur:InterpreteurSig = struct
     let label_pure_code : programme -> programme = function prg ->
         let rec lbl l = function
             Pure(_) -> failwith "Error : trying to label a code that is already labeled"
-            | Unit -> Pure(Unit)
+            | Unit -> Pure(Const(0))
             | Const(n) as c -> Pure(c)
-            | Var(x) as v -> Pure(v)
+            | Var(x) as v -> if (List.mem v l) then Pure(v) else v
             | PrInt(p) as prt-> let x = lbl l p in
                                 if (is_pure x) then Pure(prt) else PrInt(x)
 
@@ -281,7 +283,7 @@ module Interpreteur:InterpreteurSig = struct
                                         if (is_pure ra)&&(is_pure rb) then Pure(bin)
                                         else BinOp(ra,op,rb)
             (* Fonctions *)
-            | Function_def(var,expr) as f -> let r = lbl l expr in
+            | Function_def(var,expr) as f -> let r = lbl (var::l) expr in
                                                 if (is_pure r) then Pure(f) else
                                                 Function_def(var,r)
 
@@ -290,7 +292,7 @@ module Interpreteur:InterpreteurSig = struct
                                                 Function_call(f,r)
 
             (* Exceptions  *)
-            | TryWith(p1,x,p2) -> TryWith(lbl l p1, lbl l x, lbl l p2)
+            | TryWith(p1,x,p2) -> TryWith(lbl l p1, lbl l x, lbl (x::l) p2)
 
             | Raise(expr) -> Raise(lbl l expr)
 
@@ -307,6 +309,7 @@ module Interpreteur:InterpreteurSig = struct
         in lbl [] prg
 
     let execute_mixte = function
-        prg -> execute (label_pure_code prg);;
+        prg -> debug (label_pure_code prg); print_newline ();
+               execute (label_pure_code prg);
 
 end
