@@ -54,6 +54,7 @@ module StackMachine : StackMachineSig = struct
 		VAL of int
 		| FUN  of environnement * instruction list
 		| ENV  of environnement
+		| INST of instruction list
 
 	type machine =
 		Mach of instruction list * environnement * mach_type list
@@ -202,12 +203,12 @@ module StackMachine : StackMachineSig = struct
 								   )
 					|CALL 		-> (match l with
 									|[] -> failwith "stack empty"
-									|ti::FUN(envf, cf)::qi -> machine := Mach(cf@q,envf, ti::ENV(env)::qi)
+									|ti::FUN(envf, cf)::qi -> machine := Mach(cf,envf, ti::ENV(env)::INST(q)::qi)
 									| _ -> failwith "top of stack has not the good objects"
 							     )
 					|RETURN 	-> (match l with
 									|[] -> failwith "stack empty"
-									|ti::ENV(env)::qi -> machine := Mach(q,env, ti::qi)
+									|ti::ENV(env)::INST(q_)::qi -> machine := Mach(q_,env, ti::qi)
 									| _ -> failwith "top of stack has not the good objects"
 								 )
 

@@ -22,7 +22,9 @@ Coiffier Guillaume - Valque Léo
 
 - `./fouine -interm sortie fichier` compile le code parsé et le stocke dans sortie. Les fichiers de sortie sont par défaut dans le dossier Stack_programs. Donnez simplement le nom du fichier "toto.code" et il sera enregistré dans le bon dossier. Si aucun fichier de sortie n'est spécifié, le programme affichera le code dans la console.
 
-- `./fouine -machine fichier` compile le code parsé et l'exécute sur la machine à pile. Ce code doit être un code fouine. La lecture des codes machine à pile n'est pas encore implémentée.
+- `./fouine -machine fichier` compile le code parsé et l'exécute sur la machine à pile. Ce code doit être un code fouine.
+
+- `./fouine -execute fichier` compile le code parsé et l'exécute sur la machine à pile. Ce code doit être dans le langage de la machine à pile.
 
 - NB : il est dans tous les cas possibles de ne pas donner de fichier d'entrée à fouine. Le programme s'éxecute alors en mode interactif et il faut entrer un programme dans la console.
 
@@ -32,6 +34,7 @@ Coiffier Guillaume - Valque Léo
     - `./fouine -debug Programs/function.fouine`
     - `./fouine -interm`
     - `./fouine -interm toto.code Programs/prog1.fouine`
+    - `./fouine -execute toto.code`
     - `./fouine -machine Programs/prog2.fouine`
     - `./fouine -debug Programs/function.fouine`
 
@@ -85,11 +88,21 @@ Coiffier Guillaume - Valque Léo
 ## Rendu 4
 ### Semaine 6
 
-[ ]
+[X] Ajout d'un lexer, parser pour les instructions de la machine à pile, on peut desormais compiler puis executez plus tard
+
+[X] Ajout des fonctions dans la machine à pile
 
 ### Semaine 7
 
-[ ]
+[X] Ajout des fonctions recursives dans la machine à pile
+
+[X] Ajout des indices de bruijn dans la machine à pile
+
+[X] Ajout de l'interpréteur mixtes qui envoie sur la machine quand il peut et sinon éxecute normalement
+
+#bug reperé mais non corrigés
+la traduction d'environnement suppose qu'une fonction est récursive du coup quelquechose défini par
+let f x = x in let f x = f x in f 2 ne s'executera pas correctement, il bouclera au lieu de renvoyer 2 
 
 # L'interprétation
 L'interprétation est réalisée dans la fonction execute du fichier interpreteur.ml . Cette fonction prend en argument un programme fouine parsé (de type programme) et renvoie un entier. On utilise une fonction récursive auxiliaire qui associe une valeur de type 'ret' au programme. Ensuite, on appelle la petite fonction return qui renvoie un int à partir de ce ret.
@@ -101,6 +114,8 @@ Ce type intermédiaire ret est nécessaire pour pouvoir utiliser des fonctions d
 On utilisera des tables de hachage (Hastbl) qui associeront une valeur 'Env.elt' à une valeur 'programme'. Cette structure de donnée a le gros avantage de gérer parfaitement la portée des variables. En effet, d'après la documentation de Ocaml, lorsqu'une valeur y est assignée à la variable x dans une Hashtbl, l'ancienne valeur de x est remplacée par y. Lorsque l'on supprime l'association (x,y) dans la table, l'ancienne valeur associée à x est restaurée, ce qui est le comportement attendu.
 
 Cette structure de donnée supporte l'ajout d'un couple d'élément, la suppression d'un élement et de son association (avec éventuelle restauration de la précédente association), la recherche d'un élement et la copie (pour pouvoir faire des clotures).
+
+Elle contient la fonction transform_env qui transforme l'environnement de l'interpréteur en code avec des Let et Letrec que peut comprendre la machine à pile et qui permet de transmettre de manière indirecte de l'environnement à la machine à pile.
 
 # Les fonctions et les fonctions récursives
 
@@ -117,6 +132,8 @@ Deux constructeurs sont associés aux fonctions dans le type programme :
 La machine à pile est réalisée par la fonction step du fichier machine.ml . Cette fonction prend en argument une pile d'instruction machine (de type instruction list) et affiche un entier lorsqu'il a terminé. Chaque step lit et exécute l'instruction au sommet de la pile.
 
 La compilation du code parsé est effectuée par la fonction build situé dans le même fichier . Cette fonction prend en argument un programme fouine parsé (de type programme) et renvoie une pile d'instruction machine (de type instruction list).
+
+La machine comprend les indices de bruijn, calculée au moment de la compilation par la fonction find_bruijn. Les ACCESS ne se font plus sur le nom de la variable mais sur la position dans l'environnement
 
 # Exceptions
 
@@ -159,6 +176,9 @@ Fichier faisant l'interface entre le parser et le reste du code. Fournit simplem
 
 ### parser.mly , lexer.mll
 Ces fichiers permettent de lire la formule donnée en entrée par le programme, et de construire un objet de type programme représentant le code à exécuter.
+
+### parsMachine.mly , lexMachine.mll
+Ces fichiers permettent de lire les instructions donnée en entrée par le programme, et de construire un objet de type instruction list représentant le code à exécuter sur la machine à pile.
 
 ### Dossier de programmes
 - exemples simples sur les différentes fonctionnalités de fouine (les noms des programmes sont a priori explicites)
