@@ -187,7 +187,7 @@ module StackMachine : StackMachineSig = struct
 					|IF(a,b) 	-> (match l with
 									|[] -> failwith "stack empty"
 									|VAL(ti)::qi -> if ti=0 then machine := Mach(b@q, env ,qi)
-											   else machine := Mach(a@q, env ,qi)
+													   	    else machine := Mach(a@q, env ,qi)
 									| _ -> failwith "top object has not an int"
 						   		 )
 

@@ -96,13 +96,13 @@ module Interpreteur:InterpreteurSig = struct
         | Access(t,i) -> debug t; pstr ".("; debug i; pstr ")"
         | Pure(p) -> pstr "Pure("; debug p; pstr ") "
 
-    (* ------ Fonction d'interprétation ------ *)
+    (* ------ Fonction d'interprétation ------ *)    
     let execute : programme -> int = fun prg ->
         let rec exec_aux env  = function
 
 		  Pure(Const(n)) -> Env.Int(n),false
 		| Pure(Var(x))   -> (Env.find env (Var(x))),false
-        | Pure(prg) ->  (* print_string "Call stack machine with code : "; print_newline (); debug prg ; print_newline (); *)
+        | Pure(prg) ->  (* print_string "Call stack machine with code : "; print_newline (); debug prg ;*)
         				let a = StackMachine.init_and_compute (transform_env env prg) in
                         (* print_string "Machine returns sucessfully"; print_newline (); *)
                         Env.Int(a),false
@@ -314,7 +314,7 @@ module Interpreteur:InterpreteurSig = struct
         in lbl [] prg
 
     let execute_mixte = function
-        prg -> debug (label_pure_code prg); print_newline ();
+        prg -> (*debug (label_pure_code prg); print_newline ();*)
                 execute (label_pure_code prg)
 
 end

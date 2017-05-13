@@ -1,0 +1,11 @@
+let x = ref 1 in
+let sx = ref 1 in
+let rec fiboIntelligent n =
+	if 0 then 0
+	else (
+		let z = !sx in
+		sx := !sx + !x;
+		x := z;
+		prInt !sx; fiboIntelligent (n)
+	) in
+	fiboIntelligent 10;;

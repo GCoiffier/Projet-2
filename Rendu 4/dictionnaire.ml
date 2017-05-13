@@ -14,6 +14,11 @@ end
 module Dictionnaire : Dictsig = struct
   (* Le dictionnaire est implémenté à l'aide d'une table de hachage *)
 
+  let rec appartient k acc = match acc with (* suppression des doublons pour limiter la taille de to_list *)
+  	|[] -> false 
+  	|(k_,v_)::q when k_ = k -> true
+  	|t::q -> appartient k q
+
   type ('a, 'b) t = ('a, 'b) Hashtbl.t
 
   let create n = Hashtbl.create n
@@ -21,6 +26,6 @@ module Dictionnaire : Dictsig = struct
   let remove = Hashtbl.remove
   let find = Hashtbl.find
   let copy = Hashtbl.copy
-  let to_list = fun h -> Hashtbl.fold (fun k v acc -> (k, v)::acc) h []
+  let to_list = fun h -> Hashtbl.fold (fun k v acc -> if appartient k acc then acc else (k, v)::acc) h []
 
 end
