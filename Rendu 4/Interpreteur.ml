@@ -102,9 +102,9 @@ module Interpreteur:InterpreteurSig = struct
 
 		  Pure(Const(n)) -> Env.Int(n),false
 		| Pure(Var(x))   -> (Env.find env (Var(x))),false
-        | Pure(prg) ->  print_string "Call stack machine with code : "; print_newline (); debug prg ; print_newline ();
+        | Pure(prg) ->  (* print_string "Call stack machine with code : "; print_newline (); debug prg ; print_newline (); *)
         				let a = StackMachine.init_and_compute (transform_env env prg) in
-                        print_string "Machine returns sucessfully"; print_newline ();
+                        (* print_string "Machine returns sucessfully"; print_newline (); *)
                         Env.Int(a),false
         (* Ces trois cas n'arrivent que si l'on appelle l'interprétation mixte *)
 
@@ -264,10 +264,15 @@ module Interpreteur:InterpreteurSig = struct
                                         if (is_pure rx)&&(is_pure px) then Pure(lt)
                                         else Let(x,rx,px)
 
-            | LetRec(f,expr_f,p) as ltrec ->  let rf = lbl (f::l) expr_f  in
-                                        let px = lbl (if (is_pure rf) then (f::l) else l) p in
-                                        if (is_pure rf)&&(is_pure px) then Pure(ltrec)
-                                        else LetRec(f,rf,px)
+            | LetRec(f,expr_f,p) as ltrec ->  let rf = lbl (f::l) expr_f in
+                                                if (is_pure rf) then
+                                                    let px = lbl (f::l) p in
+                                                    if (is_pure px) then Pure(ltrec)
+                                                    else LetRec(f,rf,px)
+                                                else let rf = lbl l expr_f in
+                                                    let px = lbl l p in
+                                                    if (is_pure px) then Pure(ltrec)
+                                                    else LetRec(f,rf,px)
 
             | IfThenElse(b,p1,p2) as ite -> let rb = lbl l b and
                                          rp1 = lbl l p1 and
@@ -310,6 +315,6 @@ module Interpreteur:InterpreteurSig = struct
 
     let execute_mixte = function
         prg -> debug (label_pure_code prg); print_newline ();
-               execute (label_pure_code prg);
+                execute (label_pure_code prg)
 
 end
