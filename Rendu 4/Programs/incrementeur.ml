@@ -1,3 +1,3 @@
-let rec add n= if (!n)<20 then (n := !n + 1; prInt !n; add n) else 0 in
-	let x = ref 0 in add x;;
-
+let n = ref 0 in
+let rec add u = if !n<20 then (n := !n + 1; prInt !n; add u) else 0 in
+	add 0;;

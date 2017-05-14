@@ -30,13 +30,13 @@ Coiffier Guillaume - Valque Léo
 
 - Exemples :
     - `./fouine`
-    - `./fouine Programs/factorielle.fouine`
-    - `./fouine -debug Programs/function.fouine`
+    - `./fouine Programs/factorielle.ml`
+    - `./fouine -debug Programs/function.ml`
     - `./fouine -interm`
-    - `./fouine -interm toto.code Programs/prog1.fouine`
+    - `./fouine -interm toto.code Programs/prog1.ml`
     - `./fouine -execute toto.code`
-    - `./fouine -machine Programs/prog2.fouine`
-    - `./fouine -debug Programs/function.fouine`
+    - `./fouine -machine Programs/prog2.ml`
+    - `./fouine -debug Programs/function.ml`
 
 # Avancement du projet
 
@@ -102,7 +102,7 @@ Coiffier Guillaume - Valque Léo
 
 #bug reperé mais non corrigés
 la traduction d'environnement suppose qu'une fonction est récursive du coup quelquechose défini par
-let f x = x in let f x = f x in f 2 ne s'executera pas correctement, il bouclera au lieu de renvoyer 2 
+let f x = x in let f x = f x in f 2 ne s'executera pas correctement, il bouclera au lieu de renvoyer 2
 
 # L'interprétation
 L'interprétation est réalisée dans la fonction execute du fichier interpreteur.ml . Cette fonction prend en argument un programme fouine parsé (de type programme) et renvoie un entier. On utilise une fonction récursive auxiliaire qui associe une valeur de type 'ret' au programme. Ensuite, on appelle la petite fonction return qui renvoie un int à partir de ce ret.
