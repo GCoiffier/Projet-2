@@ -86,7 +86,8 @@ expr:
   | fun_def                                       { $1 }
 
  /* exceptions */
-  | TRY expr WITH EXCEPT variable IMPLIES expr    { TryWith($2,$5,$7) }
+  | TRY expr WITH LPAREN EXCEPT variable IMPLIES expr RPAREN    
+  												  { TryWith($2,$6,$8) }
   | RAISE EXCEPT sexpr                            { Raise($3) }
 
  /* reference */

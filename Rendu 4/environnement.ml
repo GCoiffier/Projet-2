@@ -34,6 +34,9 @@ let transform_env env prg=
 	let rec aux env prg= match env with
 		|[] -> prg
 		|(Var(v), Env.Int(x))::q -> Let(Var(v), Const(x), aux q prg)
-		|(Var(f), Env.Cloture(Pure(c),envf))::q -> LetRec(Var(f), c, aux q prg)
+		|(Var(f), Env.Cloture(Pure(c),envf))::q -> let Env.Cloture(Pure(c_),_)= Env.find envf (Var(f)) in
+				if c = c_
+				then (print_string "ici\n"; LetRec(Var(f), c, aux q prg) )
+				else Let(Var(f), c, aux q prg)
 		|_::q -> aux q prg in
 	aux (Env.to_list (Env.copy env)) prg

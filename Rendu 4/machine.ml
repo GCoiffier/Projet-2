@@ -63,7 +63,7 @@ module StackMachine : StackMachineSig = struct
 
 
 	let rec find_bruijn x env = match env with (* transform l'accès à une valeur dans l'environnement par un entier *)
-		|[] -> failwith "Error in Bruijn : variable not found"
+		|[] -> print_string x; print_newline(); failwith "Error in Bruijn : variable not found"
 		|t::q when t=x -> 0
 		|t::q -> 1 + (find_bruijn x q)
 
@@ -257,7 +257,8 @@ module StackMachine : StackMachineSig = struct
 		done;
 		match !mach with
 		 | Mach([],_,VAL(t)::[]) -> t
-		 | _ 					 -> failwith "execution failed : end value not an int or too much end values"
+		 | Mach([],_,t::[]) 	 -> failwith "execution failed : end value not an int"
+		 | _ 					 -> failwith "execution failed : too much end values"
 
 
 	let init_and_compute prg=
@@ -268,7 +269,8 @@ module StackMachine : StackMachineSig = struct
 		done;
 		match !mach with
 		 | Mach([],_,VAL(t)::[]) -> t
-		 | _ 					 -> failwith "execution failed : end value not an int or too much end values"
+		 | Mach([],_,t::[]) 	 -> failwith "execution failed : end value not an int"
+		 | _ 					 -> failwith "execution failed : too much end values"
 
 
 	let init_and_display prg =

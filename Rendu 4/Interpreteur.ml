@@ -102,7 +102,10 @@ module Interpreteur:InterpreteurSig = struct
 
 		  Pure(Const(n)) -> Env.Int(n),false
 		| Pure(Var(x))   -> (Env.find env (Var(x))),false
+		| Pure(Function_def(var,expr)) -> let f = Function_def(var,expr) in (* la machine devrai renvoyer une fonction et *)
+						 				  Env.Cloture(f, Env.copy env),false (* planterai *)
         | Pure(prg) ->  (* print_string "Call stack machine with code : "; print_newline (); debug prg ; print_newline (); *)
+        				let b = debug (transform_env env prg) in print_newline ();
         				let a = StackMachine.init_and_compute (transform_env env prg) in
                         (* print_string "Machine returns sucessfully"; print_newline (); print_newline (); *)
                         Env.Int(a),false
@@ -303,7 +306,10 @@ module Interpreteur:InterpreteurSig = struct
             | Raise(expr) -> Raise(lbl l expr)
 
             (* aspects impératifs et références *)
-            | Imp(p1,p2) -> Imp(lbl l p1, lbl l p2)
+            | Imp(p1,p2) as imp -> let ra = lbl l p1 in let rb = lbl l p2 in
+            				if (is_pure ra)&&(is_pure rb)
+            				then Pure(imp)
+            				else Imp(ra,rb)
             | Ref(x) -> Ref(lbl l x)
             | Bang(x) -> Bang(lbl l x)
             | Assign(x,p) -> Assign(lbl l x, lbl l p)
@@ -315,7 +321,7 @@ module Interpreteur:InterpreteurSig = struct
         in lbl [] prg
 
     let execute_mixte = function
-        prg -> (*debug (label_pure_code prg); print_newline ();*)
+        prg -> debug (label_pure_code prg); print_newline ();
                 execute (label_pure_code prg)
 
 end
