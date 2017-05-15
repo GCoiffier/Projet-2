@@ -10,15 +10,19 @@
 \BOOKMARK [2][-]{subsection.3.2}{Organisation du projet}{section.3}% 10
 \BOOKMARK [2][-]{subsection.3.3}{Avancement du projet en fonction du temps}{section.3}% 11
 \BOOKMARK [0][-]{part.2}{II Le projet}{}% 12
-\BOOKMARK [1][-]{subsection.3.4}{Liste des fichiers}{part.2}% 13
-\BOOKMARK [2][-]{subsection.3.5}{Liste des programmes fouine donn\351s en exemple}{subsection.3.4}% 14
-\BOOKMARK [2][-]{subsection.3.6}{Bugs rep\351r\351s mais non corrig\351s}{subsection.3.4}% 15
-\BOOKMARK [1][-]{section.4}{L'interpr\351teur fouine}{part.2}% 16
-\BOOKMARK [2][-]{subsection.4.1}{Notre langage fouine}{section.4}% 17
-\BOOKMARK [2][-]{subsection.4.2}{Structures de donn\351es}{section.4}% 18
-\BOOKMARK [2][-]{subsection.4.3}{Les exceptions}{section.4}% 19
-\BOOKMARK [2][-]{subsection.4.4}{Aspects imp\351ratifs et tableaux}{section.4}% 20
-\BOOKMARK [1][-]{section.5}{La machine \340 pile SECD}{part.2}% 21
-\BOOKMARK [2][-]{subsection.5.1}{Pr\351sentation}{section.5}% 22
-\BOOKMARK [2][-]{subsection.5.2}{Impl\351mentation}{section.5}% 23
-\BOOKMARK [1][-]{section.6}{Interface et interpr\351tation mixte}{part.2}% 24
+\BOOKMARK [1][-]{section.4}{Organisation du code}{part.2}% 13
+\BOOKMARK [2][-]{subsection.4.1}{Liste des fichiers}{section.4}% 14
+\BOOKMARK [2][-]{subsection.4.2}{Liste des programmes fouine donn\351s en exemple}{section.4}% 15
+\BOOKMARK [2][-]{subsection.4.3}{Bugs rep\351r\351s mais non corrig\351s}{section.4}% 16
+\BOOKMARK [1][-]{section.5}{L'interpr\351teur fouine}{part.2}% 17
+\BOOKMARK [2][-]{subsection.5.1}{L'interpr\351tation}{section.5}% 18
+\BOOKMARK [2][-]{subsection.5.2}{Structures de donn\351es}{section.5}% 19
+\BOOKMARK [2][-]{subsection.5.3}{Fonctions et fonctions r\351cursives}{section.5}% 20
+\BOOKMARK [2][-]{subsection.5.4}{Les exceptions}{section.5}% 21
+\BOOKMARK [2][-]{subsection.5.5}{Aspects imp\351ratifs et tableaux}{section.5}% 22
+\BOOKMARK [1][-]{section.6}{La machine \340 pile SECD}{part.2}% 23
+\BOOKMARK [2][-]{subsection.6.1}{Pr\351sentation}{section.6}% 24
+\BOOKMARK [2][-]{subsection.6.2}{Impl\351mentation}{section.6}% 25
+\BOOKMARK [1][-]{section.7}{Interface et interpr\351tation mixte}{part.2}% 26
+\BOOKMARK [2][-]{subsection.7.1}{Puret\351 du code}{section.7}% 27
+\BOOKMARK [2][-]{subsection.7.2}{Interpr\351tation mixte}{section.7}% 28

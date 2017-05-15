@@ -1,53 +1,56 @@
 This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: rapport.aux
+A level-1 auxiliary file: part1.aux
+A level-1 auxiliary file: part2.aux
 The style file: plain.bst
 Database file #1: biblio.bib
-I was expecting a `,' or a `}'---line 17 of file biblio.bib
+I was expecting a `,' or a `}'---line 29 of file biblio.bib
  : 
  : @Proceedings{allProjInt16,
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
-Warning--empty publisher in 700
-You've used 3 entries,
+Warning--I didn't find a database entry for "700"
+Warning--to sort, need author or key in WikiFouine
+You've used 4 entries,
             2118 wiz_defined-function locations,
-            515 strings with 4230 characters,
-and the built_in function-call counts, 824 in all, are:
-= -- 80
-> -- 23
-< -- 4
-+ -- 10
+            524 strings with 4394 characters,
+and the built_in function-call counts, 1051 in all, are:
+= -- 107
+> -- 24
+< -- 3
++ -- 11
 - -- 6
-* -- 50
-:= -- 134
-add.period$ -- 9
-call.type$ -- 3
-change.case$ -- 10
+* -- 64
+:= -- 161
+add.period$ -- 11
+call.type$ -- 4
+change.case$ -- 14
 chr.to.int$ -- 0
-cite$ -- 4
-duplicate$ -- 40
-empty$ -- 70
+cite$ -- 5
+duplicate$ -- 46
+empty$ -- 98
 format.name$ -- 7
-if$ -- 175
+if$ -- 228
 int.to.chr$ -- 0
-int.to.str$ -- 3
-missing$ -- 3
-newline$ -- 17
+int.to.str$ -- 4
+missing$ -- 2
+newline$ -- 21
 num.names$ -- 8
-pop$ -- 15
+pop$ -- 20
 preamble$ -- 1
-purify$ -- 9
+purify$ -- 11
 quote$ -- 0
-skip$ -- 32
+skip$ -- 38
 stack$ -- 0
-substring$ -- 40
+substring$ -- 70
 swap$ -- 13
-text.length$ -- 3
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 9
+type$ -- 15
 warning$ -- 1
-while$ -- 9
-width$ -- 4
-write$ -- 32
+while$ -- 11
+width$ -- 5
+write$ -- 40
 (There was 1 error message)

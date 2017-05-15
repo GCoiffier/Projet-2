@@ -1,67 +1,3 @@
-\documentclass{article}
-
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage[frenchb]{babel}
-\usepackage{fullpage}
-\usepackage{graphicx}
-%\usepackage{layout}
-%\usepackage{geometry}
-%\usepackage{setspace}
-%\usepackage{soul}
-%\usepackage{ulem}
-%\usepackage{eurosym}
-%\usepackage{bookman}
-%\usepackage{charter}
-%\usepackage{newcent}
-%\usepackage{lmodern}
-%\usepackage{mathpazo}
-%\usepackage{mathptmx}
-\usepackage{url}
-%\usepackage{verbatim}
-%\usepackage{moreverb}
-%\usepackage{listings}
-%\usepackage{fancyhdr}
-%\usepackage{wrapfig}
-\usepackage{color}
-%\usepackage{colortbl}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsfonts}
-%\usepackage{mathrsfs}
-%\usepackage{makeidx}
-%\usepackage{parskip}
-\usepackage{titlesec}
-\usepackage{hyperref}
-
-% pour compiler: 
-
-% faire    pdflatex ex-rapport
-% (si les references aux numeros de parties apparaissent comme des
-% "?", recompiler une fois)
-
-% la compilation de la bibliographie est davantage une "incantation":
-% faire     bibtex ex-biblio
-% puis      pdflatex ex-rapport (un nombre premier de fois)
-
-
-\title{ \Huge{Rapport Projet 2} \\ Où l'on parle de rongeurs}
-\author{Guillaume Coiffier - Léo Valque}
-\date{2017}
-
-\titleformat{\part}[display]
-  {\normalfont \huge \bfseries \centering}
-  {\partname \thepart}{20pt}{\Huge}
-
-\newcommand{\non}[1]{\overline{#1}}
-
-\begin{document}
-
-\renewcommand{\labelitemi}{$\bullet$}
-\maketitle
-\tableofcontents
-\newpage
-
 \part{Généralités}
 
 \section*{Remarques générales}
@@ -139,7 +75,15 @@ Le langage fouine est un langage de programmation constituant un sous-ensemble d
  \item Les fonctions récursives (syntaxe \texttt{let rec ... = ... in ...})
 \end{itemize}
 
+Mais, à la différence d'Ocaml, il ne comprend pas :
+\begin{itemize}
+ \item De typage : toutes les fonctions prennent en argument des entiers, et renvoient des entiers
+ \item De structures de données telles que les listes
+ \item De filtrage par motif
+ \item La couche orientée objet
+\end{itemize}
 
+Cependant, nous verrons que fouine peut être étendu avec certaines fonctionnalités, notamment un système de gestion d'exceptions et des références.\\
 Ce langage ne figure cependant pas dans la liste des 700 langages de programmation proposée par Peter J. Landin \cite{700}.
 
 \section{Organisation du rapport et du projet}
@@ -185,7 +129,7 @@ Enfin, la dernière partie sera consacrée à l'exécution mixte fouine/SECD d'u
 
 \subsubsection*{Rendu 3}
 \begin{itemize}
- \item Semaine 4 
+ \item \textbf{Semaine 4 }
     \begin{itemize}
       \item Correction des exceptions (on utilise plus \texttt{try ... with} de Caml)
       \item Implémentation des tableaux
@@ -193,7 +137,7 @@ Enfin, la dernière partie sera consacrée à l'exécution mixte fouine/SECD d'u
       \item Exécution des expressions arithmétiques sur une machine à pile
     \end{itemize}
   
-  \item Semaines 5 et 6
+  \item \textbf{Semaines 5 et 6}
     \begin{itemize}
       \item Corrections de bugs du retour du rendu 2 (réferences, ordre d'execution des fonctions, exceptions)
       \item Travail sur le main. Le programme peut désormais lire l'entrée standard dans le cas où on ne donne pas de fichier en argument
@@ -205,74 +149,22 @@ Enfin, la dernière partie sera consacrée à l'exécution mixte fouine/SECD d'u
 
 \subsubsection*{Rendu 4}
 \begin{itemize}
-  \item Semaine 6 
+  \item \textbf{Semaine 6 }
     \begin{itemize}
       \item Ajout d'un lexer, parser pour les instructions de la machine à pile, on peut desormais compiler puis executez plus tard
       \item Ajout des fonctions dans la machine à pile
     \end{itemize}
     
-   \item Semaine 7 
+   \item \textbf{Semaine 7 }
     \begin{itemize}
    \item Ajout des fonctions recursives dans la machine à pile
    \item Implémentation des indices de bruijn dans la machine à pile
    \item Ajout de l'interpréteur mixte qui envoie sur la machine quand il peut et sinon éxecute normalement
     \end{itemize} 
     
-    \item Semaine 8 
+    \item \textbf{Semaine 8} 
     \begin{itemize}
     \item Correction de bugs sur l'interprétation mixte. Implémentation du transfert d'environnement entre fouine et SECD
     \item Rédaction du présent rapport.
    \end{itemize}
 \end{itemize}
-
-
-
-\newpage
-\part{Le projet}
-
-\section*{Organisation du code}
-
-\subsection{Liste des fichiers}
-
-\subsection{Liste des programmes fouine donnés en exemple}
-
-\subsection{Bugs repérés mais non corrigés}
-
-
-
-
-
-
-
-\section{L'interpréteur fouine} % section à remplir par Guillaume
-
-\subsection{Notre langage fouine}
-
-\subsection{Structures de données}
-
-\subsection{Les exceptions}
-
-\subsection{Aspects impératifs et tableaux}
-
-
-
-
-
-\section{La machine à pile SECD} % section à remplir par Léo
-
-\subsection{Présentation}
-
-\subsection{Implémentation}
-
-
-\section{Interface et interprétation mixte}
-
-\section*{Conclusion}
-
-On constate que blibla.
-
-\nocite{*}
-\bibliographystyle{plain}
-\bibliography{biblio}
-
-\end{document}
