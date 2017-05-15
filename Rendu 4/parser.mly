@@ -24,6 +24,7 @@ open Fouine_type
 %token AMAKE, LARROW
 
 /* priorités et associativité */
+%nonassoc TRY
 %left LET, IN
 %left EINSTR
 %left IF, THEN, ELSE
@@ -86,8 +87,8 @@ expr:
   | fun_def                                       { $1 }
 
  /* exceptions */
-  | TRY expr WITH LPAREN EXCEPT variable IMPLIES expr RPAREN    
-  												  { TryWith($2,$6,$8) }
+  | TRY expr WITH EXCEPT variable IMPLIES expr
+  												  { TryWith($2,$5,$7) }
   | RAISE EXCEPT sexpr                            { Raise($3) }
 
  /* reference */

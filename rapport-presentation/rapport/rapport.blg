@@ -10,11 +10,10 @@ I was expecting a `,' or a `}'---line 29 of file biblio.bib
  : @Proceedings{allProjInt16,
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
-Warning--I didn't find a database entry for "700"
 Warning--to sort, need author or key in WikiFouine
 You've used 4 entries,
             2118 wiz_defined-function locations,
-            524 strings with 4394 characters,
+            523 strings with 4391 characters,
 and the built_in function-call counts, 1051 in all, are:
 = -- 107
 > -- 24
