@@ -100,18 +100,20 @@ module Interpreteur:InterpreteurSig = struct
     let execute : programme -> int = function prg ->
         let rec exec_aux env  = function
 
+        (* Cas de l'interprétation mixte. *)
 		  Pure(Const(n)) -> Env.Int(n),false
 		| Pure(Var(x))   -> (Env.find env (Var(x))),false
 		| Pure(Function_def(var,expr))-> let f = Function_def(var,expr) in Env.Cloture(Pure(f), Env.copy env),false
             (* appeler la machine à pile là dessus ferai qu'elle devrait renvoyer une fonction, or elle ne peut pas *)
 
-        | Pure(prg) ->  (* print_string "Call stack machine with code : "; print_newline (); debug (transform_env env prg) ; print_newline (); *)
+        | Pure(prg) ->  (*** Décommenter ce qui suit pour voir les appels à la machine ***)
+                        (* print_string "Call stack machine with code : "; print_newline (); debug (transform_env env prg) ; print_newline (); *)
         				let a = StackMachine.init_and_compute (transform_env env prg) in
                         (* print_string "Machine returns sucessfully"; print_newline (); print_newline (); *)
                         Env.Int(a),false
-        (* Ces quatre cas n'arrivent que si l'on appelle l'interprétation mixte.
-            Décommenter pour voir les appels à la machine *)
 
+
+        (* Autres cas *)
         | Unit -> Env.Int(0),false
 
         | Const(n) -> Env.Int(n),false
@@ -198,7 +200,7 @@ module Interpreteur:InterpreteurSig = struct
 
         | Raise(expr) -> (fst (exec_aux env expr)),true
 
-        (* aspects impératifs et références *)
+        (* Aspects impératifs et références *)
         | Imp(p1,p2) -> let u,b = exec_aux env p1 in
                             (* test pour vérifier que l'on a pas de raise dans p1, auquel cas il ne faut PAS executer p2 *)
                             if b then u,b else
@@ -220,7 +222,7 @@ module Interpreteur:InterpreteurSig = struct
                                 Env.Ref(r) -> r := (return u)
                                 | _ -> failwith "Error : Not a reference");
                             u,false end
-        (* tableaux  *)
+        (* Tableaux  *)
         | AMake(x) -> let n,b = (exec_aux env x) in
                             if b then n,b else (Env.Array (Array.make (return n) 0)),false
 
@@ -246,7 +248,7 @@ module Interpreteur:InterpreteurSig = struct
         in let v,b =  (exec_aux (Env.create 10) prg) in
             if b then failwith "Error : exception not caught" else return v
 
-(* ------ exécution mixte interpréteur/machine à pile ------ *)
+(* ------ Exécution mixte interpréteur/machine à pile ------ *)
 
     let is_pure = function
         | Pure(_) -> true

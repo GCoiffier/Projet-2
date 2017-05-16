@@ -45,6 +45,8 @@
   \end{description}
 \end{frame}
 
+\section{Interprétation mixte}
+
 \begin{frame}
 \frametitle{Interprétation mixte}
   Les fonctions et fonctions récursives sont pures. \pause
@@ -59,38 +61,40 @@
 \section{La machine à pile SECD}
 
 \begin{frame}
-\frametitle{indices de bruijn}
+\frametitle{Indices de Bruijn}
   \begin{itemize}
     \item Dans la machine, on veut accèder aux élements par leurs position et non pas par leur nom \pause
-    \item lorsqu'on compile le code, on stocke le nom des variables défini dans une pile \pause
-    \item lorsqu'on compile l'access à un élement, on regarde quel est la position actuel de cette élement dans la pile. on remplace le nom par la valeur de cette position \pause
-    \item let x = 2 in ( let y = 3 in x+y) + x devient \\
-    let 2 in (let 3 in access(1)+access(0) ) + access(0)
+    \item Lorsqu'on compile le code, on stocke le nom des variables défini dans une pile \pause
+    \item Lorsqu'on compile l'access à un élement, on regarde quel est la position actuel de cette élement dans la pile. on remplace le nom par la valeur de cette position \pause
+    \item \texttt{let x = 2 in ( let y = 3 in x+y) + x} \\ devient : \\
+    \texttt{let 2 in (let 3 in access(1)+access(0) ) + access(0)}
+   \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{conversion d'environnement}
-  \begin{itemize]
-    \item Objectif : Traduire l'environnement de l'interpreteur vers l'environnement de la machine. \pause
-    \item Problème : Elle sont très différentes. \pause
-    \item dans l'interpreteur, c'est une table de hachage avec pour clés des strings. \pause
-    \item dans la machine, c'est une simple liste avec pour "clé" des entiers (indices de bruijn). \pause 
+\frametitle{Conversion d'environnement}
+  \begin{itemize}
+    \item \textbf{Objectif :} Traduire l'environnement de l'interpreteur vers l'environnement de la machine. \pause
+    \item \textbf{Problème :} Ils sont très différents. \pause
+  \end{itemize}
+  Dans l'interpreteur, c'est une table de hachage avec pour clés des strings. \pause \\ ~ \\
+  Dans la machine, c'est une simple liste avec pour "clé" des entiers (indices de bruijn).
+
 \end{frame}
 
 \begin{frame}
-\frametitle{conversion d'environnement}
-  \item On transmet pas directement l'environnement. \pause
+\frametitle{Conversion d'environnement}
+  $\implies$ On transmet pas directement l'environnement. \pause
+  \begin{itemize}
   \item On transforme l'environnement de l'interpreteur en programme avec des let in qui met devant le code envoyer à la machine \pause
   \item La machine reçoit donc de l'environnement par ce biais \pause
-  \item Problème :  c'est lent, la traduction de l'environnement est en O(n) où n est la taille de l'environnement
+  \item \textbf{Problème} :  c'est lent, la traduction de l'environnement est en O(n) où n est la taille de l'environnement
+  \end{itemize}
 \end{frame}
 
-\section*{Conclusion}
-\begin{frame}{Conclusion}
-C'était bien.
-\end{frame}
 
-\begin{frame}{Conclusion}
+\begin{frame}
+\frametitle{Conclusion}
  \centering
  \Large Merci pour votre attention ! \\ ~ \\
  \includegraphics[width = 0.8\textwidth]{fouine_hiver.jpg}

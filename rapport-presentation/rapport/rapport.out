@@ -15,7 +15,9 @@
 \BOOKMARK [2][-]{subsection.5.3}{Fonctions et fonctions r\351cursives}{section.5}% 15
 \BOOKMARK [2][-]{subsection.5.4}{Les exceptions}{section.5}% 16
 \BOOKMARK [2][-]{subsection.5.5}{Aspects imp\351ratifs et tableaux}{section.5}% 17
-\BOOKMARK [1][-]{section.6}{La machine \340 pile SECD}{part.2}% 18
-\BOOKMARK [1][-]{section.7}{Interface et interpr\351tation mixte}{part.2}% 19
-\BOOKMARK [2][-]{subsection.7.1}{Puret\351 du code}{section.7}% 20
-\BOOKMARK [2][-]{subsection.7.2}{Interpr\351tation mixte}{section.7}% 21
+\BOOKMARK [2][-]{subsection.5.6}{Autres petites am\351liorations}{section.5}% 18
+\BOOKMARK [1][-]{section.6}{La machine \340 pile SECD}{part.2}% 19
+\BOOKMARK [1][-]{section.7}{Interface et interpr\351tation mixte}{part.2}% 20
+\BOOKMARK [2][-]{subsection.7.1}{Puret\351 du code}{section.7}% 21
+\BOOKMARK [2][-]{subsection.7.2}{Interpr\351tation mixte}{section.7}% 22
+\BOOKMARK [1][-]{section.8}{Performances}{part.2}% 23

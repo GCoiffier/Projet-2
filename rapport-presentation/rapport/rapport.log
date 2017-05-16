@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.10.16)  16 MAY 2017 11:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.10.16)  16 MAY 2017 18:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -614,39 +614,72 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip55
 )
-(./rapport.aux (./part1.aux) (./part2.aux))
+(/usr/share/texlive/texmf-dist/tex/latex/subfig/subfig.sty
+Package: subfig 2005/06/28 ver: 1.3 subfig package
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2016/02/04 v1.7-139 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 67.
+\captionmargin=\dimen126
+\captionmargin@=\dimen127
+\captionwidth=\dimen128
+\caption@tempdima=\dimen129
+\caption@indent=\dimen130
+\caption@parindent=\dimen131
+\caption@hangindent=\dimen132
+)
+\c@ContinuedFloat=\count114
+Package caption Info: hyperref package is loaded.
+)
+\c@KVtest=\count115
+\sf@farskip=\skip56
+\sf@captopadj=\dimen133
+\sf@capskip=\skip57
+\sf@nearskip=\skip58
+\c@subfigure=\count116
+\c@subfigure@save=\count117
+\c@lofdepth=\count118
+\c@subtable=\count119
+\c@subtable@save=\count120
+\c@lotdepth=\count121
+\sf@top=\skip59
+\sf@bottom=\skip60
+) (./rapport.aux (./part1.aux) (./part2.aux))
 \openout1 = `rapport.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 58.
-LaTeX Font Info:    ... okay on input line 58.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 58.
-LaTeX Font Info:    ... okay on input line 58.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 58.
-LaTeX Font Info:    ... okay on input line 58.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 58.
-LaTeX Font Info:    ... okay on input line 58.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 58.
-LaTeX Font Info:    ... okay on input line 58.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 58.
-LaTeX Font Info:    ... okay on input line 58.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 58.
-LaTeX Font Info:    ... okay on input line 58.
-LaTeX Info: Redefining \degres on input line 58.
-LaTeX Info: Redefining \dots on input line 58.
-LaTeX Info: Redefining \up on input line 58.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Info: Redefining \degres on input line 49.
+LaTeX Info: Redefining \dots on input line 49.
+LaTeX Info: Redefining \up on input line 49.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count114
-\scratchdimen=\dimen126
+\scratchcounter=\count122
+\scratchdimen=\dimen134
 \scratchbox=\box29
-\nofMPsegments=\count115
-\nofMParguments=\count116
+\nofMPsegments=\count123
+\nofMParguments=\count124
 \everyMPshowfont=\toks24
-\MPscratchCnt=\count117
-\MPscratchDim=\dimen127
-\MPnumerator=\count118
-\makeMPintoPDFobject=\count119
+\MPscratchCnt=\count125
+\MPscratchDim=\dimen135
+\MPnumerator=\count126
+\makeMPintoPDFobject=\count127
 \everyMPtoPDFconversion=\toks25
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
@@ -664,7 +697,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \AtBeginShipoutBox=\box30
-Package hyperref Info: Link coloring OFF on input line 58.
+Package hyperref Info: Link coloring OFF on input line 49.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -672,22 +705,25 @@ Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count120
+\c@section@level=\count128
 )
-LaTeX Info: Redefining \ref on input line 58.
-LaTeX Info: Redefining \pageref on input line 58.
-LaTeX Info: Redefining \nameref on input line 58.
+LaTeX Info: Redefining \ref on input line 49.
+LaTeX Info: Redefining \pageref on input line 49.
+LaTeX Info: Redefining \nameref on input line 49.
 
 (./rapport.out) (./rapport.out)
 \@outlinefile=\write3
 \openout3 = `rapport.out'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 63.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: subfig package v1.3 is loaded.
+Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Try loading font information for U+msa on input line 54.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 63.
+LaTeX Font Info:    Try loading font information for U+msb on input line 54.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -713,7 +749,7 @@ File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 ) [2
 
 ]
-<fouine_hiver.jpg, id=133, 240.9pt x 160.49962pt>
+<fouine_hiver.jpg, id=143, 240.9pt x 160.49962pt>
 File: fouine_hiver.jpg Graphic file (type jpg)
  <use fouine_hiver.jpg>
 Package pdftex.def Info: fouine_hiver.jpg used on input line 50.
@@ -734,28 +770,59 @@ Underfull \hbox (badness 10000) in paragraph at lines 54--55
  (./part2.tex [5
 
 
-] [6] [7]) [8] (./rapport.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 74.
+] [6] [7] [8]
+Underfull \hbox (badness 10000) in paragraph at lines 131--132
 
-[9
+ []
+
+<fouine1.jpeg, id=199, 197.73875pt x 256.96pt>
+File: fouine1.jpeg Graphic file (type jpg)
+ <use fouine1.jpeg>
+Package pdftex.def Info: fouine1.jpeg used on input line 136.
+(pdftex.def)             Requested size: 142.26378pt x 184.87383pt.
+
+<fouine2.jpg, id=200, 188.705pt x 198.7425pt>
+File: fouine2.jpg Graphic file (type jpg)
+ <use fouine2.jpg>
+Package pdftex.def Info: fouine2.jpg used on input line 138.
+(pdftex.def)             Requested size: 142.26378pt x 149.8298pt.
+
+<fouine3.jpeg, id=201, 194.7275pt x 259.97125pt>
+File: fouine3.jpeg Graphic file (type jpg)
+ <use fouine3.jpeg>
+Package pdftex.def Info: fouine3.jpeg used on input line 139.
+(pdftex.def)             Requested size: 142.26378pt x 189.9361pt.
+
+<chat.jpeg, id=202, 602.25pt x 893.3375pt>
+File: chat.jpeg Graphic file (type jpg)
+ <use chat.jpeg>
+Package pdftex.def Info: chat.jpeg used on input line 141.
+(pdftex.def)             Requested size: 142.26378pt x 211.02483pt.
+) [9 <./fouine1.jpeg> <./fouine2.jpg> <./fouine3.jpeg> <./chat.jpeg>] (./rappor
+t.bbl) (./rapport.lof)
+\tf@lof=\write5
+\openout5 = `rapport.lof'.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 65.
+ [10
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 74.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 65.
  (./rapport.aux (./part1.aux) (./part2.aux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 74.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 74.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 65.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 65.
 Package rerunfilecheck Info: File `rapport.out' has not changed.
-(rerunfilecheck)             Checksum: DF306C68AC3D04726CADDC002ECF3FE0;1464.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 74.
+(rerunfilecheck)             Checksum: 2E4D700B10471B18B510D15C8C171B9A;1599.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 65.
  ) 
 Here is how much of TeX's memory you used:
- 8182 strings out of 493029
- 114803 string characters out of 6136233
- 211316 words of memory out of 5000000
- 11514 multiletter control sequences out of 15000+600000
- 23205 words of font info for 58 fonts, out of 8000000 for 9000
+ 9392 strings out of 493029
+ 136427 string characters out of 6136233
+ 235409 words of memory out of 5000000
+ 12693 multiletter control sequences out of 15000+600000
+ 23969 words of font info for 59 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 29i,6n,33p,840b,482s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 44i,10n,51p,840b,482s stack positions out of 5000i,500n,10000p,200000b,80000s
 pdfTeX warning (dest): name{cite.DBLP\\penalty\040\\@M\040\040:journals/cacm/
 Landin66} has been referenced but does not exist, replaced by a fixed one
 
@@ -765,17 +832,18 @@ pe1/public/cm-super/sfbx1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/
 sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></usr/s
 hare/texmf/fonts/type1/public/cm-super/sfbx2074.pfb></usr/share/texmf/fonts/typ
 e1/public/cm-super/sfbx2488.pfb></usr/share/texmf/fonts/type1/public/cm-super/s
-fcc1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/sh
-are/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type
-1/public/cm-super/sfrm2488.pfb></usr/share/texmf/fonts/type1/public/cm-super/sf
-ss1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfsx1000.pfb></usr/sha
-re/texmf/fonts/type1/public/cm-super/sfsx1200.pfb></usr/share/texmf/fonts/type1
-/public/cm-super/sfsx1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sft
-i1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on rapport.pdf (9 pages, 313213 bytes).
+fcc1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0800.pfb></usr/sh
+are/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf/fonts/type
+1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sf
+rm2488.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfss1000.pfb></usr/sha
+re/texmf/fonts/type1/public/cm-super/sfsx1000.pfb></usr/share/texmf/fonts/type1
+/public/cm-super/sfsx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfs
+x1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1000.pfb></usr/shar
+e/texmf/fonts/type1/public/cm-super/sftt1000.pfb>
+Output written on rapport.pdf (10 pages, 452699 bytes).
 PDF statistics:
- 267 PDF objects out of 1000 (max. 8388607)
- 236 compressed objects within 3 object streams
- 60 named destinations out of 1000 (max. 500000)
- 174 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 302 PDF objects out of 1000 (max. 8388607)
+ 265 compressed objects within 3 object streams
+ 72 named destinations out of 1000 (max. 500000)
+ 210 words of extra memory for PDF output out of 10000 (max. 10000000)
 
