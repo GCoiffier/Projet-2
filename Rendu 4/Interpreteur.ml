@@ -105,7 +105,7 @@ module Interpreteur:InterpreteurSig = struct
 		| Pure(Function_def(var,expr)) -> let f = Function_def(var,expr) in (* la machine devrai renvoyer une fonction et *)
 						 				  Env.Cloture(Pure(f), Env.copy env),false (* planterai *)
         | Pure(prg) ->  (* print_string "Call stack machine with code : "; print_newline (); debug prg ; print_newline (); *)
-        				let _ = debug (transform_env env prg) in print_newline ();
+        				(* let _ = debug (transform_env env prg) in print_newline (); *)
         				let a = StackMachine.init_and_compute (transform_env env prg) in
                         (* print_string "Machine returns sucessfully"; print_newline (); print_newline (); *)
                         Env.Int(a),false
