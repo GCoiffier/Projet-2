@@ -23,7 +23,7 @@
 %\usepackage{listings}
 %\usepackage{fancyhdr}
 %\usepackage{wrapfig}
-\usepackage{color}
+\usepackage[usenames,dvipsnames]{color}
 %\usepackage{colortbl}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -34,17 +34,6 @@
 \usepackage{titlesec}
 \usepackage{hyperref}
 
-% pour compiler: 
-
-% faire    pdflatex ex-rapport
-% (si les references aux numeros de parties apparaissent comme des
-% "?", recompiler une fois)
-
-% la compilation de la bibliographie est davantage une "incantation":
-% faire     bibtex ex-biblio
-% puis      pdflatex ex-rapport (un nombre premier de fois)
-
-
 \title{ \Huge{Rapport Projet 2} \\ Où l'on parle de rongeurs}
 \author{Guillaume Coiffier - Léo Valque}
 \date{2017}
@@ -53,7 +42,7 @@
   {\normalfont \huge \bfseries \centering}
   {\partname \thepart}{20pt}{\Huge}
 
-\newcommand{\non}[1]{\overline{#1}}
+\newcommand{\fouine}{\textsf{\textcolor{Orchid}{f}\textcolor{Blue}{o}\textcolor{Orchid}{u}\textcolor{Blue}{i}\textcolor{Orchid}{n}\textcolor{Blue}{e} }}
 
 \begin{document}
 

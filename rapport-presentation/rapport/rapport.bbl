@@ -14,6 +14,23 @@ Les~M1 du~DI.
 \newblock Notre beau projet intégré.
 \newblock In Caron \cite{allProjInt16}, pages 10--22.
 
+\bibitem{DBLP:books/lib/Knuth97}
+Donald~Ervin Knuth.
+\newblock {\em The art of computer programming, Volume {I:} Fundamental
+  Algorithms, 3rd Edition}.
+\newblock Addison-Wesley, 1997.
+
+\bibitem{DBLP:books/lib/Knuth98a}
+Donald~Ervin Knuth.
+\newblock {\em The art of computer programming, , Volume III, 2nd Edition}.
+\newblock Addison-Wesley, 1998.
+
+\bibitem{DBLP:books/lib/Knuth98}
+Donald~Ervin Knuth.
+\newblock {\em The art of computer programming, Volume {II:} Seminumerical
+  Algorithms, 3rd Edition}.
+\newblock Addison-Wesley, 1998.
+
 \bibitem{DBLP:journals/cacm/Landin66}
 Peter~J. Landin.
 \newblock The next 700 programming languages.

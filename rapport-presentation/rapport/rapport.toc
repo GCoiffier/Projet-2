@@ -1,44 +1,42 @@
 \select@language {french}
-\contentsline {part}{I\hspace {1em}G\IeC {\'e}n\IeC {\'e}ralit\IeC {\'e}s}{3}{part.1}
-\contentsline {section}{\numberline {1}Comment utiliser notre programme}{3}{section.1}
-\contentsline {subsection}{\numberline {1.1}Avec Linux}{3}{subsection.1.1}
-\contentsline {paragraph}{Exemples :}{3}{paragraph*.1}
-\contentsline {subsection}{\numberline {1.2}Avec un autre OS}{4}{subsection.1.2}
-\contentsline {section}{\numberline {2}Fouine}{4}{section.2}
-\contentsline {subsection}{\numberline {2.1}Fouine}{4}{subsection.2.1}
-\contentsline {subsection}{\numberline {2.2}Le langage Fouine}{4}{subsection.2.2}
-\contentsline {section}{\numberline {3}Organisation du rapport et du projet}{5}{section.3}
-\contentsline {subsection}{\numberline {3.1}Organisation du rapport}{5}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Organisation du projet}{5}{subsection.3.2}
-\contentsline {subsection}{\numberline {3.3}Avancement du projet en fonction du temps}{5}{subsection.3.3}
-\contentsline {part}{II\hspace {1em}Le projet}{7}{part.2}
-\contentsline {section}{\numberline {4}Organisation du code}{7}{section.4}
-\contentsline {subsection}{\numberline {4.1}Liste des fichiers}{7}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Liste des programmes fouine donn\IeC {\'e}s en exemple}{7}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Bugs rep\IeC {\'e}r\IeC {\'e}s mais non corrig\IeC {\'e}s}{8}{subsection.4.3}
-\contentsline {section}{\numberline {5}L'interpr\IeC {\'e}teur fouine}{8}{section.5}
-\contentsline {subsection}{\numberline {5.1}L'interpr\IeC {\'e}tation}{8}{subsection.5.1}
-\contentsline {paragraph}{}{8}{paragraph*.2}
-\contentsline {paragraph}{}{8}{paragraph*.3}
-\contentsline {subsection}{\numberline {5.2}Structures de donn\IeC {\'e}es}{8}{subsection.5.2}
-\contentsline {paragraph}{}{8}{paragraph*.4}
-\contentsline {paragraph}{}{8}{paragraph*.5}
-\contentsline {paragraph}{}{8}{paragraph*.6}
-\contentsline {subsection}{\numberline {5.3}Fonctions et fonctions r\IeC {\'e}cursives}{8}{subsection.5.3}
-\contentsline {paragraph}{}{8}{paragraph*.7}
-\contentsline {paragraph}{}{8}{paragraph*.8}
-\contentsline {paragraph}{}{9}{paragraph*.9}
-\contentsline {subsection}{\numberline {5.4}Les exceptions}{9}{subsection.5.4}
-\contentsline {paragraph}{}{9}{paragraph*.10}
-\contentsline {paragraph}{}{9}{paragraph*.11}
-\contentsline {paragraph}{}{9}{paragraph*.12}
-\contentsline {paragraph}{Historique de l'impl\IeC {\'e}mentation :}{9}{paragraph*.13}
-\contentsline {subsection}{\numberline {5.5}Aspects imp\IeC {\'e}ratifs et tableaux}{9}{subsection.5.5}
-\contentsline {paragraph}{}{9}{paragraph*.14}
-\contentsline {paragraph}{}{9}{paragraph*.15}
-\contentsline {section}{\numberline {6}La machine \IeC {\`a} pile SECD}{9}{section.6}
-\contentsline {subsection}{\numberline {6.1}Pr\IeC {\'e}sentation}{9}{subsection.6.1}
-\contentsline {subsection}{\numberline {6.2}Impl\IeC {\'e}mentation}{10}{subsection.6.2}
-\contentsline {section}{\numberline {7}Interface et interpr\IeC {\'e}tation mixte}{10}{section.7}
-\contentsline {subsection}{\numberline {7.1}Puret\IeC {\'e} du code}{10}{subsection.7.1}
-\contentsline {subsection}{\numberline {7.2}Interpr\IeC {\'e}tation mixte}{10}{subsection.7.2}
+\contentsline {part}{I\hspace {1em}G\IeC {\'e}n\IeC {\'e}ralit\IeC {\'e}s}{2}{part.1}
+\contentsline {section}{\numberline {1}Comment utiliser notre programme}{2}{section.1}
+\contentsline {paragraph}{Exemples :}{2}{paragraph*.1}
+\contentsline {section}{\numberline {2}Fouine}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}Fouine}{3}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Le langage \textsf {\leavevmode {\color {Orchid}f}\leavevmode {\color {Blue}o}\leavevmode {\color {Orchid}u}\leavevmode {\color {Blue}i}\leavevmode {\color {Orchid}n}\leavevmode {\color {Blue}e} }}{3}{subsection.2.2}
+\contentsline {section}{\numberline {3}Avancement du projet en fonction du temps}{4}{section.3}
+\contentsline {part}{II\hspace {1em}Le projet}{5}{part.2}
+\contentsline {section}{\numberline {4}Organisation du code}{5}{section.4}
+\contentsline {subsection}{\numberline {4.1}Liste des fichiers}{5}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Liste des programmes \textsf {\leavevmode {\color {Orchid}f}\leavevmode {\color {Blue}o}\leavevmode {\color {Orchid}u}\leavevmode {\color {Blue}i}\leavevmode {\color {Orchid}n}\leavevmode {\color {Blue}e} }donn\IeC {\'e}s en exemple}{5}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Bugs d\IeC {\'e}tect\IeC {\'e}s et non corrig\IeC {\'e}s}{6}{subsection.4.3}
+\contentsline {section}{\numberline {5}L'interpr\IeC {\'e}teur \textsf {\leavevmode {\color {Orchid}f}\leavevmode {\color {Blue}o}\leavevmode {\color {Orchid}u}\leavevmode {\color {Blue}i}\leavevmode {\color {Orchid}n}\leavevmode {\color {Blue}e} }}{6}{section.5}
+\contentsline {subsection}{\numberline {5.1}L'interpr\IeC {\'e}tation}{6}{subsection.5.1}
+\contentsline {paragraph}{}{6}{paragraph*.2}
+\contentsline {paragraph}{}{6}{paragraph*.3}
+\contentsline {subsection}{\numberline {5.2}Structures de donn\IeC {\'e}es}{6}{subsection.5.2}
+\contentsline {paragraph}{}{6}{paragraph*.4}
+\contentsline {paragraph}{}{6}{paragraph*.5}
+\contentsline {paragraph}{}{6}{paragraph*.6}
+\contentsline {subsection}{\numberline {5.3}Fonctions et fonctions r\IeC {\'e}cursives}{6}{subsection.5.3}
+\contentsline {paragraph}{}{6}{paragraph*.7}
+\contentsline {paragraph}{}{6}{paragraph*.8}
+\contentsline {subsection}{\numberline {5.4}Les exceptions}{7}{subsection.5.4}
+\contentsline {paragraph}{}{7}{paragraph*.9}
+\contentsline {paragraph}{}{7}{paragraph*.10}
+\contentsline {paragraph}{}{7}{paragraph*.11}
+\contentsline {paragraph}{}{7}{paragraph*.12}
+\contentsline {subsection}{\numberline {5.5}Aspects imp\IeC {\'e}ratifs et tableaux}{7}{subsection.5.5}
+\contentsline {paragraph}{}{7}{paragraph*.13}
+\contentsline {paragraph}{}{7}{paragraph*.14}
+\contentsline {section}{\numberline {6}La machine \IeC {\`a} pile SECD}{7}{section.6}
+\contentsline {paragraph}{}{7}{paragraph*.15}
+\contentsline {paragraph}{}{7}{paragraph*.16}
+\contentsline {paragraph}{}{7}{paragraph*.17}
+\contentsline {section}{\numberline {7}Interface et interpr\IeC {\'e}tation mixte}{8}{section.7}
+\contentsline {paragraph}{}{8}{paragraph*.18}
+\contentsline {subsection}{\numberline {7.1}Puret\IeC {\'e} du code}{8}{subsection.7.1}
+\contentsline {paragraph}{}{8}{paragraph*.19}
+\contentsline {paragraph}{}{8}{paragraph*.20}
+\contentsline {subsection}{\numberline {7.2}Interpr\IeC {\'e}tation mixte}{8}{subsection.7.2}

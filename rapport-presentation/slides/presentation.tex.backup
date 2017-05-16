@@ -14,13 +14,7 @@
 
 
 \begin{document}
-
 \maketitle
-
-\begin{frame}
- \centering
- \Large un interpréteur \fouine $\quad \bigcup \quad $ une machine SECD
-\end{frame}
 
 \section{L'interpréteur fouine}
 
@@ -38,21 +32,19 @@
 
 \begin{frame}
 \frametitle{L'interpréteur fouine}
-  Comment ça marche en pratique ? \\ ~ \\ \pause
-  \begin{description}
-   \item[Les exceptions :] On propage un booléen du \texttt{raise} au \texttt{try} juste au dessus \pause
-   \item[Tableaux et références :] Stockés dans l'environnement
-  \end{description}
+  Comment ça marche en pratique ?
+  \begin{itemize}
+   \item Type \texttt{programme} construit par le parser
+   \item 
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Interprétation mixte}
-  Les fonctions et fonctions récursives sont pures. \pause
+\frametitle{L'interpréteur fouine}
+  Interprétation mixte
  \begin{itemize}
-   \item Constructeur \texttt{Pure of programme} \pause
-   \item Fonction \texttt{label\_pure\_code} qui insère les constructeurs purs \pause
-   \item Interprétation quasiment normale \pause
-   \item Recopie d'environnement de \fouine vers la machine
+   \item Constructeur \texttt{Pure of programme}
+   \item Bloup
   \end{itemize}
 \end{frame}
 
@@ -62,12 +54,12 @@
  COUCOU LEO
 \end{frame}
 
-\section*{Conclusion}
-\begin{frame}{Conclusion}
+\section*{Conclusions}
+\begin{frame}{Conclusions}
 C'était bien.
 \end{frame}
 
-\begin{frame}{Conclusion}
+\begin{frame}{Conclusions}
  \centering
  \Large Merci pour votre attention ! \\ ~ \\
  \includegraphics[width = 0.8\textwidth]{fouine_hiver.jpg}
