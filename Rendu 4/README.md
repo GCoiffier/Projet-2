@@ -151,6 +151,18 @@ Les références se font sur des entiers uniquement. Elles sont implémentées e
 
 Les tableaux ont été implémentés quasiment comme les références. Le type Env.elt a été enrichi d'un constructeur Array contenant un tableau. Les trois opérations (création de tableau, assignation à un indice, lecture d'une case) se font alors naturellement.
 
+# test de performance
+
+on a effectue 2 test de performance:
+- le crible pour calculer les nombre premiers:
+l'interpreteur basique met 0.55s pour calculez les nombres premiers inférieur à 100000
+l'interpreteur mixte met 37.5s pour calculez seulement les 10000 premiers, en effet la traduction d'environnement est très lent et les appels à la machine sont nombreux
+
+- un fibonacci naif pour n=30:
+l'interpreteur met 0.99s
+la machine met 0.74s
+la machine est donc plus rapide
+
 # Liste et contenu des fichiers
 
 ### main.ml :
