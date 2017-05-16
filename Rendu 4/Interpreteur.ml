@@ -102,14 +102,14 @@ module Interpreteur:InterpreteurSig = struct
 
 		  Pure(Const(n)) -> Env.Int(n),false
 		| Pure(Var(x))   -> (Env.find env (Var(x))),false
-		| Pure(Function_def(var,expr)) -> let f = Function_def(var,expr) in (* la machine devrai renvoyer une fonction et *)
-						 				  Env.Cloture(Pure(f), Env.copy env),false (* planterai *)
-        | Pure(prg) ->  (* print_string "Call stack machine with code : "; print_newline (); debug prg ; print_newline (); *)
-        				let _ = debug (transform_env env prg) in print_newline ();
+		| Pure(Function_def(var,expr))-> let f = Function_def(var,expr) in Env.Cloture(Pure(f), Env.copy env),false
+            (* appeler la machine à pile là dessus ferai qu'elle devrait renvoyer une fonction, or elle ne peut pas *)
+
+        | Pure(prg) ->  (* print_string "Call stack machine with code : "; print_newline (); debug (transform_env env prg) ; print_newline (); *)
         				let a = StackMachine.init_and_compute (transform_env env prg) in
                         (* print_string "Machine returns sucessfully"; print_newline (); print_newline (); *)
                         Env.Int(a),false
-        (* Ces trois cas n'arrivent que si l'on appelle l'interprétation mixte.
+        (* Ces quatre cas n'arrivent que si l'on appelle l'interprétation mixte.
             Décommenter pour voir les appels à la machine *)
 
         | Unit -> Env.Int(0),false
@@ -297,7 +297,8 @@ module Interpreteur:InterpreteurSig = struct
                                                 Function_def(var,r)
 
             | Function_call(f,arg) as call-> let r = lbl l arg in
-                                                if (is_pure r)&&(List.mem f l) then Pure(call) else
+                                                let rf = lbl l f in
+                                                if (is_pure r)&&((is_pure rf)||(List.mem f l)) then Pure(call) else
                                                 Function_call(f,r)
 
             (* Exceptions  *)
@@ -321,7 +322,7 @@ module Interpreteur:InterpreteurSig = struct
         in lbl [] prg
 
     let execute_mixte = function
-        prg -> debug (label_pure_code prg); print_newline ();
+        prg -> (* debug (label_pure_code prg); print_newline (); *)
                 execute (label_pure_code prg)
 
 end
