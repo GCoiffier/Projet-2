@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.10.16)  16 MAY 2017 11:27
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.10.16)  16 MAY 2017 11:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1316,89 +1316,136 @@ Dictionary: translator-theorem-dictionary, Language: English
 )
 LaTeX Info: Redefining \includegraphics on input line 16.
  (./presentation.nav)
-Overfull \vbox (15.63992pt too high) detected at line 17
+Overfull \vbox (15.63992pt too high) detected at line 18
  []
 
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-! Argument of \@gobble has an extra }.
-<inserted text> 
-                \par 
-l.19 \section{L'interpréteur \fouine}
-                                      
-I've run across a `}' that doesn't seem to match anything.
-For example, `\def\a#1{...}' and `\a}' would produce
-this error. If you simply proceed now, the `\par' that
-I've just inserted will cause me to report a runaway
-argument that might be the root of the problem. But if
-your `}' was spurious, just type `2' and it will go away.
+LaTeX Font Info:    Try loading font information for U+msa on input line 23.
 
-Runaway argument?
-! Paragraph ended before \@gobble was complete.
-<to be read again> 
-                   \par 
-l.19 \section{L'interpréteur \fouine}
-                                      
-I suspect you've forgotten a `}', causing me to apply this
-control sequence to too much text. How can we recover?
-My plan is to forget the whole thing and hope for the best.
-
-! Argument of \@firstofone has an extra }.
-<inserted text> 
-                \par 
-l.19 \section{L'interpréteur \fouine}
-                                      
-I've run across a `}' that doesn't seem to match anything.
-For example, `\def\a#1{...}' and `\a}' would produce
-this error. If you simply proceed now, the `\par' that
-I've just inserted will cause me to report a runaway
-argument that might be the root of the problem. But if
-your `}' was spurious, just type `2' and it will go away.
-
-Runaway argument?
-! Paragraph ended before \@firstofone was complete.
-<to be read again> 
-                   \par 
-l.19 \section{L'interpréteur \fouine}
-                                      
-I suspect you've forgotten a `}', causing me to apply this
-control sequence to too much text. How can we recover?
-My plan is to forget the whole thing and hope for the best.
-
-! Undefined control sequence.
-\beamer@saveanother ->\let \beamer@savedif 
-                                           =\ifbeamer@anotherslide 
-l.19 \section{L'interpréteur \fouine}
-                                      
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-! Incomplete \iffalse; all text was ignored after line 19.
-<inserted text> 
-                \fi 
-<*> presentation.tex
-                    
-The file ended while I was skipping conditional text.
-This kind of error happens when you say `\if...' and forget
-the matching `\fi'. I've inserted a `\fi'; this might work.
+LaTeX Font Info:    Try loading font information for U+msb on input line 23.
 
-! Emergency stop.
-<*> presentation.tex
-                    
-*** (job aborted, no legal \end found)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Try loading font information for OT1+mathkerncmss on input 
+line 23.
 
- 
+(/usr/share/texlive/texmf-dist/tex/latex/sansmathaccent/ot1mathkerncmss.fd
+File: ot1mathkerncmss.fd 2013/03/27 Fontinst v1.933 font definitions for OT1/ma
+thkerncmss.
+)
+
+LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <4> not available
+(Font)              size <5> substituted on input line 23.
+
+[2
+
+] [3
+
+]
+LaTeX Font Info:    Try loading font information for OMS+cmss on input line 37.
+
+LaTeX Font Info:    No file OMScmss.fd. on input line 37.
+
+
+LaTeX Font Warning: Font shape `OMS/cmss/m/n' undefined
+(Font)              using `OMS/cmsy/m/n' instead
+(Font)              for symbol `textbullet' on input line 37.
+
+[4
+
+] [5
+
+] [6
+
+] [7
+
+] [8
+
+] [9
+
+] [10
+
+] [11
+
+] [12
+
+] [13
+
+] [14
+
+] [15
+
+] [16
+
+] [17
+
+] [18
+
+] [19
+
+]
+[20
+
+] <fouine_hiver.jpg, id=136, 240.9pt x 160.49962pt>
+File: fouine_hiver.jpg Graphic file (type jpg)
+ <use fouine_hiver.jpg>
+Package pdftex.def Info: fouine_hiver.jpg used on input line 74.
+(pdftex.def)             Requested size: 245.83282pt x 163.79068pt.
+
+[21
+
+ <./fouine_hiver.jpg>]
+\tf@nav=\write6
+\openout6 = `presentation.nav'.
+
+\tf@toc=\write7
+\openout7 = `presentation.toc'.
+
+\tf@snm=\write8
+\openout8 = `presentation.snm'.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 77.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 77.
+ (./presentation.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 77.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 77.
+Package rerunfilecheck Info: File `presentation.out' has not changed.
+(rerunfilecheck)             Checksum: 591C59E128FFB3E1195F1A605EC2B144;119.
+
+
+LaTeX Font Warning: Size substitutions with differences
+(Font)              up to 1.0pt have occurred.
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 77.
+ ) 
 Here is how much of TeX's memory you used:
- 20360 strings out of 493029
- 402360 string characters out of 6136233
- 473448 words of memory out of 5000000
- 23439 multiletter control sequences out of 15000+600000
- 5751 words of font info for 21 fonts, out of 8000000 for 9000
+ 20654 strings out of 493029
+ 408595 string characters out of 6136233
+ 475646 words of memory out of 5000000
+ 23658 multiletter control sequences out of 15000+600000
+ 15851 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 71i,7n,83p,1734b,563s stack positions out of 5000i,500n,10000p,200000b,80000s
-!  ==> Fatal error occurred, no output PDF file produced!
+ 71i,13n,83p,1734b,710s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/share/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on presentation.pdf (21 pages, 128632 bytes).
+PDF statistics:
+ 180 PDF objects out of 1000 (max. 8388607)
+ 141 compressed objects within 2 object streams
+ 46 named destinations out of 1000 (max. 500000)
+ 64 words of extra memory for PDF output out of 10000 (max. 10000000)
+
