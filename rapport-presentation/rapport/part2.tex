@@ -104,6 +104,23 @@ Dans cette fonction, on propage une liste des variables et fonctions qui ont ét
 
 Pour l'interprétation d'un programme où les codes purs ont été marqués, il a suffit d'ajouter un cas de filtrage par motif à l'interpréteur : si le code est pur, on l'envoie sur la machine à pile avec l'environnement courant au lieu de continuer l'interprétation récursivement.
 
+la traduction d'environnement s'effectue de manière indirecte. La fonction transform_env transforme l'environnement en code avec des let .. in.\\
+On peut donc envoyer ainsi de l'environnement à la machine.\\
+Pour décider si une fonction est récursive, on cherche de son environnement la variable qui porte son nom et on regarde si il possède le même code auxquel cas elle est considérée récursive.\\ 
+On peut donc être très vicieux et envoyer let f x = x in let f x = f x in let f x= f x in let y = ref 0 in f 3;; pour faire planter la machine. En effet elle considerera f comme recursive.
+\section{Performance}
+
+On a fait des tests avec différentes fonctions:
+un crible d'eratostene:
+pour n=100000, l'interpreteur basique met 0.55s
+pour n=10000, l'interpreteur mixte met 37.5s
+On voit ici le cout des traductions d'environnement
+
+un fibonacci naif pour n=30:
+l'interpreteur met 0.99s
+la machine met0.74s
+la machine est plus rapide que l'interpreteur
+
 \section*{Conclusion}
 
 Ce rapport est un peu long, et le mentionner ici le rend encore plus long.

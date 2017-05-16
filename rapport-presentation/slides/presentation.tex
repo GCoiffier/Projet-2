@@ -59,7 +59,30 @@
 \section{La machine à pile SECD}
 
 \begin{frame}
- COUCOU LEO
+\frametitle{indices de bruijn}
+  \begin{itemize}
+    \item Dans la machine, on veut accèder aux élements par leurs position et non pas par leur nom \pause
+    \item lorsqu'on compile le code, on stocke le nom des variables défini dans une pile \pause
+    \item lorsqu'on compile l'access à un élement, on regarde quel est la position actuel de cette élement dans la pile. on remplace le nom par la valeur de cette position \pause
+    \item let x = 2 in ( let y = 3 in x+y) + x devient \\
+    let 2 in (let 3 in access(1)+access(0) ) + access(0)
+\end{frame}
+
+\begin{frame}
+\frametitle{conversion d'environnement}
+  \begin{itemize]
+    \item Objectif : Traduire l'environnement de l'interpreteur vers l'environnement de la machine. \pause
+    \item Problème : Elle sont très différentes. \pause
+    \item dans l'interpreteur, c'est une table de hachage avec pour clés des strings. \pause
+    \item dans la machine, c'est une simple liste avec pour "clé" des entiers (indices de bruijn). \pause 
+\end{frame}
+
+\begin{frame}
+\frametitle{conversion d'environnement}
+  \item On transmet pas directement l'environnement. \pause
+  \item On transforme l'environnement de l'interpreteur en programme avec des let in qui met devant le code envoyer à la machine \pause
+  \item La machine reçoit donc de l'environnement par ce biais \pause
+  \item Problème :  c'est lent, la traduction de l'environnement est en O(n) où n est la taille de l'environnement
 \end{frame}
 
 \section*{Conclusion}
