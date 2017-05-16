@@ -24,6 +24,7 @@ open Fouine_type
 %token AMAKE, LARROW
 
 /* priorités et associativité */
+%nonassoc TRY
 %left LET, IN
 %left EINSTR
 %left IF, THEN, ELSE

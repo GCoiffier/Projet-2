@@ -10,21 +10,21 @@
  \item Les fichiers compilés pour la machine SECD sont situés dans le dossier Stack\_Programs. Ils ont une extension \texttt{.code}
  \end{itemize}
 
-\section{Comment exécuter notre programme}
+\section{Comment utiliser notre programme}
 
 \subsection{Avec Linux}
 
 \begin{itemize}
   \setlength\itemsep{3pt}
  \item Pour compiler le programme, utilisez simplement la commande \texttt{make}. Celle-ci crée un exécutable appelé \textit{fouine}.
- \item Pour nettoyer le répertoire de travail, utilisez la commande `make clean`.
- \item \texttt{./fouine fichier} exécute le code contenu dans **fichier** et renvoie le résultat de ce code (qui doit être un entier)
+ \item Pour nettoyer le répertoire de travail, utilisez la commande \texttt{make clean}.
+ \item \texttt{./fouine fichier} exécute le code contenu dans \textit{fichier} et renvoie le résultat de ce code (qui doit être un entier)
  \item \texttt{./fouine -debug fichier} commence par afficher le code parsé dans la console, puis exécute le code et affiche le résultat.
  \item \texttt{./fouine -interm sortie fichier} compile le code parsé et le stocke dans sortie. Si aucun fichier de sortie n'est spécifié, le programme affichera le code dans la console.
  \item \texttt{./fouine -machine fichier} compile le code parsé et effectue l'interprétation mixte : ce qui peut être exécuté sur la machine à pile y est exécuté, le reste fait appel à l'interpréteur standard. Le code en entrée doit être un code fouine.
  \item \texttt{./fouine -execute fichier} compile le code parsé et l'exécute sur la machine à pile. Ce code doit être dans le langage de la machine à pile.
- \item \textbf{NB :} il est dans tous les cas possibles de ne pas donner de fichier d'entrée à fouine. Le programme s'éxecute alors en mode interactif et il faut entrer un programme dans la console.
 \end{itemize}
+\textbf{NB :} il est dans tous les cas possibles de ne pas donner de fichier d'entrée à fouine. Le programme s'éxecute alors en mode interactif et il faut entrer un programme dans la console.
 
 \paragraph{Exemples :}
 
@@ -84,13 +84,14 @@ Mais, à la différence d'Ocaml, il ne comprend pas :
 \end{itemize}
 
 Cependant, nous verrons que fouine peut être étendu avec certaines fonctionnalités, notamment un système de gestion d'exceptions et des références.\\
-Ce langage ne figure cependant pas dans la liste des 700 langages de programmation proposée par Peter J. Landin \cite{700}.
+Ce langage ne figure cependant pas dans la liste des 700 langages de programmation proposée par Peter J. Landin \cite{DBLP:journals/cacm/Landin66}.
 
 \section{Organisation du rapport et du projet}
 
 \subsection{Organisation du rapport}
 
-Ce rapport s'organise en 3 parties, si l'on exclut cette partie d'introduction. \\
+Ce rapport s'organise en 2  grandes parties. La première partie concerne les remarques générales sur le projet. Vous vous trouvez actuellement au beau milieu de cette partie. \\
+La second partie concerne le programe en lui-même, et est divisée en trois sections.
 Dans un premier temps, nous parlerons de l'interpréteur fouine, de ses fonctionnalités et de certains aspects importants de son implémentation. \\
 Dans un second temps, nous parlerons de la machine à pile SECD, également implémentée par nos soins. \\
 Enfin, la dernière partie sera consacrée à l'exécution mixte fouine/SECD d'un code.
