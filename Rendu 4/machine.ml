@@ -238,7 +238,8 @@ module StackMachine : StackMachineSig = struct
 												|OR  -> machine := Mach(q,env, VAL(t1+t2)::qi);
 												|_ -> ()
 											  )
-								|_ -> failwith "stack empty"
+								|t1::t2::qi -> failwith "top objects are not values"
+								|_ 			-> failwith "stack empty"
 							   )
 				)
 		| _ -> failwith "execution failed"

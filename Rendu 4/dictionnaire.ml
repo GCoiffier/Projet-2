@@ -22,11 +22,6 @@ module Dictionnaire : Dictsig = struct
   let find = Hashtbl.find
   let copy = Hashtbl.copy
 
-  let rec appartient k acc = match acc with (* suppression des doublons pour limiter la taille de to_list *)
-  	|[] -> false
-  	|(k_,v_)::q when k_ = k -> true
-  	|t::q -> appartient k q
-
-  let to_list = fun h -> Hashtbl.fold (fun k v acc -> if appartient k acc then acc else (k, v)::acc) h []
+  let to_list = fun h -> Hashtbl.fold (fun k v acc -> (k, v)::acc) h []
 
 end

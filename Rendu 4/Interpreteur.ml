@@ -103,9 +103,9 @@ module Interpreteur:InterpreteurSig = struct
 		  Pure(Const(n)) -> Env.Int(n),false
 		| Pure(Var(x))   -> (Env.find env (Var(x))),false
 		| Pure(Function_def(var,expr)) -> let f = Function_def(var,expr) in (* la machine devrai renvoyer une fonction et *)
-						 				  Env.Cloture(f, Env.copy env),false (* planterai *)
+						 				  Env.Cloture(Pure(f), Env.copy env),false (* planterai *)
         | Pure(prg) ->  (* print_string "Call stack machine with code : "; print_newline (); debug prg ; print_newline (); *)
-        				let b = debug (transform_env env prg) in print_newline ();
+        				let _ = debug (transform_env env prg) in print_newline ();
         				let a = StackMachine.init_and_compute (transform_env env prg) in
                         (* print_string "Machine returns sucessfully"; print_newline (); print_newline (); *)
                         Env.Int(a),false
@@ -292,7 +292,7 @@ module Interpreteur:InterpreteurSig = struct
                                         if (is_pure ra)&&(is_pure rb) then Pure(bin)
                                         else BinOp(ra,op,rb)
             (* Fonctions *)
-            | Function_def(var,expr) as f -> let r = lbl (var::l) expr in
+            | Function_def(var,expr) as f-> let r = lbl (var::l) expr in
                                                 if (is_pure r) then Pure(f) else
                                                 Function_def(var,r)
 
