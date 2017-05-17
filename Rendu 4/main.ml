@@ -2,11 +2,11 @@
   |    PROJET 2  2017 - L3IF ENS Lyon      |
   |    Valque Léo - Coiffier Guillaume     |
   |                                        |
-  |                 Rendu 3                |
+  |                 Rendu 4                |
   |                Main file               |
   ------------------------------------------
 
-  NB : Tout ce qu'il faut savoir est dans le README.md
+  NB : Tout ce qu'il faut savoir est dans le rapport
 *)
 
 open Interpreteur
